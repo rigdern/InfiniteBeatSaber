@@ -57,7 +57,11 @@ function Get-Git {
 
     $result = & git $Arguments 2>&1
     Test-Predicate ($LASTEXITCODE -eq 0) "Command failed with message: $result"
-    return $result.ToString().Trim()
+    if ($result -eq $null) {
+        return ''
+    } else {
+        return $result.ToString().Trim()
+    }
 }
 
 function Test-GitHasLocalChanges {
