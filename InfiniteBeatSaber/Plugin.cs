@@ -1,10 +1,14 @@
-﻿using IPA;
+﻿using HarmonyLib;
+using InfiniteBeatSaber.Installers;
+using IPA;
 using IPA.Config;
 using IPA.Config.Stores;
+using SiraUtil.Zenject;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using IPALogger = IPA.Logging.Logger;
@@ -16,6 +20,7 @@ namespace InfiniteBeatSaber
     {
         internal static Plugin Instance { get; private set; }
         internal static IPALogger Log { get; private set; }
+        private static Harmony _harmony;
 
         [Init]
         /// <summary>
@@ -23,10 +28,13 @@ namespace InfiniteBeatSaber
         /// [Init] methods that use a Constructor or called before regular methods like InitWithConfig.
         /// Only use [Init] with one Constructor.
         /// </summary>
-        public void Init(IPALogger logger)
+        public void Init(IPALogger logger, Zenjector zenjector)
         {
             Instance = this;
             Log = logger;
+
+            zenjector.Install<MenuInstaller>(Location.Menu);
+
             Log.Info($"InfiniteBeatSaber initialized. Version: {BuildConstants.GitFullHash}. Build date: {BuildConstants.BuildDate.ToString("o")}");
         }
 
@@ -55,6 +63,33 @@ namespace InfiniteBeatSaber
         {
             Log.Debug("OnApplicationQuit");
 
+        }
+
+        [OnEnable]
+        public void OnEnable()
+        {
+            try
+            {
+                _harmony = Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
+        }
+
+        [OnDisable]
+        public void OnDisable()
+        {
+            try
+            {
+                _harmony?.UnpatchSelf();
+                _harmony = null;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
         }
     }
 }
