@@ -12,7 +12,6 @@ namespace InfiniteBeatSaber.Patches
         [HarmonyPrefix]
         public static bool LoadAudioClipFromFilePathAsyncPrefix(ref Task<AudioClip> __result, string filePath)
         {
-            Plugin.Log.Info("AHC LoadAudioClipFromFilePathAsyncPrefix loading: " + filePath);
             __result = LoadAudioClipFromFilePathAsync(filePath);
             return false; // Prevent the orginial implementation from running.
         }

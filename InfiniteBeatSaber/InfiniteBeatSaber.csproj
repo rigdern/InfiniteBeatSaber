@@ -45,6 +45,11 @@
       <Private>False</Private>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="BeatmapCore">
+      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\BeatmapCore.dll</HintPath>
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="BSML">
       <HintPath>$(BeatSaberDir)\Plugins\BSML.dll</HintPath>
       <Private>False</Private>
@@ -137,23 +142,32 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudioRemixer.cs" />
+    <Compile Include="BeatmapRemixer.cs" />
     <Compile Include="BuildConstants\Debug.cs" Condition="'$(Configuration)' == 'Debug'" />
     <Compile Include="$(SolutionDir)Generated\BuildConstants\Release.cs" Link="BuildConstants\Release.cs" Condition="'$(Configuration)' == 'Release'" />
+    <Compile Include="Extensions\AudioClipExtensions.cs" />
+    <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="InfiniteBeatSaberMenuUI.cs" />
+    <Compile Include="InfiniteBeatSaberMode.cs" />
     <Compile Include="InfiniteJukeboxAlgorithm\AugmentedTypes.cs" />
     <Compile Include="InfiniteJukeboxAlgorithm\InfiniteBeats.cs" />
     <Compile Include="InfiniteJukeboxAlgorithm\InputTypes.cs" />
     <Compile Include="InfiniteJukeboxAlgorithm\NearestNeighborCalculator.cs" />
     <Compile Include="InfiniteJukeboxAlgorithm\PredictableRandom.cs" />
     <Compile Include="InfiniteJukeboxAlgorithm\TrackRemixer.cs" />
+    <Compile Include="InfiniteRemix.cs" />
     <Compile Include="Installers\MenuInstaller.cs" />
+    <Compile Include="Installers\PlayerInstaller.cs" />
     <Compile Include="Patches\AudioTimeSyncControllerPatches.cs" />
     <Compile Include="Patches\GameplayCoreSceneSetupDataPatches.cs" />
     <Compile Include="Patches\MediaAsyncLoaderPatches.cs" />
     <Compile Include="Patches\StandardLevelDetailViewPatches.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Remix.cs" />
     <Compile Include="RemixableSongs.cs" />
+    <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="manifest.json" />

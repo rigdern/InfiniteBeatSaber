@@ -34,6 +34,7 @@ namespace InfiniteBeatSaber
             Log = logger;
 
             zenjector.Install<MenuInstaller>(Location.Menu);
+            zenjector.Install<PlayerInstaller>(Location.Player);
 
             Log.Info($"InfiniteBeatSaber initialized. Version: {BuildConstants.GitFullHash}. Build date: {BuildConstants.BuildDate.ToString("o")}");
         }
