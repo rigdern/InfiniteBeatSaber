@@ -4,7 +4,7 @@ using System;
 namespace InfiniteBeatSaber.Patches
 {
     [HarmonyPatch(typeof(StandardLevelDetailView))]
-    internal class StandardLevelDetailViewPatches
+    internal static class StandardLevelDetailViewPatches
     {
         // Like `StandardLevelDetailView.didChangeDifficultyBeatmapEvent` but additionally fires
         // when `selectedDifficultyBeatmap` is initialized (not only when the player changes it
