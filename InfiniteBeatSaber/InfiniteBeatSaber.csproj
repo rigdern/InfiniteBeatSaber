@@ -92,6 +92,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuildConstants\Debug.cs" Condition="'$(Configuration)' == 'Debug'" />
+    <Compile Include="$(SolutionDir)Generated\BuildConstants\Release.cs" Link="BuildConstants\Release.cs" Condition="'$(Configuration)' == 'Release'" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Configuration\PluginConfig.cs" />
     <Compile Include="InfiniteBeatSaberController.cs" />
@@ -112,4 +114,10 @@
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>if "$(ConfigurationName)" == "Release" (
+  powershell.exe -ExecutionPolicy Bypass -File "$(SolutionDir)build-tools\genBuildConstants.ps1"
+)
+</PreBuildEvent>
+  </PropertyGroup>
 </Project>

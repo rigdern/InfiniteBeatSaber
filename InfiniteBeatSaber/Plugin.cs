@@ -27,7 +27,7 @@ namespace InfiniteBeatSaber
         {
             Instance = this;
             Log = logger;
-            Log.Info("InfiniteBeatSaber initialized.");
+            Log.Info($"InfiniteBeatSaber initialized. Version: {BuildConstants.GitFullHash}. Build date: {BuildConstants.BuildDate.ToString("o")}");
         }
 
         #region BSIPA Config
