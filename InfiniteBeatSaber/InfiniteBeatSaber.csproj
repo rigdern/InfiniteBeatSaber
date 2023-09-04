@@ -50,6 +50,11 @@
       <Private>False</Private>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <Private>False</Private>
+      <HintPath>$(BeatSaberDir)\Libs\Newtonsoft.Json.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="SiraUtil">
       <HintPath>$(BeatSaberDir)\Plugins\SiraUtil.dll</HintPath>
       <Private>False</Private>
@@ -120,6 +125,12 @@
     <Compile Include="BuildConstants\Debug.cs" Condition="'$(Configuration)' == 'Debug'" />
     <Compile Include="$(SolutionDir)Generated\BuildConstants\Release.cs" Link="BuildConstants\Release.cs" Condition="'$(Configuration)' == 'Release'" />
     <Compile Include="InfiniteBeatSaberMenuUI.cs" />
+    <Compile Include="InfiniteJukeboxAlgorithm\AugmentedTypes.cs" />
+    <Compile Include="InfiniteJukeboxAlgorithm\InfiniteBeats.cs" />
+    <Compile Include="InfiniteJukeboxAlgorithm\InputTypes.cs" />
+    <Compile Include="InfiniteJukeboxAlgorithm\NearestNeighborCalculator.cs" />
+    <Compile Include="InfiniteJukeboxAlgorithm\PredictableRandom.cs" />
+    <Compile Include="InfiniteJukeboxAlgorithm\TrackRemixer.cs" />
     <Compile Include="Installers\MenuInstaller.cs" />
     <Compile Include="Patches\StandardLevelDetailViewPatches.cs" />
     <Compile Include="Plugin.cs" />
@@ -139,6 +150,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="InfiniteJukeboxAlgorithm\LICENSE" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
