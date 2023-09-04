@@ -38,33 +38,6 @@ namespace InfiniteBeatSaber
             Log.Info($"InfiniteBeatSaber initialized. Version: {BuildConstants.GitFullHash}. Build date: {BuildConstants.BuildDate.ToString("o")}");
         }
 
-        #region BSIPA Config
-        //Uncomment to use BSIPA's config
-        /*
-        [Init]
-        public void InitWithConfig(Config conf)
-        {
-            Configuration.PluginConfig.Instance = conf.Generated<Configuration.PluginConfig>();
-            Log.Debug("Config loaded");
-        }
-        */
-        #endregion
-
-        [OnStart]
-        public void OnApplicationStart()
-        {
-            Log.Debug("OnApplicationStart");
-            new GameObject("InfiniteBeatSaberController").AddComponent<InfiniteBeatSaberController>();
-
-        }
-
-        [OnExit]
-        public void OnApplicationQuit()
-        {
-            Log.Debug("OnApplicationQuit");
-
-        }
-
         [OnEnable]
         public void OnEnable()
         {

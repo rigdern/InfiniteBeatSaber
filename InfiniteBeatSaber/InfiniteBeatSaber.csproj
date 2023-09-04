@@ -123,8 +123,6 @@
     <Compile Include="Installers\MenuInstaller.cs" />
     <Compile Include="Patches\StandardLevelDetailViewPatches.cs" />
     <Compile Include="Plugin.cs" />
-    <Compile Include="Configuration\PluginConfig.cs" />
-    <Compile Include="InfiniteBeatSaberController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemixableSongs.cs" />
   </ItemGroup>
