@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfiniteBeatSaber", "InfiniteBeatSaber\InfiniteBeatSaber.csproj", "{3FEFBC8B-6254-4F16-A613-1DEDE2E32B29}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3FEFBC8B-6254-4F16-A613-1DEDE2E32B29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FEFBC8B-6254-4F16-A613-1DEDE2E32B29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FEFBC8B-6254-4F16-A613-1DEDE2E32B29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FEFBC8B-6254-4F16-A613-1DEDE2E32B29}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7DB31F76-A40A-4D29-B58D-450AF8B0C8A5}
+	EndGlobalSection
+EndGlobal
