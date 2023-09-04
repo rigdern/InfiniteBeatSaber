@@ -2,10 +2,10 @@
   "$schema": "https://raw.githubusercontent.com/bsmg/BSIPA-MetadataFileSchema/master/Schema.json",
   "id": "InfiniteBeatSaber",
   "name": "InfiniteBeatSaber",
-  "author": "",
+  "author": "rigdern",
   "version": "0.0.1",
-  "description": "",
-  "gameVersion": "1.18.3",
+  "description": "Generates never-ending and ever changing levels. Inspired by the Infinite Jukebox.",
+  "gameVersion": "1.31.0",
   "dependsOn": {
     "BSIPA": "^4.2.0"
   }
