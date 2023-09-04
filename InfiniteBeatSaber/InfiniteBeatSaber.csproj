@@ -146,6 +146,9 @@
     <Compile Include="BeatmapRemixer.cs" />
     <Compile Include="BuildConstants\Debug.cs" Condition="'$(Configuration)' == 'Debug'" />
     <Compile Include="$(SolutionDir)Generated\BuildConstants\Release.cs" Link="BuildConstants\Release.cs" Condition="'$(Configuration)' == 'Release'" />
+    <Compile Include="DebugTools\EvalProgram.cs" Condition="'$(Configuration)' == 'Debug'" />
+    <Compile Include="DebugTools\WebSocketServer.cs" Condition="'$(Configuration)' == 'Debug'" />
+    <Compile Include="DebugTools\Eval.cs" Condition="'$(Configuration)' == 'Debug'" />
     <Compile Include="Extensions\AudioClipExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="InfiniteBeatSaberMenuUI.cs" />

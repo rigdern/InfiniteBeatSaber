@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Zenject;
+﻿using Zenject;
 
 namespace InfiniteBeatSaber.Installers
 {
@@ -12,6 +7,11 @@ namespace InfiniteBeatSaber.Installers
         public override void InstallBindings()
         {
             Container.BindInterfacesAndSelfTo<InfiniteBeatSaberMenuUI>().AsSingle().NonLazy();
+
+#if DEBUG
+            Container.BindInterfacesAndSelfTo<DebugTools.WebSocketServer>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<DebugTools.Eval>().AsSingle().NonLazy();
+#endif
         }
     }
 }
