@@ -126,7 +126,7 @@ namespace InfiniteBeatSaber
                 while (!cancellationToken.IsCancellationRequested)
                 {
                     var sleepUntilSongTime = _infiniteRemix.Duration - 25;
-                    var sleepSeconds = sleepUntilSongTime - _audioTimeSyncController.songTime;
+                    var sleepSeconds = (sleepUntilSongTime - _audioTimeSyncController.songTime) / _audioTimeSyncController.timeScale;
 
                     if (sleepSeconds > 0)
                     {
