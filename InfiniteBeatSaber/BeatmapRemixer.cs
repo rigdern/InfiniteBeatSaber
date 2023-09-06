@@ -3,20 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using static InfiniteBeatSaber.FloatComparison;
 
 namespace InfiniteBeatSaber
 {
     internal class BeatmapRemixer
     {
-        private readonly IEnumerable<BeatmapDataItem> _originalBeatmapDataItems;
+        private readonly IEnumerable<BeatmapDataItem> _sortedBeatmapDataItems; // Sorted by time
+        private readonly IEnumerable<ObstacleData> _sortedObstacleDataItems; // Sorted by time
         private readonly BeatmapData _remixedBeatmap;
 
         public BeatmapRemixer(IReadonlyBeatmapData beatmap, BeatmapData remixedBeatmap)
         {
-            _originalBeatmapDataItems = FilterBeatmapDataItems(beatmap.allBeatmapDataItems);
+            (_sortedBeatmapDataItems, _sortedObstacleDataItems) = FilterAndSortBeatmapDataItems(beatmap.allBeatmapDataItems);
             _remixedBeatmap = remixedBeatmap;
 
-            AddBeatmapDataItemsInOrder(_remixedBeatmap, MapPrologue(_originalBeatmapDataItems));
+            AddBeatmapDataItemsInOrder(_remixedBeatmap, MapPrologue(_sortedBeatmapDataItems));
         }
 
         // Adds `remix` to the remixed beatmap.
@@ -24,42 +26,45 @@ namespace InfiniteBeatSaber
         {
             foreach (var slice in remix.Slices)
             {
-                AddBeatmapDataItemsInOrder(_remixedBeatmap, SliceMap(_originalBeatmapDataItems, slice.Clock, slice.Start, slice.Duration));
+                AddBeatmapDataItemsInOrder(_remixedBeatmap, SliceMap(slice.Clock, slice.Start, slice.Duration));
+                AddBeatmapDataItemsInOrder(_remixedBeatmap, SliceObstacles(slice.Clock, slice.Start, slice.Duration));
             }
         }
 
-        private static bool AreFloatsEqual(double a, double b)
-        {
-            return Math.Abs(a - b) <= 0.001;
-        }
-
-        private static bool IsFloatGreater(double a, double b)
-        {
-            return a > b && !AreFloatsEqual(a, b);
-        }
-
-        private static IEnumerable<BeatmapDataItem> FilterBeatmapDataItems(IEnumerable<BeatmapDataItem> beatmapDataItems)
+        private static (IEnumerable<BeatmapDataItem>, IEnumerable<ObstacleData>) FilterAndSortBeatmapDataItems(IEnumerable<BeatmapDataItem> beatmapDataItems)
         {
             var omittedItemTypes = new SortedSet<string>();
-            var result = new LinkedList<BeatmapDataItem>();
-            foreach (var item in beatmapDataItems)
+            var keptBeatmapDataItems = new LinkedList<BeatmapDataItem>();
+            var obstacleDataItems = new LinkedList<ObstacleData>();
+            foreach (var item in beatmapDataItems.OrderBy(item => item))
             {
                 if (item is BPMChangeBeatmapEventData ||
                     item is BasicBeatmapEventData)
                 {
-                    result.AddLast(item);
+                    keptBeatmapDataItems.AddLast(item);
                 }
                 else if (item is NoteData noteData)
                 {
                     if (noteData.gameplayType == NoteData.GameplayType.Normal ||
                         noteData.gameplayType == NoteData.GameplayType.Bomb)
                     {
-                        result.AddLast(item);
+                        keptBeatmapDataItems.AddLast(item);
                     }
                     else
                     {
                         omittedItemTypes.Add($"{noteData.GetType().Name}, gameplayType: {noteData.gameplayType}");
                     }
+                }
+                else if (item is ObstacleData obstacleData)
+                {
+                    // `ObstacleData` is handled specially because, unlike other
+                    // beatmap data items, it has a `duration`. It might be
+                    // appropriate to include in a slice even though it begins
+                    // before the slice's start time. Due to the need to handle
+                    // obstacles specially, they get put into their own list,
+                    // `obstacleDataItems`, rather than into
+                    // `keptBeatmapDataItems`.
+                    obstacleDataItems.AddLast(obstacleData);
                 }
                 else
                 {
@@ -77,8 +82,12 @@ namespace InfiniteBeatSaber
                 }
                 Plugin.Log.Info(output.ToString());
             }
+            else
+            {
+                Plugin.Log.Info("BeatmapRemixer.FilterBeatmapDataItems: All beatmap item types are supported.");
+            }
 
-            return result;
+            return (keptBeatmapDataItems, obstacleDataItems);
         }
 
 
@@ -86,6 +95,12 @@ namespace InfiniteBeatSaber
         {
             var fieldInfo = typeof(BeatmapDataItem).GetField("<time>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic);
             fieldInfo.SetValue(item, time);
+        }
+
+        private static void SetDuration(ObstacleData obstacleData, float duration)
+        {
+            var fieldInfo = typeof(ObstacleData).GetField("<duration>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic);
+            fieldInfo.SetValue(obstacleData, duration);
         }
 
         private static IEnumerable<BeatmapDataItem> MapPrologue(IEnumerable<BeatmapDataItem> beatmapDataItems)
@@ -98,10 +113,10 @@ namespace InfiniteBeatSaber
                 .TakeWhile(item => IsFloatGreater(0, item.time));
         }
 
-        private static IEnumerable<BeatmapDataItem> SliceMap(IEnumerable<BeatmapDataItem> beatmapDataItems, double clock, double start, double duration)
+        private IEnumerable<BeatmapDataItem> SliceMap(double clock, double start, double duration)
         {
             var end = start + duration;
-            return beatmapDataItems
+            return _sortedBeatmapDataItems
                 .SkipWhile(item => IsFloatGreater(start, item.time))
                 .TakeWhile(item => IsFloatGreater(end, item.time))
                 .Select(item =>
@@ -113,6 +128,33 @@ namespace InfiniteBeatSaber
                     SetTime(result, (float)newTime);
                     return result;
                 });
+        }
+
+        private IEnumerable<BeatmapDataItem> SliceObstacles(double clock, double start, double duration)
+        {
+            var sliceRange = new Range(start, start + duration);
+
+            var result = new List<BeatmapDataItem>();
+            foreach (var obstacleData in _sortedObstacleDataItems)
+            {
+                if (IsFloatGreaterOrEqual(obstacleData.time, sliceRange.End))
+                {
+                    // All subsequent obstacles are further in the song than the requested slice.
+                    break;
+                }
+
+                var obstacleRange = new Range(obstacleData.time, obstacleData.time + obstacleData.duration);
+                if (sliceRange.TryIntersection(obstacleRange, out var rangeIntersection))
+                {
+                    var newStart = rangeIntersection.Start - start + clock;
+                    var newDuration = rangeIntersection.End - rangeIntersection.Start;
+                    var newObstacle = (ObstacleData)obstacleData.GetCopy();
+                    SetTime(newObstacle, (float)newStart);
+                    SetDuration(newObstacle, (float)newDuration);
+                    result.Add(newObstacle);
+                }
+            }
+            return result;
         }
 
         private static void AddBeatmapDataItemInOrder(BeatmapData map, BeatmapDataItem item)
