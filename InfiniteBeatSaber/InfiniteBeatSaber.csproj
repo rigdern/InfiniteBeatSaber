@@ -181,6 +181,7 @@
     <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')" />
     <None Include="InfiniteBeatSaber.csproj.user" Condition="Exists('InfiniteBeatSaber.csproj.user')" />
     <EmbeddedResource Include="SpotifyAnalyses\custom_level_8E7E553099436AF31564ADF1977A5EC42A61CFFF.json" />
+    <EmbeddedResource Include="SpotifyAnalyses\custom_level_B68BF61AC6BE0E128BE32A85810D42E7C53F4756.json" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BeatSaberModdingTools.Tasks">
