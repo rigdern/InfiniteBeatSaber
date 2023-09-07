@@ -66,9 +66,19 @@ function spawn(command, args, options=undefined) {
   return result;
 }
 
-export default class BeatSaberClient {
+class Signal {
+  constructor() {
+    this.promise = new Promise((resolve, reject) => {
+      this.resolve = resolve;
+      this.reject = reject;
+    });
+  }
+}
+
+class BeatSaberClient {
   constructor(onMessage) {
     this._socket = undefined;
+    this._disconnectedSignal = new Signal();
     this._onMessage = onMessage;
   }
 
@@ -109,6 +119,7 @@ export default class BeatSaberClient {
   _onDisconnected() {
     console.log('WebSocket disconnected');
     this._socket = undefined;
+    this._disconnectedSignal.resolve();
   }
 
   async ensureConnected() {
@@ -119,10 +130,24 @@ export default class BeatSaberClient {
 
   async send(cmd, args={}) {
     await this.ensureConnected();
-    this._socket.send(JSON.stringify([
+    const message = JSON.stringify([
       cmd,
       JSON.stringify(args),
-    ]));
+    ]);
+    await new Promise((resolve, reject) => {
+      this._socket.send(message, err => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+
+  close() {
+    this._socket.close();
+    return this._disconnectedSignal.promise;
   }
 }
 
@@ -195,6 +220,7 @@ async function main(args) {
 
   const beatSaberClient = new BeatSaberClient();
   await beatSaberClient.send('evalDll', { dllPath: dllPath });
+  await beatSaberClient.close();
 }
 
 process.exit(await main(process.argv.slice(2)));
