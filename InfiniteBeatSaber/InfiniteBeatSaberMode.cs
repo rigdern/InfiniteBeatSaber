@@ -9,13 +9,17 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 using InfiniteBeatSaber.Extensions;
+using InfiniteBeatSaber.DebugTools;
 
 namespace InfiniteBeatSaber
 {
     internal class InfiniteBeatSaberMode : IInitializable, IDisposable
     {
-        private readonly AudioTimeSyncController _audioTimeSyncController;
-        private readonly GameplayCoreSceneSetupData _gameplayCoreSceneSetupData;
+        [Inject] private readonly AudioTimeSyncController _audioTimeSyncController;
+        [Inject] private readonly GameplayCoreSceneSetupData _gameplayCoreSceneSetupData;
+#if DEBUG
+        [Inject] private readonly DebugTools.RemixVisualizer _remixVisualizer;
+#endif
 
         private CancellationTokenSource _generateRemixLoopCts;
 
@@ -23,23 +27,14 @@ namespace InfiniteBeatSaber
         private AudioRemixer _audioRemixer;
         private BeatmapRemixer _beatmapRemixer;
 
-        [Inject]
-        public InfiniteBeatSaberMode(
-            AudioTimeSyncController audioTimeSyncController,
-            GameplayCoreSceneSetupData gameplayCoreSceneSetupData)
-        {
-            _audioTimeSyncController = audioTimeSyncController;
-            _gameplayCoreSceneSetupData = gameplayCoreSceneSetupData;
-        }
-
         public void Initialize()
         {
             if (!InfiniteBeatSaberMenuUI.IsInfiniteBeatSaberMode) return;
 
             var level = _gameplayCoreSceneSetupData.previewBeatmapLevel;
             // TODO: Stop blocking the thread by reading a file.
-            var spotifyAnalysis = JsonConvert.DeserializeObject<SpotifyAnalysis>(
-                Util.ReadEmbeddedResource(RemixableSongs.SpotifyAnalysisPath(level.levelID)));
+            var spotifyAnalysisText = Util.ReadEmbeddedResource(RemixableSongs.SpotifyAnalysisPath(level.levelID));
+            var spotifyAnalysis = JsonConvert.DeserializeObject<SpotifyAnalysis>(spotifyAnalysisText);
 
             var random = new SystemRandom();
 
@@ -55,6 +50,9 @@ namespace InfiniteBeatSaber
             _infiniteRemix = new InfiniteRemix(spotifyAnalysis, level.beatsPerMinute, random);
             _audioRemixer = new AudioRemixer(audioClip, audioSource);
             _beatmapRemixer = new BeatmapRemixer(originalBeatmap, beatmap);
+#if DEBUG
+            _remixVisualizer.InitializeData(spotifyAnalysisText);
+#endif
 
             GenerateNextPartOfRemix(60);
 
@@ -101,6 +99,9 @@ namespace InfiniteBeatSaber
             var remix = _infiniteRemix.GetNext(minSeconds);
             _audioRemixer.AddRemix(remix);
             _beatmapRemixer.AddRemix(remix);
+#if DEBUG
+            _remixVisualizer.AddRemix(remix);
+#endif
 
             var durationDelta = _infiniteRemix.Duration - startDuration;
 

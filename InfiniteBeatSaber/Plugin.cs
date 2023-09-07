@@ -33,6 +33,7 @@ namespace InfiniteBeatSaber
             Instance = this;
             Log = logger;
 
+            zenjector.Install<AppInstaller>(Location.App);
             zenjector.Install<MenuInstaller>(Location.Menu);
             zenjector.Install<PlayerInstaller>(Location.Player);
 
