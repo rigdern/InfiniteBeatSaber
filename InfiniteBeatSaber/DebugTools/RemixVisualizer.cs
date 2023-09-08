@@ -1,4 +1,4 @@
-﻿using InfiniteBeatSaber.Extensions;
+using InfiniteBeatSaber.Extensions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -6,15 +6,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using Zenject;
 using static InfiniteBeatSaber.FloatComparison;
-using static IPA.Logging.Logger;
 
 namespace InfiniteBeatSaber.DebugTools
 {
     internal class RemixVisualizer : IInitializable, IDisposable
     {
+#pragma warning disable 0649 // Suppress "Field X is never assigned to" b/c [Inject] assigns.
         [Inject] private readonly AudioTimeSyncController _audioTimeSyncController;
         [Inject] private readonly GameplayCoreSceneSetupData _gameplayCoreSceneSetupData;
         [Inject] private readonly WebSocketServer _webSocketServer;
+#pragma warning restore 0649
 
         private readonly AsyncQueue<Beat> _beats = new AsyncQueue<Beat>();
 

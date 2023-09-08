@@ -9,17 +9,18 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 using InfiniteBeatSaber.Extensions;
-using InfiniteBeatSaber.DebugTools;
 
 namespace InfiniteBeatSaber
 {
     internal class InfiniteBeatSaberMode : IInitializable, IDisposable
     {
+#pragma warning disable 0649 // Suppress "Field X is never assigned to" b/c [Inject] assigns.
         [Inject] private readonly AudioTimeSyncController _audioTimeSyncController;
         [Inject] private readonly GameplayCoreSceneSetupData _gameplayCoreSceneSetupData;
 #if DEBUG
         [Inject] private readonly DebugTools.RemixVisualizer _remixVisualizer;
 #endif
+#pragma warning restore 0649
 
         private CancellationTokenSource _generateRemixLoopCts;
 
@@ -33,7 +34,7 @@ namespace InfiniteBeatSaber
 
             var level = _gameplayCoreSceneSetupData.previewBeatmapLevel;
             // TODO: Stop blocking the thread by reading a file.
-            var spotifyAnalysisText = Util.ReadEmbeddedResource(RemixableSongs.SpotifyAnalysisPath(level.levelID));
+            var spotifyAnalysisText = RemixableSongs.ReadSpotifyAnalysis(level);
             var spotifyAnalysis = JsonConvert.DeserializeObject<SpotifyAnalysis>(spotifyAnalysisText);
 
             var random = new SystemRandom();
