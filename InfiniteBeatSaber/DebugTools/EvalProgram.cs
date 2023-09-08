@@ -14,6 +14,10 @@ namespace InfiniteBeatSaber.DebugTools
 {
     public static class EvalProgram
     {
+        // `EvalMain` is intended to be used like a REPL. While Beat Saber is running, write
+        // code in `EvalMain` and then run `debug-tools\repl\msbuildEval.vbs` to have it
+        // injected into and executed in the running Beat Saber game. Only works in debug
+        // builds.
         public static void EvalMain(IDictionary<string, object> state)
         {
             Log.Info($"value: {0}");
@@ -28,6 +32,56 @@ namespace InfiniteBeatSaber.DebugTools
                 return (IReadonlyBeatmapData)propertyInfo.GetValue(null);
             }
         }
+
+        #region Utilities for EvailMain's `state` parameter
+
+        private static TValue GetOrAdd<TKey, TValue>(
+            IDictionary<TKey, object> dictionary,
+            TKey key,
+            Func<TValue> generateValue)
+        {
+            if (!dictionary.TryGetValue(key, out object value))
+            {
+                value = generateValue();
+                dictionary[key] = value;
+            }
+
+            return (TValue)value;
+        }
+
+        private static void RedoEffect<TKey>(
+            IDictionary<TKey, object> dictionary,
+            TKey key,
+            Func<Action> doEffect)
+        {
+            if (dictionary.TryGetValue(key, out object cleanUp))
+            {
+                ((Action)cleanUp)();
+            }
+
+            dictionary[key] = doEffect();
+        }
+
+        private static TValue Update<TKey, TValue>(
+            IDictionary<TKey, object> dictionary,
+            TKey key,
+            TValue initialValue,
+            Func<TValue, TValue> updatedValue)
+        {
+            if (dictionary.TryGetValue(key, out object currentValue))
+            {
+                dictionary[key] = updatedValue((TValue)currentValue);
+            }
+            else
+            {
+                dictionary[key] = initialValue;
+            }
+
+
+            return (TValue)dictionary[key];
+        }
+
+        #endregion
 
         #region Printing generic C# objects
 
