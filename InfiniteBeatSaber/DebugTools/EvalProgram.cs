@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,7 +20,16 @@ namespace InfiniteBeatSaber.DebugTools
         // builds.
         public static void EvalMain(IDictionary<string, object> state)
         {
-            Log.Info($"value: {0}");
+            // Example: Log the name of a Beat Saber pack.
+            var beatmapLevelsModel = UnityEngine.Object.FindObjectOfType<BeatmapLevelsModel>();
+            var pack = beatmapLevelsModel.allLoadedBeatmapLevelPackCollection.beatmapLevelPacks.First();
+            Log.Info($"Name of a Beat Saber pack: {pack.packName}");
+
+            // Example: Log properties of a root `GameObject`.
+            LogObj(SceneManager.GetActiveScene().GetRootGameObjects().First(), "a root GameObject");
+
+            // Example: Log all classes that derive from `BeatmapDataItem`.
+            LogSubclassHierarchy(typeof(BeatmapDataItem));
         }
 
         private static IReadonlyBeatmapData OriginalMap
@@ -131,14 +140,14 @@ namespace InfiniteBeatSaber.DebugTools
 
         #endregion
 
-        #region Printing C# inheritance hierarchy
+        #region Printing C# subclass hierarchy
 
-        private static void LogInheritanceHierarchy(Type rootType)
+        private static void LogSubclassHierarchy(Type rootType)
         {
-            Log.Info(PrintInheritanceHierarchy(rootType));
+            Log.Info(PrintSubclassHierarchy(rootType));
         }
 
-        private static string PrintInheritanceHierarchy(Type rootType)
+        private static string PrintSubclassHierarchy(Type rootType)
         {
             var output = new StringBuilder();
 
