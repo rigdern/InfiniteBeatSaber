@@ -15,6 +15,9 @@ Do all of these steps on the same computer:
 - Launch Beat Saber and start playing a song in Infinite Beat Saber mode.
 - (Refresh the web browser if necessary so it connects to Beat Saber).
 
+Here's a screenshot of the interface:
+![](./docs/interface.png)
+
 ## Third-party licenses
 All code in the [`./web/third-party/`](./web/third-party/) folder uses the MIT license:
 
