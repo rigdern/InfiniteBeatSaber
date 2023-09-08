@@ -55,6 +55,8 @@ namespace InfiniteBeatSaber.DebugTools
         [Inject]
         public Eval(WebSocketServer webSocketServer)
         {
+            Util.AssertDebugBuild();
+
             _webSocketServer = webSocketServer;
         }
 

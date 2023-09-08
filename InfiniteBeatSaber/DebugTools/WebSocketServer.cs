@@ -25,6 +25,8 @@ namespace InfiniteBeatSaber.DebugTools
 
         public void Initialize()
         {
+            Util.AssertDebugBuild();
+
             StartServerLoop().LogOnFailure();
         }
 

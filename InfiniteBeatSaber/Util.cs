@@ -24,6 +24,20 @@ namespace InfiniteBeatSaber
             return value;
         }
 
+        // Code that calls this should be configured in the csproj file so that it
+        // isn't even included in release builds. This is intended as a back up
+        // mechanism that catches any mistakes that might be made.
+#if !DEBUG
+        // Generate a *compiler* error if anyone caller is included in a release build.
+        [Obsolete("This code should not be included in release builds", error: true)]
+#endif
+        public static void AssertDebugBuild()
+        {
+#if !DEBUG
+            throw new Exception("This code should not be included in release builds");
+#endif
+        }
+
         public static string ReadEmbeddedResource(string resourceName)
         {
             var assembly = Assembly.GetExecutingAssembly();

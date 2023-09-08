@@ -26,6 +26,8 @@ namespace InfiniteBeatSaber.DebugTools
 
         public void Initialize()
         {
+            Util.AssertDebugBuild();
+
             if (!InfiniteBeatSaberMenuUI.IsInfiniteBeatSaberMode) return;
 
             Plugin.Log.Info("InfiniteBeatSaberMode.DebugTools.DebugVisualizer: Initialize");
