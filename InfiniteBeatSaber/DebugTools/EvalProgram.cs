@@ -7,6 +7,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace InfiniteBeatSaber.DebugTools
 {
@@ -241,6 +243,59 @@ namespace InfiniteBeatSaber.DebugTools
                 }
             }
 
+            return output.ToString();
+        }
+
+        #endregion
+
+        #region Printing Unity UI hierarchy
+
+        private static string PrintFullUIHierarchy()
+        {
+            var roots = SceneManager.GetActiveScene().GetRootGameObjects();
+            var output = new StringBuilder();
+            foreach (var c in roots)
+            {
+                output.Append(PrintUIHierarchy(c.gameObject));
+            }
+            return output.ToString();
+        }
+
+        private static void LogUIHierarchy(GameObject root)
+        {
+            Log.Info(PrintUIHierarchy(root));
+        }
+
+        private static string PrintUIHierarchy(GameObject root)
+        {
+            var output = new StringBuilder();
+
+            void Walk(GameObject node, string indent)
+            {
+                if (node == null) return;
+
+                // Get some relevant UI components for additional info
+                var textComp = node.GetComponent<Text>();
+                var imageComp = node.GetComponent<Image>();
+
+                string additionalInfo = "";
+
+                if (textComp != null)
+                    additionalInfo += $"Text: \"{textComp.text}\" ";
+                if (imageComp != null)
+                    additionalInfo += $"Image: {imageComp.sprite?.name} ";
+
+                // Log current GameObject
+                output.AppendLine($"{indent}{node.name} ({node.GetType().Name}) {additionalInfo}");
+
+                // Recurse on children
+                foreach (Transform child in node.transform)
+                {
+                    Walk(child.gameObject, indent + "  ");
+                }
+            };
+
+            Walk(root, "");
             return output.ToString();
         }
 
