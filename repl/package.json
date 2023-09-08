@@ -1,7 +1,0 @@
-{
-  "main": "eval.js",
-  "type": "module",
-  "dependencies": {
-    "ws": "^8.13.0"
-  }
-}

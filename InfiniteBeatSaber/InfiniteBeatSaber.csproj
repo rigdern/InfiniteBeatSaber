@@ -203,4 +203,16 @@
 )
 </PreBuildEvent>
   </PropertyGroup>
+  <Target Name="Eval" DependsOnTargets="ResolveReferences">
+    <PropertyGroup>
+      <EvalProgramDllPath>$(ProjectDir)$(OutputPath)EvalProgram.dll</EvalProgramDllPath>
+    </PropertyGroup>
+    <Csc
+      TargetType="library"
+      Sources="$(ProjectDir)DebugTools\EvalProgram.cs"
+      OutputAssembly="$(EvalProgramDllPath)"
+      References="@(ReferencePath);$(BeatSaberDir)\Plugins\InfiniteBeatSaber.dll"
+    />
+    <Exec Command="powershell.exe -ExecutionPolicy Bypass -File &quot;$(SolutionDir)debug-tools\repl\eval.ps1&quot; -dllPath &quot;$(EvalProgramDllPath)&quot;" />
+  </Target>
 </Project>
