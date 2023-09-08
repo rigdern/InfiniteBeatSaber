@@ -34,8 +34,7 @@ namespace InfiniteBeatSaber
 
             var level = _gameplayCoreSceneSetupData.previewBeatmapLevel;
             // TODO: Stop blocking the thread by reading a file.
-            var spotifyAnalysisText = RemixableSongs.ReadSpotifyAnalysis(level);
-            var spotifyAnalysis = JsonConvert.DeserializeObject<SpotifyAnalysis>(spotifyAnalysisText);
+            var spotifyAnalysis = RemixableSongs.ReadSpotifyAnalysis(level);
 
             var random = new SystemRandom();
 
@@ -52,7 +51,7 @@ namespace InfiniteBeatSaber
             _audioRemixer = new AudioRemixer(audioClip, audioSource);
             _beatmapRemixer = new BeatmapRemixer(originalBeatmap, beatmap);
 #if DEBUG
-            _remixVisualizer.InitializeData(spotifyAnalysisText);
+            _remixVisualizer.InitializeData(spotifyAnalysis.SerializeToJson());
 #endif
 
             GenerateNextPartOfRemix(60);

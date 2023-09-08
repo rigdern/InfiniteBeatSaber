@@ -3,6 +3,7 @@
 // See the LICENSE file for the full MIT license terms.
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 
@@ -25,19 +26,30 @@ namespace InfiniteJukeboxAlgorithm.AugmentedTypes
         public List<Quantum> Beats { get; set; }
         public List<Quantum> Tatums { get; set; }
         public List<Segment> Segments { get; set; }
-        public List<Segment> FSegments { get; set; } // Filtered segments
+        [JsonProperty("fsegments")] public List<Segment> FSegments { get; set; } // Filtered segments
+
+        public string SerializeToJson()
+        {
+            return JsonConvert.SerializeObject(
+                this,
+                new JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                });
+        }
     }
 
     public class Quantum
     {
         public double Start { get; set; }
         public double Duration { get; set; }
+        public double Confidence { get; set; }
         public int Which { get; set; }
         public Track Track { get; set; }  // new property
         public Quantum Prev { get; set; }  // new property
         public Quantum Next { get; set; }  // new property
         public List<Segment> OverlappingSegments { get; set; }
-        public Segment OSeg { get; set; }  // new property
+        [JsonProperty("oseg")] public Segment OSeg { get; set; }  // new property
         public List<Quantum> Children { get; set; }  // new property
         public Quantum Parent { get; set; }  // new property
         public int IndexInParent { get; set; }
@@ -55,9 +67,8 @@ namespace InfiniteJukeboxAlgorithm.AugmentedTypes
     {
         public double[] Timbre { get; set; }
         public double[] Pitches { get; set; }
-        public double LoudnessStart { get; set; }
-        public double LoudnessMax { get; set; }
-        public double Confidence { get; set; }
+        [JsonProperty("loudness_start")] public double LoudnessStart { get; set; }
+        [JsonProperty("loudness_max")] public double LoudnessMax { get; set; }
 
         public double[] GetFieldValues(string field)
         {

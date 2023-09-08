@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InfiniteBeatSaber
 {
@@ -41,7 +37,7 @@ namespace InfiniteBeatSaber
         public static string ReadEmbeddedResource(string resourceName)
         {
             var assembly = Assembly.GetExecutingAssembly();
-            var fullResourceName = "InfiniteBeatSaber." + resourceName;
+            var fullResourceName = $"InfiniteBeatSaber.{resourceName}";
 
             using (Stream stream = assembly.GetManifestResourceStream(fullResourceName))
             using (StreamReader reader = new StreamReader(stream))
