@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -214,6 +214,33 @@ namespace InfiniteBeatSaber.DebugTools
             {
                 output.AppendLine($"{group.Key}: {group.Count()}");
             }
+            return output.ToString();
+        }
+
+        #endregion
+
+        #region Printing Beat Saber song catalog
+
+        private static void LogSongCatalog()
+        {
+            Log.Info(PrintSongCatalog());
+        }
+
+        private static string PrintSongCatalog()
+        {
+            var output = new StringBuilder();
+
+            var beatmapLevelsModel = UnityEngine.Object.FindObjectOfType<BeatmapLevelsModel>();
+            foreach (var pack in beatmapLevelsModel.allLoadedBeatmapLevelPackCollection.beatmapLevelPacks)
+            {
+                output.AppendLine($"{pack.packName} (ID: {pack.packID})");
+                foreach (var level in pack.beatmapLevelCollection.beatmapLevels)
+                {
+                    var mappedBy = string.IsNullOrEmpty(level.levelAuthorName) ? "" : $". Mapped by {level.levelAuthorName}";
+                    output.AppendLine($"  {level.songName} by {level.songAuthorName}{mappedBy} (ID: {level.levelID})");
+                }
+            }
+
             return output.ToString();
         }
 
