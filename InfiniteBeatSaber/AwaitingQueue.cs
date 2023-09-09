@@ -1,88 +1,112 @@
 /*
-* AwaitingQueue.cs
-* 
-* Serializes the work of all Tasks that are added to its queue. Awaits the
-* Task returned by the current work item before moving on to the next work
-* item.
-* 
-* This class is not thread-safe. All methods should be called from the same thread
-* or LimitedConcurrencyActionQueue. `await` must cause the continuation to run on
-* the same thread or LimitedConcurrencyActionQueue.
-* 
-* Motivation:
-*   When you `await` a Task, you have to consider all of the things that could have
-*   changed by the time your continuation runs. For example:
-*
-*      class Recorder
-*      {
-*          private MediaCapture _captureMedia;
-*
-*          public async Task StartRecording()
-*          {
-*              _captureMedia = new MediaCapture();
-*              await _captureMedia.InitializeAsync();
-*              // Lots of things could have changed by the time we get here.
-*              // For example, maybe `_captureMedia` is null!
-*              await _captureMedia.StartRecordToStreamAsync(...);
-*          }
-*
-*          public async Task StopRecording()
-*          {
-*              // This code can run while `StartRecording` is in the middle
-*              // of running.
-*
-*              if (_captureMedia != null)
-*              {
-*                  // Code to clean up _captureMedia...
-*                  _captureMedia = null;
-*              }
-*          }
-*      }
-*
-*   Alternatively, you can use `AwaitingQueue` to serialize async work that
-*   interacts with each other to prevent any interleavings. Example:
-*
-*      class Recorder
-*      {
-*          private AwaitingQueue _awaitingQueue = new AwaitingQueue();
-*          private MediaCapture _captureMedia;
-*
-*          public async Task StartRecording()
-*          {
-*              _awaitingQueue.RunOrDispatch(async () =>
-*              {
-*                  // This code won't run until all of the other Tasks
-*                  // that were added to the `_awaitingQueue` before us
-*                  // have already completed.
-*
-*                  _captureMedia = new MediaCapture();
-*                  await _captureMedia.InitializeAsync(captureInitSettings);
-*                  // We can think of `StartRecording` as being atomic which
-*                  // means we don't have to worry about anything we care about
-*                  // changing by the time we get here. For example, `_captureMedia`
-*                  // is guaranteed to be non-null by design.
-*                  await _captureMedia.StartRecordToStreamAsync(...);
-*              });
-*          }
-*
-*          public async Task StopRecording()
-*          {
-*              _awaitingQueue.RunOrDispatch(() =>
-*              {
-*                  // This code won't run until all of the other Tasks
-*                  // that were added to the `_awaitingQueue` before us
-*                  // have already completed. This means this code can't
-*                  // run while `StartRecording` is in the middle of running.
-*
-*                  if (_captureMedia != null)
-*                  {
-*                      // Code to clean up _captureMedia...
-*                      _captureMedia = null;
-*                  }
-*              });
-*          }
-*      }
-*/
+ * This file contains code derived from react-native-sqlite-storage (https://github.com/andpor/react-native-sqlite-storage).
+ * 
+ * The MIT License (MIT)
+ * 
+ * Copyright (c) 2015 andpor
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ * 
+ * AwaitingQueue.cs
+ * 
+ * Serializes the work of all Tasks that are added to its queue. Awaits the
+ * Task returned by the current work item before moving on to the next work
+ * item.
+ * 
+ * This class is not thread-safe. All methods should be called from the same thread
+ * or LimitedConcurrencyActionQueue. `await` must cause the continuation to run on
+ * the same thread or LimitedConcurrencyActionQueue.
+ * 
+ * Motivation:
+ *   When you `await` a Task, you have to consider all of the things that could have
+ *   changed by the time your continuation runs. For example:
+ *
+ *      class Recorder
+ *      {
+ *          private MediaCapture _captureMedia;
+ *
+ *          public async Task StartRecording()
+ *          {
+ *              _captureMedia = new MediaCapture();
+ *              await _captureMedia.InitializeAsync();
+ *              // Lots of things could have changed by the time we get here.
+ *              // For example, maybe `_captureMedia` is null!
+ *              await _captureMedia.StartRecordToStreamAsync(...);
+ *          }
+ *
+ *          public async Task StopRecording()
+ *          {
+ *              // This code can run while `StartRecording` is in the middle
+ *              // of running.
+ *
+ *              if (_captureMedia != null)
+ *              {
+ *                  // Code to clean up _captureMedia...
+ *                  _captureMedia = null;
+ *              }
+ *          }
+ *      }
+ *
+ *   Alternatively, you can use `AwaitingQueue` to serialize async work that
+ *   interacts with each other to prevent any interleavings. Example:
+ *
+ *      class Recorder
+ *      {
+ *          private AwaitingQueue _awaitingQueue = new AwaitingQueue();
+ *          private MediaCapture _captureMedia;
+ *
+ *          public async Task StartRecording()
+ *          {
+ *              _awaitingQueue.RunOrDispatch(async () =>
+ *              {
+ *                  // This code won't run until all of the other Tasks
+ *                  // that were added to the `_awaitingQueue` before us
+ *                  // have already completed.
+ *
+ *                  _captureMedia = new MediaCapture();
+ *                  await _captureMedia.InitializeAsync(captureInitSettings);
+ *                  // We can think of `StartRecording` as being atomic which
+ *                  // means we don't have to worry about anything we care about
+ *                  // changing by the time we get here. For example, `_captureMedia`
+ *                  // is guaranteed to be non-null by design.
+ *                  await _captureMedia.StartRecordToStreamAsync(...);
+ *              });
+ *          }
+ *
+ *          public async Task StopRecording()
+ *          {
+ *              _awaitingQueue.RunOrDispatch(() =>
+ *              {
+ *                  // This code won't run until all of the other Tasks
+ *                  // that were added to the `_awaitingQueue` before us
+ *                  // have already completed. This means this code can't
+ *                  // run while `StartRecording` is in the middle of running.
+ *
+ *                  if (_captureMedia != null)
+ *                  {
+ *                      // Code to clean up _captureMedia...
+ *                      _captureMedia = null;
+ *                  }
+ *              });
+ *          }
+ *      }
+ */
 
 using System;
 using System.Collections.Generic;
