@@ -43,6 +43,9 @@ namespace InfiniteBeatSaber
 
         private void OnDidChangeDifficultyBeatmap(StandardLevelDetailView view, IDifficultyBeatmap difficultyBeatmap)
         {
+            //var level = difficultyBeatmap.level;
+            //Plugin.Log.Info($"InfiniteBeatSaberMenuUI.OnDidChangeDifficultyBeatmap: {level.songName} by {level.songAuthorName}, {level.levelAuthorName} (ID: {level.levelID})");
+
             var isRemixable = RemixableSongs.IsDifficultyBeatmapRemixable(difficultyBeatmap);
 
             _startInfiniteBeatSaberButton.gameObject.SetActive(isRemixable);

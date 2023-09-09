@@ -77,7 +77,7 @@ namespace InfiniteBeatSaber.DebugTools
             _server = new TcpListener(IPAddress.Parse(ip), port);
 
             _server.Start();
-            Plugin.Log.Info($"WebSocketServer listening on {ip}:{port}");
+            //Plugin.Log.Info($"WebSocketServer listening on {ip}:{port}");
 
             try
             {

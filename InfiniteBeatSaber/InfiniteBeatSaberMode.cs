@@ -64,7 +64,7 @@ namespace InfiniteBeatSaber
             Plugin.Log.Info(
                 "InfiniteBeatSaberMode.Initialize" +
                 $". Seed: {random.Seed}" +
-                $". Level: {level.songName} by {level.songAuthorName}, {level.levelAuthorName} ({level.levelID})" +
+                $". Level: {level.songName} by {level.songAuthorName}, {level.levelAuthorName} (ID: {level.levelID})" +
                 "");
         }
 
@@ -105,7 +105,7 @@ namespace InfiniteBeatSaber
 
             var durationDelta = _infiniteRemix.Duration - startDuration;
 
-            Plugin.Log.Info("InfiniteBeatSaberMode.GenerateNextPartOfRemix: " + minSeconds + ". " + startDuration + " -> " + _infiniteRemix.Duration + " (" + durationDelta + ")");
+            //Plugin.Log.Info("InfiniteBeatSaberMode.GenerateNextPartOfRemix: " + minSeconds + ". " + startDuration + " -> " + _infiniteRemix.Duration + " (" + durationDelta + ")");
             return remix;
         }
 
@@ -120,7 +120,7 @@ namespace InfiniteBeatSaber
             _generateRemixLoopCts = new CancellationTokenSource();
             var cancellationToken = _generateRemixLoopCts.Token;
 
-            Plugin.Log.Info("InfiniteBeatSaberMode.StartGenerateRemixLoop: Started");
+            //Plugin.Log.Info("InfiniteBeatSaberMode.StartGenerateRemixLoop: Started");
 
             try
             {
@@ -142,7 +142,7 @@ namespace InfiniteBeatSaber
                 // No-op
             }
 
-            Plugin.Log.Info("InfiniteBeatSaberMode.StartGenerateRemixLoop: Exited");
+            //Plugin.Log.Info("InfiniteBeatSaberMode.StartGenerateRemixLoop: Exited");
         }
 
         private void StopGenerateRemixLoop()

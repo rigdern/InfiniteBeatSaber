@@ -1,4 +1,4 @@
-using InfiniteBeatSaber.Extensions;
+﻿using InfiniteBeatSaber.Extensions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -30,8 +30,6 @@ namespace InfiniteBeatSaber.DebugTools
 
             if (!InfiniteBeatSaberMenuUI.IsInfiniteBeatSaberMode) return;
 
-            Plugin.Log.Info("InfiniteBeatSaberMode.DebugTools.DebugVisualizer: Initialize");
-
             _unregisterWebSocket = _webSocketServer.Register(OnWebSocketMessage);
 
             _audioTimeSyncController.stateChangedEvent += OnAudioTimeSyncControllerStateChanged;
@@ -51,8 +49,6 @@ namespace InfiniteBeatSaber.DebugTools
 
         public void InitializeData(string spotifyAnalysisText)
         {
-            Plugin.Log.Info("InfiniteBeatSaberMode.DebugTools.DebugVisualizer: InitializeData: " + spotifyAnalysisText.Length);
-
             _spotifyAnalysis = spotifyAnalysisText;
             SendSongInfoIfAvailable();
         }
@@ -119,7 +115,7 @@ namespace InfiniteBeatSaber.DebugTools
             _loopCts = new CancellationTokenSource();
             var cancellationToken = _loopCts.Token;
 
-            Plugin.Log.Info("InfiniteBeatSaberMode.DebugTools.DebugVisualizer: Started");
+            //Plugin.Log.Info("InfiniteBeatSaberMode.DebugTools.RemixVisualizer: Started");
 
             try
             {
@@ -136,7 +132,7 @@ namespace InfiniteBeatSaber.DebugTools
 
                         if (sleepSeconds > 0)
                         {
-                            Plugin.Log.Info("InfiniteBeatSaber.DebugTools.DebugVisualizer: Sleep for " + sleepSeconds + ", " + beat.BeatIndex + " " + beat.Clock + ", " + songTime);
+                            //Plugin.Log.Info("InfiniteBeatSaber.DebugTools.RemixVisualizer: Sleep for " + sleepSeconds + ", " + beat.BeatIndex + " " + beat.Clock + ", " + songTime);
                             await Task.Delay(TimeSpan.FromSeconds(sleepSeconds), cancellationToken);
                         }
                     }
@@ -147,7 +143,8 @@ namespace InfiniteBeatSaber.DebugTools
                         while (_beats.HasItems() && IsFloatLessOrEqual(_beats.Peek().Clock, songTime + 0.01))
                         {
                             currentBeat = _beats.Dequeue();
-                            Plugin.Log.Info("InfiniteBeatSaber.DebugTools.DebugVisualizer: Dequeue " + currentBeat.BeatIndex + " " + currentBeat.Clock + ", " + songTime);
+                            //var delta = songTime - currentBeat.Clock;
+                            //Plugin.Log.Info("InfiniteBeatSaber.DebugTools.RemixVisualizer: Dequeue " + currentBeat.BeatIndex + " " + delta + ": " + currentBeat.Clock + ", " + songTime);
                         }
 
                         if (currentBeat != null)
@@ -168,7 +165,7 @@ namespace InfiniteBeatSaber.DebugTools
                 // No-op
             }
 
-            Plugin.Log.Info("InfiniteBeatSaber.DebugTools.DebugVisualizer: Exited");
+            //Plugin.Log.Info("InfiniteBeatSaber.DebugTools.RemixVisualizer: Exited");
         }
 
         private void StopLoop()
