@@ -53,6 +53,10 @@ The code for the Infinite Jukebox algorithm in this repo is derived from [The Et
 
 I published my extraction of the Infinite Jukebox algorithm to [its own repo](https://github.com/rigdern/InfiniteJukeboxAlgorithm) to make it easier for anyone that wants to make use of the algorithm in their own projects.
 
+## Support My Work
+
+If you'd like to support my work, consider [buying me a coffee on ko-fi](https://ko-fi.com/adamcomella).
+
 ## License
 
 [MIT](./LICENSE)
