@@ -197,12 +197,12 @@
     <None Include="InfiniteJukeboxAlgorithm\LICENSE" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>if "$(ConfigurationName)" == "Release" (
-  powershell.exe -ExecutionPolicy Bypass -File "$(SolutionDir)build-tools\genBuildConstants.ps1"
-)
-</PreBuildEvent>
-  </PropertyGroup>
+  <Target Name="GenerateReleaseBuildConstants" BeforeTargets="PreBuildEvent" Condition="'$(Configuration)'=='Release'">
+    <Exec Command="powershell.exe -ExecutionPolicy Bypass -File &quot;$(SolutionDir)build-tools\genBuildConstants.ps1&quot;" />
+  </Target>
+  <Target Name="ZipReleaseBuild" AfterTargets="Build" Condition="'$(Configuration)'=='Release'">
+    <Exec Command="powershell.exe -ExecutionPolicy Bypass -File &quot;$(SolutionDir)build-tools\zipFile.ps1&quot; -fileToZip &quot;$(ProjectDir)$(OutputPath)InfiniteBeatSaber.dll&quot; -zipFile &quot;$(ProjectDir)$(OutputPath)InfiniteBeatSaber.zip&quot;" />
+  </Target>
   <Target Name="Eval" DependsOnTargets="ResolveReferences">
     <PropertyGroup>
       <EvalProgramDllPath>$(ProjectDir)$(OutputPath)EvalProgram.dll</EvalProgramDllPath>
