@@ -10,7 +10,7 @@ This mod is both inspired by the [The Infinite Jukebox](https://musicmachinery.c
 2. Launch Beat Saber.
 3. Press the "Solo" button.
 4. Press the "Custom Levels" button &mdash; (1) in the screenshot.
-5. Select one of the [currently supported levels](#currently-supported-levels). Only "Standard" mode is currently supported.
+5. Select one of the [currently supported levels](#currently-supported-levels). Only the Standard, One Saber, and No Arrows modes are currently supported.
 6. Press the button with the infinity symbol on it &mdash; (2) in the screenshot.
 7. Play the song for as long as you like &mdash; it never ends!
 
@@ -20,7 +20,7 @@ Here's a screenshot highlighting the relevant UI:
 
 If you don't see the infinity button, it could mean one of these things:
 1. The selected song isn't currently supported.
-2. The selected mode isn't currently supported &mdash; only "Standard" mode is supported.
+2. The selected mode isn't currently supported &mdash; only the Standard, One Saber, and No Arrows modes are currently supported.
 3. The Infinite Beat Saber mod isn't installed.
 
 ## Currently Supported Levels

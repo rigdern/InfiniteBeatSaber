@@ -27,7 +27,10 @@ namespace InfiniteBeatSaber
             var levelId = difficultyBeatmap.level.levelID;
             var characteristic = difficultyBeatmap.parentDifficultyBeatmapSet.beatmapCharacteristic.serializedName;
 
-            return _levelIdToSpotifyAnalysisInfo.ContainsKey(levelId) && characteristic == "Standard";
+            return _levelIdToSpotifyAnalysisInfo.ContainsKey(levelId) && (
+                characteristic == "Standard" ||
+                characteristic == "OneSaber" ||
+                characteristic == "NoArrows");
         }
 
         public static SpotifyAnalysis ReadSpotifyAnalysis(IPreviewBeatmapLevel level)
