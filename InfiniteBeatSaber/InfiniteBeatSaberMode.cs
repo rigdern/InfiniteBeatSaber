@@ -1,8 +1,6 @@
 ﻿using InfiniteBeatSaber.Patches;
-using InfiniteJukeboxAlgorithm.AugmentedTypes;
 using InfiniteJukeboxAlgorithm;
 using IPA.Utilities;
-using Newtonsoft.Json;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
