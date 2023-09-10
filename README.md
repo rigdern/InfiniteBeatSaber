@@ -6,7 +6,7 @@ This mod is both inspired by the [The Infinite Jukebox](https://musicmachinery.c
 
 ## How to Play
 
-1. Install the Infinite Beat Saber mod using [ModAssistant](https://github.com/Assistant/ModAssistant/releases/) or a mechanism of your choosing. (If you prefer manual installation, see the [Manual Installation](./docs/manual-installation.md) doc.)
+1. Install the Infinite Beat Saber mod using [ModAssistant](https://github.com/Assistant/ModAssistant/) or a mechanism of your choosing. If you haven't installed any Beat Saber mods before, you might want to check out the [PC Modding page on the Beat Saber Modding Group Wiki](https://bsmg.wiki/pc-modding.html). (If you prefer manual installation, see the [Manual Installation](./docs/manual-installation.md) doc.)
 2. Launch Beat Saber.
 3. Press the "Solo" button.
 4. Press the "Custom Levels" button &mdash; (1) in the screenshot.

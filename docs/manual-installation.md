@@ -12,3 +12,5 @@ You'll need to make sure that you have compatible versions of all of these thing
 - SiraUtil
 
 To determine this, you can check `manifest.json` for the version of Infinite Beat Saber you downloaded.
+
+The "Manual Installation" section of [this Beat Saber Modding Group page](https://bsmg.wiki/pc-modding.html#manual-installation) has general information about manually installing mods.
