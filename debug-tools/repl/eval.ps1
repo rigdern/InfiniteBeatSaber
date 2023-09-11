@@ -6,6 +6,8 @@ param (
     [string]$dllPath
 )
 
+$ErrorActionPreference = 'Stop'
+
 function IsUnexpectedException {
     param (
         [System.Exception]$Exception
@@ -17,43 +19,55 @@ function IsUnexpectedException {
     return $Exception -isnot [System.Net.WebSockets.WebSocketException] -or $Exception.WebSocketErrorCode -ne [System.Net.WebSockets.WebSocketError]::ConnectionClosedPrematurely
 }
 
-$uri = "ws://127.0.0.1:2019/"
-
-$commandName = "evalDll"
-$commandArgs = @{
-    dllPath = $dllPath
-}
-$message = ConvertTo-Json @($commandName, (ConvertTo-Json $commandArgs))
-
-$client = New-Object System.Net.WebSockets.ClientWebSocket
-$client.ConnectAsync($uri, [System.Threading.CancellationToken]::None).Wait()
-Write-Output "WebSocket connection opened"
-
-$buffer = [System.Text.Encoding]::UTF8.GetBytes($message)
-$client.SendAsync(
-    [System.ArraySegment[byte]]::new($buffer),
-    [System.Net.WebSockets.WebSocketMessageType]::Text,
-    $true,
-    [System.Threading.CancellationToken]::None).Wait()
-Write-Output "WebSocket message sent"
-
-# Close the connection, swallowing any expected exceptions.
 try {
-    $client.CloseAsync(
-        [System.Net.WebSockets.WebSocketCloseStatus]::NormalClosure,
-        "Bye",
+    # Write-Output "dllPath: $dllPath"
+
+    $uri = "ws://127.0.0.1:2019/"
+
+    $commandName = "evalDll"
+    $commandArgs = @{
+        dllPath = $dllPath
+    }
+    $message = ConvertTo-Json @($commandName, (ConvertTo-Json $commandArgs))
+
+    $client = New-Object System.Net.WebSockets.ClientWebSocket
+    $client.ConnectAsync($uri, [System.Threading.CancellationToken]::None).Wait()
+    Write-Output "WebSocket connection opened"
+
+    $buffer = [System.Text.Encoding]::UTF8.GetBytes($message)
+    $client.SendAsync(
+        [System.ArraySegment[byte]]::new($buffer),
+        [System.Net.WebSockets.WebSocketMessageType]::Text,
+        $true,
         [System.Threading.CancellationToken]::None).Wait()
-} catch [System.AggregateException] {
-    $ex = $_.Exception
-    foreach ($innerEx in $ex.InnerExceptions) {
-        if (IsUnexpectedException -Exception $innerEx) {
+    Write-Output "WebSocket message sent"
+
+    # Close the connection, swallowing any expected exceptions.
+    try {
+        $client.CloseAsync(
+            [System.Net.WebSockets.WebSocketCloseStatus]::NormalClosure,
+            "Bye",
+            [System.Threading.CancellationToken]::None).Wait()
+    } catch [System.AggregateException] {
+        $ex = $_.Exception
+        foreach ($innerEx in $ex.InnerExceptions) {
+            if (IsUnexpectedException -Exception $innerEx) {
+                throw
+            }
+        }
+    } catch {
+        $ex = $_.Exception
+        if (IsUnexpectedException -Exception $ex) {
             throw
         }
     }
-} catch {
-    $ex = $_.Exception
-    if (IsUnexpectedException -Exception $ex) {
-        throw
+    Write-Output "WebSocket connection closed"
+} catch [System.AggregateException] {
+    # Log the aggregate exception and all its inner exceptions
+    $exception = $_.Exception
+    Write-Host "Fatal AggregateException: $($_.Exception.Message)"
+    foreach ($innerException in $exception.InnerExceptions) {
+        Write-Host "  InnerException: $($innerException.Message)"
     }
+    throw
 }
-Write-Output "WebSocket connection closed"
