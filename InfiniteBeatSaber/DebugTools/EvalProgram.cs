@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -142,22 +142,48 @@ namespace InfiniteBeatSaber.DebugTools
 
         #region Printing C# subclass hierarchy
 
-        private static void LogSubclassHierarchy(Type rootType)
+        private static void LogSubclassHierarchyAllAssemblies(Type rootType)
         {
-            Log.Info(PrintSubclassHierarchy(rootType));
+            Log.Info(PrintSubclassHierarchyAllAssemblies(rootType));
         }
 
-        private static string PrintSubclassHierarchy(Type rootType)
+        private static string PrintSubclassHierarchyAllAssemblies(Type rootType)
         {
+            return PrintSubclassHierarchy(rootType, AppDomain.CurrentDomain.GetAssemblies());
+        }
+
+        private static void LogSubclassHierarchy(Type rootType, IEnumerable<Assembly> assemblies = null)
+        {
+            Log.Info(PrintSubclassHierarchy(rootType, assemblies));
+        }
+
+        private static string PrintSubclassHierarchy(Type rootType, IEnumerable<Assembly> assemblies = null)
+        {
+            if (assemblies == null)
+            {
+                assemblies = new List<Assembly> { rootType.Assembly };
+            }
+
+            var types = assemblies.SelectMany(assembly => {
+                try
+                {
+                    return assembly.GetTypes();
+                }
+                catch (ReflectionTypeLoadException ex)
+                {
+                    Log.Info("Skipping assembly: " + assembly.GetName().Name);
+                    return new Type[] { };
+                }
+            }).ToList();
+
             var output = new StringBuilder();
 
             void Walk(Type type, int indentLevel)
             {
-                output.AppendLine($"{new string('\t', indentLevel)}- `{type.Name}`");
+                output.AppendLine($"{new string('\t', indentLevel)}- `{type.Name}` ({type.Assembly.GetName().Name})");
 
                 var subclasses =
-                    rootType.Assembly
-                    .GetTypes()
+                    types
                     .Where(t => t.BaseType == type);
 
                 foreach (var subclass in subclasses)
