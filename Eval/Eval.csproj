@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{3FEFBC8B-6254-4F16-A613-1DEDE2E32B29}</ProjectGuid>
+    <ProjectGuid>{AD941956-A7E0-4DF6-896A-2171FA294784}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>InfiniteBeatSaber</RootNamespace>
-    <AssemblyName>InfiniteBeatSaber</AssemblyName>
+    <RootNamespace>Eval</RootNamespace>
+    <AssemblyName>Eval</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <DebugSymbols>true</DebugSymbols>
@@ -39,29 +39,26 @@
     <DisableCopyToPlugins>True</DisableCopyToPlugins>
     <DisableZipRelease>True</DisableZipRelease>
   </PropertyGroup>
+  <PropertyGroup>
+    <!--
+      Disable various Beat Saber Modding Tools features that aren't needed for
+      the "Eval" project. Perhaps the modding tools aren't needed at all. The
+      main feature I'm interested in is the "Beat Saber Reference Manager" so
+      the project can reference Beat Saber's dependencies and other Beat Saber
+      plugins.
+    -->
+    <DisableCopyToGame>True</DisableCopyToGame>
+    <DisableCopyToPlugins>True</DisableCopyToPlugins>
+    <DisableZipRelease>True</DisableZipRelease>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>$(BeatSaberDir)\Libs\0Harmony.dll</HintPath>
-      <Private>False</Private>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
     <Reference Include="BeatmapCore">
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\BeatmapCore.dll</HintPath>
       <Private>False</Private>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <Private>False</Private>
-      <HintPath>$(BeatSaberDir)\Libs\Newtonsoft.Json.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="Polyglot">
-      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\Polyglot.dll</HintPath>
-      <Private>False</Private>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="SiraUtil">
-      <HintPath>$(BeatSaberDir)\Plugins\SiraUtil.dll</HintPath>
+    <Reference Include="InfiniteBeatSaber">
+      <HintPath>$(BeatSaberDir)\Plugins\InfiniteBeatSaber.dll</HintPath>
       <Private>False</Private>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
@@ -95,11 +92,6 @@
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine.AudioModule">
-      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
-      <Private>False</Private>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
@@ -116,74 +108,22 @@
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.UIModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine.UnityWebRequestAudioModule">
-      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
-      <Private>False</Private>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="UnityEngine.UnityWebRequestModule">
-      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
-      <Private>False</Private>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
     <Reference Include="UnityEngine.VRModule">
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.VRModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Zenject">
-      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\Zenject.dll</HintPath>
-      <Private>False</Private>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="Zenject-usage">
-      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\Zenject-usage.dll</HintPath>
-      <Private>False</Private>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AudioRemixer.cs" />
-    <Compile Include="AwaitingQueue.cs" />
-    <Compile Include="BeatmapRemixer.cs" />
-    <Compile Include="BuildConstants\Debug.cs" Condition="'$(Configuration)' == 'Debug'" />
-    <Compile Include="$(SolutionDir)Generated\BuildConstants\Release.cs" Link="BuildConstants\Release.cs" Condition="'$(Configuration)' == 'Release'" />
-    <Compile Include="FloatComparison.cs" />
-    <Compile Include="DebugTools\Eval.cs" Condition="'$(Configuration)' == 'Debug'" />
-    <Compile Include="DebugTools\RemixVisualizer.cs" Condition="'$(Configuration)' == 'Debug'" />
-    <Compile Include="DebugTools\WebSocketServer.cs" Condition="'$(Configuration)' == 'Debug'" />
-    <Compile Include="Extensions\AudioClipExtensions.cs" />
-    <Compile Include="Extensions\TaskExtensions.cs" />
-    <Compile Include="InfiniteBeatSaberMenuUI.cs" />
-    <Compile Include="InfiniteBeatSaberMode.cs" />
-    <Compile Include="InfiniteJukeboxAlgorithm\AugmentedTypes.cs" />
-    <Compile Include="InfiniteJukeboxAlgorithm\InfiniteBeats.cs" />
-    <Compile Include="InfiniteJukeboxAlgorithm\InputTypes.cs" />
-    <Compile Include="InfiniteJukeboxAlgorithm\NearestNeighborCalculator.cs" />
-    <Compile Include="InfiniteJukeboxAlgorithm\PredictableRandom.cs" />
-    <Compile Include="InfiniteJukeboxAlgorithm\TrackRemixer.cs" />
-    <Compile Include="InfiniteRemix.cs" />
-    <Compile Include="Installers\AppInstaller.cs" />
-    <Compile Include="Installers\MenuInstaller.cs" />
-    <Compile Include="Installers\PlayerInstaller.cs" />
-    <Compile Include="Patches\AudioTimeSyncControllerPatches.cs" />
-    <Compile Include="Patches\GameplayCoreSceneSetupDataPatches.cs" />
-    <Compile Include="Patches\MediaAsyncLoaderPatches.cs" />
-    <Compile Include="Patches\StandardLevelDetailViewPatches.cs" />
+    <Compile Include="EvalProgram.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Range.cs" />
-    <Compile Include="Remix.cs" />
-    <Compile Include="RemixableSongs.cs" />
-    <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="manifest.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')" />
-    <None Include="InfiniteBeatSaber.csproj.user" Condition="Exists('InfiniteBeatSaber.csproj.user')" />
-    <EmbeddedResource Include="SpotifyAnalyses\custom_level_8E7E553099436AF31564ADF1977A5EC42A61CFFF.json" />
-    <EmbeddedResource Include="SpotifyAnalyses\custom_level_B68BF61AC6BE0E128BE32A85810D42E7C53F4756.json" />
+    <None Include="Eval.csproj.user" Condition="Exists('Eval.csproj.user')" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BeatSaberModdingTools.Tasks">
@@ -192,11 +132,24 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="InfiniteJukeboxAlgorithm\LICENSE" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="GenerateReleaseBuildConstants" BeforeTargets="PreBuildEvent" Condition="'$(Configuration)'=='Release'">
-    <Exec Command="powershell.exe -ExecutionPolicy Bypass -File &quot;$(SolutionDir)build-tools\genBuildConstants.ps1&quot;" />
+  <!--
+    In this project, the intention of the "build" command is actually "eval the
+    code in the game".
+
+    A problematic case is that, if the source files are unchanged, then the
+    "build" command will be a no-op. No code will be evaled in the game which
+    violates the user's expectation. This is because both the "Build" and "Eval"
+    targets will be skipped.
+
+    "TouchSource", a pre-build target, is the workaround. It touches the source
+    file, making it look dirty, and consequently forcing the "Build" and "Eval"
+    targets to run.
+  -->
+  <Target Name="TouchSource" BeforeTargets="Build">
+    <Exec Command="powershell (Get-Item $(ProjectDir)EvalProgram.cs).LastWriteTime = Get-Date" />
+  </Target>
+  <Target Name="Eval" AfterTargets="Build">
+    <Exec Command="powershell.exe -ExecutionPolicy Bypass -File &quot;$(SolutionDir)debug-tools\repl\eval.ps1&quot; -dllPath &quot;$(TargetPath)&quot;" />
   </Target>
 </Project>

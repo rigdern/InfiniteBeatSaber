@@ -5,6 +5,8 @@ VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfiniteBeatSaber", "InfiniteBeatSaber\InfiniteBeatSaber.csproj", "{3FEFBC8B-6254-4F16-A613-1DEDE2E32B29}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eval", "Eval\Eval.csproj", "{AD941956-A7E0-4DF6-896A-2171FA294784}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{3FEFBC8B-6254-4F16-A613-1DEDE2E32B29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FEFBC8B-6254-4F16-A613-1DEDE2E32B29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FEFBC8B-6254-4F16-A613-1DEDE2E32B29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD941956-A7E0-4DF6-896A-2171FA294784}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD941956-A7E0-4DF6-896A-2171FA294784}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

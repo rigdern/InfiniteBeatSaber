@@ -1,5 +1,4 @@
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,10 +13,10 @@ namespace InfiniteBeatSaber.DebugTools
 {
     public static class EvalProgram
     {
-        // `EvalMain` is intended to be used like a REPL. While Beat Saber is running, write
-        // code in `EvalMain` and then run `debug-tools\repl\msbuildEval.vbs` to have it
-        // injected into and executed in the running Beat Saber game. Only works in debug
-        // builds.
+        // `EvalMain` is intended to be used like a REPL. While Beat Saber is
+        // running, write code in `EvalMain` and then build the "Eval" project
+        // to have it injected into and executed in the running Beat Saber game.
+        // Only works in debug builds.
         public static void EvalMain(IDictionary<string, object> state)
         {
             // Example: Log the name of a Beat Saber pack.
