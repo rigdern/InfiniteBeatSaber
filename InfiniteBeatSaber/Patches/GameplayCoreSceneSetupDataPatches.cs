@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using CustomJSONData.CustomBeatmap;
+using HarmonyLib;
 using IPA.Utilities;
 using System.Threading.Tasks;
 
@@ -30,8 +31,28 @@ namespace InfiniteBeatSaber.Patches
 
             OriginalBeatmap = data.transformedBeatmapData;
 
-            IReadonlyBeatmapData emptyBeatmap = new BeatmapData(data.transformedBeatmapData.numberOfLines);
-            data.SetField("_transformedBeatmapData", emptyBeatmap);
+            data.SetField("_transformedBeatmapData", CreateEmptyBeatmap(OriginalBeatmap));
+        }
+
+        // When the CustomJSONData plugin is in use, we need to use its
+        // `CustomBeatmapData` class instead of `BeatmapData`.
+        // `CustomBeatmapData` knows how to handle CustomJSONData's
+        // `BeatmapDataItem` subclasses.
+        private static IReadonlyBeatmapData CreateEmptyBeatmap(IReadonlyBeatmapData beatmapData)
+        {
+            if (beatmapData is CustomBeatmapData customBeatmapData)
+            {
+                return new CustomBeatmapData(
+                    customBeatmapData.numberOfLines,
+                    customBeatmapData.version2_6_0AndEarlier,
+                    customBeatmapData.customData,
+                    customBeatmapData.beatmapCustomData,
+                    customBeatmapData.levelCustomData);
+            }
+            else
+            {
+                return new BeatmapData(beatmapData.numberOfLines);
+            }
         }
     }
 }
