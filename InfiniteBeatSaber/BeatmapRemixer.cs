@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CustomJSONData.CustomBeatmap;
+using InfiniteBeatSaber.Extensions;
+using IPA.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -18,6 +21,7 @@ namespace InfiniteBeatSaber
             (_sortedBeatmapDataItems, _sortedObstacleDataItems) = FilterAndSortBeatmapDataItems(beatmap.allBeatmapDataItems);
             _remixedBeatmap = remixedBeatmap;
 
+            AddCustomJSONDataProcessors(_remixedBeatmap);
             AddBeatmapDataItemsInOrder(_remixedBeatmap, MapPrologue(_sortedBeatmapDataItems));
         }
 
@@ -29,6 +33,35 @@ namespace InfiniteBeatSaber
                 AddBeatmapDataItemsInOrder(_remixedBeatmap, SliceMap(slice.Clock, slice.Start, slice.Duration));
                 AddBeatmapDataItemsInOrder(_remixedBeatmap, SliceObstacles(slice.Clock, slice.Start, slice.Duration));
             }
+        }
+
+        // Adds data processors for the `BeatmapDataItems` provided by CustomJSONData (https://github.com/Aeroluna/CustomJSONData).
+        //
+        // Without these, methods like `BeatmapData.AddBeatmapObjectDataInOrder` throw an exception when you attempt to add one of
+        // CustomJSONData's `BeatmapDataItems` (e.g. `CustomBPMChangeBeatmapEventData`). This is because Beat Saber only installs
+        // data processors for the `BeatmapDataItems` that it provides.
+        //
+        // Because each CustomJSONData `BeatmapDataItem` is a subclass of one provided by Beat Saber that just extends it to implement
+        // `ICustomData`, it seems sensible for each CustomJSONData `BeatmapDataItem` to reuse the relevant Beat Saber data processor
+        // (e.g. `CustomBPMChangeBeatmapEventData` reuses the data processor of `BPMChangeBeatmapEventData`).
+        //
+        // For the list of data processors that Beat Saber installs, see the initialization of
+        // `BeatmapDataSortedListForTypeAndIds._sortedListsDataProcessors`.
+        private static void AddCustomJSONDataProcessors(BeatmapData beatmapData)
+        {
+            var beatmapDataItemsPerTypeAndId = beatmapData.GetField<BeatmapDataSortedListForTypeAndIds<BeatmapDataItem>, BeatmapData>("_beatmapDataItemsPerTypeAndId");
+            var dataProcessors = beatmapDataItemsPerTypeAndId.GetField<Dictionary<Type, ISortedListItemProcessor<BeatmapDataItem>>, BeatmapDataSortedListForTypeAndIds<BeatmapDataItem>>("_sortedListsDataProcessors");
+
+            dataProcessors.AddIfMissing(typeof(CustomBasicBeatmapEventData), dataProcessors[typeof(BasicBeatmapEventData)]);
+            dataProcessors.AddIfMissing(typeof(CustomBPMChangeBeatmapEventData), dataProcessors[typeof(BPMChangeBeatmapEventData)]);
+            dataProcessors.AddIfMissing(typeof(CustomColorBoostBeatmapEventData), dataProcessors[typeof(ColorBoostBeatmapEventData)]);
+            dataProcessors.AddIfMissing(typeof(CustomLightColorBeatmapEventData), dataProcessors[typeof(LightColorBeatmapEventData)]);
+            dataProcessors.AddIfMissing(typeof(CustomLightRotationBeatmapEventData), dataProcessors[typeof(LightRotationBeatmapEventData)]);
+            dataProcessors.AddIfMissing(typeof(CustomNoteData), dataProcessors[typeof(NoteData)]);
+            dataProcessors.AddIfMissing(typeof(CustomObstacleData), dataProcessors[typeof(ObstacleData)]);
+            dataProcessors.AddIfMissing(typeof(CustomSliderData), dataProcessors[typeof(SliderData)]);
+            dataProcessors.AddIfMissing(typeof(CustomSpawnRotationBeatmapEventdata), dataProcessors[typeof(SpawnRotationBeatmapEventData)]);
+            dataProcessors.AddIfMissing(typeof(CustomWaypointData), dataProcessors[typeof(WaypointData)]);
         }
 
         private static (IEnumerable<BeatmapDataItem>, IEnumerable<ObstacleData>) FilterAndSortBeatmapDataItems(IEnumerable<BeatmapDataItem> beatmapDataItems)
@@ -89,7 +122,6 @@ namespace InfiniteBeatSaber
 
             return (keptBeatmapDataItems, obstacleDataItems);
         }
-
 
         private static void SetTime(BeatmapDataItem item, float time)
         {

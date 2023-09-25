@@ -3,11 +3,12 @@
   "id": "InfiniteBeatSaber",
   "name": "InfiniteBeatSaber",
   "author": "rigdern",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Generates never-ending and ever changing levels. Inspired by the Infinite Jukebox.",
   "gameVersion": "1.31.1",
   "dependsOn": {
     "BSIPA": "^4.3.0",
+    "CustomJSONData": "^2.5.1",
     "SiraUtil": "^3.1.5"
   }
 }
