@@ -4,10 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Zenject;
 
 namespace InfiniteBeatSaber.DebugTools
 {
@@ -91,6 +91,92 @@ namespace InfiniteBeatSaber.DebugTools
 
         #endregion
 
+        #region Utilities for acquiring Zenject dependencies
+
+        private static IEnumerable<(string, DiContainer)> GetAllActiveDiContainers()
+        {
+            List<(string, DiContainer)> containers = new List<(string, DiContainer)>();
+
+            // Get ProjectContext's container
+            if (ProjectContext.HasInstance)
+            {
+                containers.Add(("ProjectContext", ProjectContext.Instance.Container));
+            }
+
+            // Get all SceneContext's containers
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                Scene currentScene = SceneManager.GetSceneAt(i);
+                if (currentScene.isLoaded)
+                {
+                    var sceneContexts = currentScene.GetRootGameObjects()
+                        .SelectMany(root => root.GetComponentsInChildren<SceneContext>());
+
+                    foreach (var sceneContext in sceneContexts)
+                    {
+                        if (sceneContext != null)
+                        {
+                            containers.Add((sceneContext.name, sceneContext.Container));
+                        }
+                    }
+                }
+            }
+
+            return containers;
+        }
+
+        private static T Resolve<T>()
+        {
+            var resolvedInstance = default(T);
+            var isResolved = false;
+
+            foreach (var (_, container) in GetAllActiveDiContainers())
+            {
+                if (container.HasBinding<T>())
+                {
+                    if (isResolved)
+                    {
+                        throw new ZenjectException($"Type: {typeof(T).Name} found in multiple active containers.");
+                    }
+
+                    resolvedInstance = container.Resolve<T>();
+                    isResolved = true;
+                }
+            }
+
+            if (!isResolved)
+            {
+                throw new ZenjectException($"Unable to resolve type: {typeof(T).Name} across all active containers.");
+            }
+
+            return resolvedInstance;
+        }
+
+        #endregion
+
+        #region CSV utilities
+
+        private static string EscapeCsvCellIfNeeded(string cell)
+        {
+            char[] specialCharacters = { '\r', '\n', ',', '"' };
+            return (
+                cell.IndexOfAny(specialCharacters) == -1 ? cell :
+                "\"" + cell.Replace("\"", "\"\"") + "\""
+            );
+        }
+
+        private static string ToCsv(IEnumerable<IEnumerable<string>> rows)
+        {
+            return string.Join(
+                "\n",
+                rows.Select(row =>
+                    string.Join(
+                        ",",
+                        row.Select(cell => EscapeCsvCellIfNeeded(cell)))));
+        }
+
+        #endregion
+
         #region Printing generic C# objects
 
         private static void LogObj(object obj, string label = null)
@@ -137,6 +223,26 @@ namespace InfiniteBeatSaber.DebugTools
             return output.ToString();
         }
 
+        private static void LogEnumerable<T>(IEnumerable<T> enumerable, string label = null)
+        {
+            Log.Info(PrintEnumerable(enumerable));
+        }
+
+        private static string PrintEnumerable<T>(IEnumerable<T> enumerable, string label = null)
+        {
+            if (label != null) label = " [" + label + "]";
+
+            var output = new StringBuilder();
+            output.AppendLine($"Enumerable{label}:");
+
+            foreach (var item in enumerable)
+            {
+                output.AppendLine($"  {item.ToString()}");
+            }
+
+            return output.ToString();
+        }
+
         #endregion
 
         #region Printing C# subclass hierarchy
@@ -163,7 +269,8 @@ namespace InfiniteBeatSaber.DebugTools
                 assemblies = new List<Assembly> { rootType.Assembly };
             }
 
-            var types = assemblies.SelectMany(assembly => {
+            var types = assemblies.SelectMany(assembly =>
+            {
                 try
                 {
                     return assembly.GetTypes();
@@ -389,7 +496,7 @@ namespace InfiniteBeatSaber.DebugTools
 
         #endregion
 
-        public static void WriteAllText(string fileName, string text)
+        private static void WriteAllText(string fileName, string text)
         {
             File.WriteAllText(Path.Combine(ScratchDirectory, fileName), text);
         }
