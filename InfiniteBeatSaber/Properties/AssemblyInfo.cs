@@ -19,6 +19,10 @@ using System.Runtime.InteropServices;
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
 
+// Enable the `Eval` assembly to see our `internal` types. This makes the REPL
+// experience more convenient.
+[assembly: InternalsVisibleTo("Eval")]
+
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("577c9955-0b0c-413e-8262-e1e9da673964")]
 
