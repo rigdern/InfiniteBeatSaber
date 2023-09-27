@@ -15,10 +15,26 @@ namespace InfiniteBeatSaber
 
         public BeatmapRemixer(IReadonlyBeatmapData beatmap, BeatmapData remixedBeatmap)
         {
-            (_sortedBeatmapDataItems, _sortedObstacleDataItems) = FilterAndSortBeatmapDataItems(beatmap.allBeatmapDataItems);
+            ISet<string> omittedItemTypes;
+            (_sortedBeatmapDataItems, _sortedObstacleDataItems, omittedItemTypes) = FilterAndSortBeatmapDataItems(beatmap.allBeatmapDataItems);
             _remixedBeatmap = remixedBeatmap;
 
             AddBeatmapDataItemsInOrder(_remixedBeatmap, MapPrologue(_sortedBeatmapDataItems));
+
+            if (omittedItemTypes.Count > 0)
+            {
+                var output = new StringBuilder();
+                output.AppendLine("BeatmapRemixer: Ignoring unsupported beatmap item types:");
+                foreach (var item in omittedItemTypes)
+                {
+                    output.AppendLine($"  {item}");
+                }
+                Plugin.Log.Info(output.ToString());
+            }
+            else
+            {
+                Plugin.Log.Info("BeatmapRemixer: All beatmap item types are supported.");
+            }
         }
 
         // Adds `remix` to the remixed beatmap.
@@ -31,7 +47,7 @@ namespace InfiniteBeatSaber
             }
         }
 
-        private static (IEnumerable<BeatmapDataItem>, IEnumerable<ObstacleData>) FilterAndSortBeatmapDataItems(IEnumerable<BeatmapDataItem> beatmapDataItems)
+        public static (IEnumerable<BeatmapDataItem>, IEnumerable<ObstacleData>, ISet<string>) FilterAndSortBeatmapDataItems(IEnumerable<BeatmapDataItem> beatmapDataItems)
         {
             var omittedItemTypes = new SortedSet<string>();
             var keptBeatmapDataItems = new LinkedList<BeatmapDataItem>();
@@ -39,7 +55,8 @@ namespace InfiniteBeatSaber
             foreach (var item in beatmapDataItems.OrderBy(item => item))
             {
                 if (item is BPMChangeBeatmapEventData ||
-                    item is BasicBeatmapEventData)
+                    item is BasicBeatmapEventData ||
+                    item is ColorBoostBeatmapEventData)
                 {
                     keptBeatmapDataItems.AddLast(item);
                 }
@@ -72,22 +89,7 @@ namespace InfiniteBeatSaber
                 }
             }
 
-            if (omittedItemTypes.Count > 0)
-            {
-                var output = new StringBuilder();
-                output.AppendLine("BeatmapRemixer.FilterBeatmapDataItems: Ignoring unsupported beatmap item types:");
-                foreach (var item in omittedItemTypes)
-                {
-                    output.AppendLine($"  {item}");
-                }
-                Plugin.Log.Info(output.ToString());
-            }
-            else
-            {
-                Plugin.Log.Info("BeatmapRemixer.FilterBeatmapDataItems: All beatmap item types are supported.");
-            }
-
-            return (keptBeatmapDataItems, obstacleDataItems);
+            return (keptBeatmapDataItems, obstacleDataItems, omittedItemTypes);
         }
 
         private static void SetTime(BeatmapDataItem item, float time)
