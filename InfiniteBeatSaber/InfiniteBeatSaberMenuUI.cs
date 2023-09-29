@@ -1,13 +1,13 @@
 ﻿using InfiniteBeatSaber.Patches;
 using IPA.Utilities;
+using System;
 using TMPro;
-using UnityEngine.Events;
 using UnityEngine.UI;
 using Zenject;
 
 namespace InfiniteBeatSaber
 {
-    internal class InfiniteBeatSaberMenuUI : IInitializable
+    internal class InfiniteBeatSaberMenuUI : IInitializable, IDisposable
     {
         public static bool IsInfiniteBeatSaberMode { get; private set; } = false;
 
@@ -26,16 +26,23 @@ namespace InfiniteBeatSaber
 
         public void Initialize()
         {
-            // Once created, I expect this object to be around for the app's remaining
-            // lifetime so this class doesn't have any cleanup code (i.e. no implementation
-            // of IDisposable.Dispose which Zenject would call when destroying it).
-
             _standardLevelDetailViewController.didPressActionButtonEvent += OnDidPressPlayButton;
             _standardLevelDetailViewController.didPressPracticeButtonEvent += OnDidPressPracticeButton;
-            _startInfiniteBeatSaberButton = AddStartInfiniteBeatSaberButton("∞", OnDidPressStartInfiniteBeatSaberButton);
+            _startInfiniteBeatSaberButton = AddStartInfiniteBeatSaberButton("∞");
+            _startInfiniteBeatSaberButton.onClick.AddListener(OnDidPressStartInfiniteBeatSaberButton);
             _startInfiniteBeatSaberButton.gameObject.SetActive(false);
 
             StandardLevelDetailViewPatches.DidChangeDifficultyBeatmap += OnDidChangeDifficultyBeatmap;
+        }
+
+        public void Dispose()
+        {
+            _standardLevelDetailViewController.didPressActionButtonEvent -= OnDidPressPlayButton;
+            _standardLevelDetailViewController.didPressPracticeButtonEvent -= OnDidPressPracticeButton;
+            _startInfiniteBeatSaberButton.onClick.RemoveListener(OnDidPressStartInfiniteBeatSaberButton);
+            UnityEngine.Object.Destroy(_startInfiniteBeatSaberButton);
+
+            StandardLevelDetailViewPatches.DidChangeDifficultyBeatmap -= OnDidChangeDifficultyBeatmap;
         }
 
         private void OnDidChangeDifficultyBeatmap(StandardLevelDetailView view, IDifficultyBeatmap difficultyBeatmap)
@@ -69,13 +76,12 @@ namespace InfiniteBeatSaber
 
         #region Code that relies directly on Beat Saber's implementation details
 
-        private Button AddStartInfiniteBeatSaberButton(string label, UnityAction onClick)
+        private Button AddStartInfiniteBeatSaberButton(string label)
         {
             var detailView = _standardLevelDetailViewController.GetField<StandardLevelDetailView, StandardLevelDetailViewController>("_standardLevelDetailView");
             var startInfiniteBeatSaberButton = UnityEngine.Object.Instantiate(detailView.practiceButton, detailView.practiceButton.transform.parent);
             SetButtonText(startInfiniteBeatSaberButton, label);
             startInfiniteBeatSaberButton.onClick.RemoveAllListeners();
-            startInfiniteBeatSaberButton.onClick.AddListener(onClick);
             return startInfiniteBeatSaberButton;
         }
 
