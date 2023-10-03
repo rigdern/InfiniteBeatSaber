@@ -18,7 +18,7 @@ namespace InfiniteBeatSaber.Patches
         {
             // `RefreshContent` is the only place that assigns `selectedDifficultyBeatmap` so
             // it seems like a good place to raise this event.
-            DidChangeDifficultyBeatmap(__instance, __instance.selectedDifficultyBeatmap);
+            DidChangeDifficultyBeatmap?.Invoke(__instance, __instance.selectedDifficultyBeatmap);
         }
     }
 }
