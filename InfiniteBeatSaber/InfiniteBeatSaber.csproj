@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -174,6 +174,7 @@
     <Compile Include="Patches\AudioTimeSyncControllerPatches.cs" />
     <Compile Include="Patches\GameplayCoreSceneSetupDataPatches.cs" />
     <Compile Include="Patches\MediaAsyncLoaderPatches.cs" />
+    <Compile Include="Patches\SongProgressUIControllerPatches.cs" />
     <Compile Include="Patches\StandardLevelDetailViewPatches.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
