@@ -78,10 +78,34 @@ namespace InfiniteBeatSaber
 
         private Button AddStartInfiniteBeatSaberButton(string label)
         {
+            void ShrinkActionButtonMinWidth(Button actionButton, float minWidth)
+            {
+                var content = actionButton.transform.Find("Content");
+                var layoutElement = content.GetComponent<LayoutElement>();
+
+                // We're just trying to make the buttons thinner so we can fit more of them.
+                // If somebody made them even thinner, that's fine. Let's not override them.
+                if (layoutElement.minWidth > minWidth)
+                {
+                    layoutElement.minWidth = minWidth;
+                }
+            }
+
             var detailView = _standardLevelDetailViewController.GetField<StandardLevelDetailView, StandardLevelDetailViewController>("_standardLevelDetailView");
+
             var startInfiniteBeatSaberButton = UnityEngine.Object.Instantiate(detailView.practiceButton, detailView.practiceButton.transform.parent);
+            startInfiniteBeatSaberButton.name = "StartInfiniteBeatSaberButton";
             SetButtonText(startInfiniteBeatSaberButton, label);
+            ShrinkActionButtonMinWidth(startInfiniteBeatSaberButton, 10);
             startInfiniteBeatSaberButton.onClick.RemoveAllListeners();
+
+            // Make the "play" button thinner. This enables us to fit several buttons in the same row:
+            // - Beat Saber "practice" button
+            // - Beat Saber "play" button
+            // - Infinite Beat Saber "start" button
+            // - Better Song List "delete song" button
+            ShrinkActionButtonMinWidth(detailView.actionButton, 14);
+
             return startInfiniteBeatSaberButton;
         }
 
