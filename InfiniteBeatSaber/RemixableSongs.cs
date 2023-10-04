@@ -1,5 +1,6 @@
 ﻿using InfiniteJukeboxAlgorithm.AugmentedTypes;
 using Newtonsoft.Json;
+using Polyglot;
 using System.Collections.Generic;
 using static InfiniteBeatSaber.FloatComparison;
 
@@ -22,15 +23,28 @@ namespace InfiniteBeatSaber
                 new SpotifyAnalysisInfo("custom_level_B68BF61AC6BE0E128BE32A85810D42E7C53F4756.json") },
         };
 
-        public static bool IsDifficultyBeatmapRemixable(IDifficultyBeatmap difficultyBeatmap)
+        public static (bool, string) IsDifficultyBeatmapRemixable(IDifficultyBeatmap difficultyBeatmap)
         {
             var levelId = difficultyBeatmap.level.levelID;
-            var characteristic = difficultyBeatmap.parentDifficultyBeatmapSet.beatmapCharacteristic.serializedName;
+            var characteristicObj = difficultyBeatmap.parentDifficultyBeatmapSet.beatmapCharacteristic;
+            var characteristic = characteristicObj.serializedName;
 
-            return _levelIdToSpotifyAnalysisInfo.ContainsKey(levelId) && (
-                characteristic == "Standard" ||
-                characteristic == "OneSaber" ||
-                characteristic == "NoArrows");
+            if (!_levelIdToSpotifyAnalysisInfo.ContainsKey(levelId))
+            {
+                return (false, "Song currently not supported by Infinite Beat Saber");
+            }
+            else if (
+                characteristic != "Standard" &&
+                characteristic != "OneSaber" &&
+                characteristic != "NoArrows")
+            {
+                var localizedCharacteristic = Localization.Get(characteristicObj.characteristicNameLocalizationKey);
+                return (false, $"{localizedCharacteristic} mode currently not supported by Infinite Beat Saber");
+            }
+            else
+            {
+                return (true, null);
+            }
         }
 
         public static SpotifyAnalysis ReadSpotifyAnalysis(IPreviewBeatmapLevel level)

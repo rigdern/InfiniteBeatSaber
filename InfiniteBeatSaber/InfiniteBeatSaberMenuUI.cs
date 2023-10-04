@@ -1,4 +1,5 @@
-﻿using InfiniteBeatSaber.Patches;
+﻿using HMUI;
+using InfiniteBeatSaber.Patches;
 using IPA.Utilities;
 using System;
 using TMPro;
@@ -11,15 +12,19 @@ namespace InfiniteBeatSaber
     {
         public static bool IsInfiniteBeatSaberMode { get; private set; } = false;
 
+        private readonly DiContainer _diContainer;
         private readonly StandardLevelDetailViewController _standardLevelDetailViewController;
         private readonly SoloFreePlayFlowCoordinator _soloFreePlayFlowCoordinator;
 
         private Button _startInfiniteBeatSaberButton;
+        private HoverHint _startInfiniteBeatSaberHoverHint;
 
         public InfiniteBeatSaberMenuUI(
+            DiContainer diContainer,
             StandardLevelDetailViewController standardLevelDetailViewController,
             SoloFreePlayFlowCoordinator soloFreePlayFlowCoordinator)
         {
+            _diContainer = diContainer;
             _standardLevelDetailViewController = standardLevelDetailViewController;
             _soloFreePlayFlowCoordinator = soloFreePlayFlowCoordinator;
         }
@@ -28,9 +33,8 @@ namespace InfiniteBeatSaber
         {
             _standardLevelDetailViewController.didPressActionButtonEvent += OnDidPressPlayButton;
             _standardLevelDetailViewController.didPressPracticeButtonEvent += OnDidPressPracticeButton;
-            _startInfiniteBeatSaberButton = AddStartInfiniteBeatSaberButton("∞");
+            (_startInfiniteBeatSaberButton, _startInfiniteBeatSaberHoverHint) = AddStartInfiniteBeatSaberButton("∞");
             _startInfiniteBeatSaberButton.onClick.AddListener(OnDidPressStartInfiniteBeatSaberButton);
-            _startInfiniteBeatSaberButton.gameObject.SetActive(false);
 
             StandardLevelDetailViewPatches.DidChangeDifficultyBeatmap += OnDidChangeDifficultyBeatmap;
         }
@@ -50,9 +54,10 @@ namespace InfiniteBeatSaber
             //var level = difficultyBeatmap.level;
             //Plugin.Log.Info($"InfiniteBeatSaberMenuUI.OnDidChangeDifficultyBeatmap: {level.songName} by {level.songAuthorName}, {level.levelAuthorName} (ID: {level.levelID})");
 
-            var isRemixable = RemixableSongs.IsDifficultyBeatmapRemixable(difficultyBeatmap);
+            var (isRemixable, notRemixableReason) = RemixableSongs.IsDifficultyBeatmapRemixable(difficultyBeatmap);
 
-            _startInfiniteBeatSaberButton.gameObject.SetActive(isRemixable);
+            _startInfiniteBeatSaberButton.interactable = isRemixable;
+            _startInfiniteBeatSaberHoverHint.text = isRemixable ? "" : notRemixableReason;
         }
 
         private void OnDidPressPracticeButton(StandardLevelDetailViewController controller, IBeatmapLevel level)
@@ -75,8 +80,8 @@ namespace InfiniteBeatSaber
         }
 
         #region Code that relies directly on Beat Saber's implementation details
-
-        private Button AddStartInfiniteBeatSaberButton(string label)
+        
+        private (Button, HoverHint) AddStartInfiniteBeatSaberButton(string label)
         {
             void ShrinkActionButtonMinWidth(Button actionButton, float minWidth)
             {
@@ -99,6 +104,8 @@ namespace InfiniteBeatSaber
             ShrinkActionButtonMinWidth(startInfiniteBeatSaberButton, 10);
             startInfiniteBeatSaberButton.onClick.RemoveAllListeners();
 
+            var hoverHint = _diContainer.InstantiateComponent<HoverHint>(startInfiniteBeatSaberButton.gameObject);
+            
             // Make the "play" button thinner. This enables us to fit several buttons in the same row:
             // - Beat Saber "practice" button
             // - Beat Saber "play" button
@@ -106,7 +113,7 @@ namespace InfiniteBeatSaber
             // - Better Song List "delete song" button
             ShrinkActionButtonMinWidth(detailView.actionButton, 14);
 
-            return startInfiniteBeatSaberButton;
+            return (startInfiniteBeatSaberButton, hoverHint);
         }
 
         private void StartLevelInPracticeMode()
