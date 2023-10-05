@@ -19,8 +19,9 @@ namespace InfiniteBeatSaber
                 new SpotifyAnalysisInfo("custom_level_8E7E553099436AF31564ADF1977A5EC42A61CFFF.json") },
             
             // Beat Saber by Jaroslav Beck.
-            { "custom_level_B68BF61AC6BE0E128BE32A85810D42E7C53F4756",
-                new SpotifyAnalysisInfo("custom_level_B68BF61AC6BE0E128BE32A85810D42E7C53F4756.json") },
+            { "custom_level_B68BF61AC6BE0E128BE32A85810D42E7C53F4756", new SpotifyAnalysisInfo("BeatSaber.json") },
+
+            { "BeatSaber", new SpotifyAnalysisInfo("BeatSaber.json") },
         };
 
         public static (bool, string) IsDifficultyBeatmapRemixable(IDifficultyBeatmap difficultyBeatmap)
