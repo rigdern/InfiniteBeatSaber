@@ -148,7 +148,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AudioRemixer.cs" />
+    <Compile Include="AsyncQueue.cs" />
+    <Compile Include="AudioRemixer\IAudioRemixer.cs" />
+    <Compile Include="AudioRemixer\QueueBasedAudioRemixer.cs" />
+    <Compile Include="AudioRemixer\RingBufferBasedAudioRemixer.cs" />
     <Compile Include="AwaitingQueue.cs" />
     <Compile Include="BeatmapRemixer.cs" />
     <Compile Include="BuildConstants\Debug.cs" Condition="'$(Configuration)' == 'Debug'" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace InfiniteBeatSaber.Extensions
@@ -20,6 +21,20 @@ namespace InfiniteBeatSaber.Extensions
                     }
                 }
             }, TaskContinuationOptions.OnlyOnFaulted);
+        }
+
+        public static async Task Cancelable(this Task task, CancellationToken cancellationToken)
+        {
+            var cancellationTask = Task.Delay(-1, cancellationToken);
+            var result = await Task.WhenAny(task, cancellationTask);
+            if (result == task)
+            {
+                await task;
+            }
+            else
+            {
+                throw new OperationCanceledException(cancellationToken);
+            }
         }
     }
 }

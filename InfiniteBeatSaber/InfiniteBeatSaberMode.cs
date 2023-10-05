@@ -23,7 +23,7 @@ namespace InfiniteBeatSaber
         private CancellationTokenSource _generateRemixLoopCts;
 
         private InfiniteRemix _infiniteRemix;
-        private AudioRemixer _audioRemixer;
+        private IAudioRemixer _audioRemixer;
         private BeatmapRemixer _beatmapRemixer;
 
         public void Initialize()
@@ -46,7 +46,8 @@ namespace InfiniteBeatSaber
             var beatmap = Util.AssertNotNull(readonlyBeatmap as BeatmapData, "beatmap");
 
             _infiniteRemix = new InfiniteRemix(spotifyAnalysis, level.beatsPerMinute, random);
-            _audioRemixer = new AudioRemixer(audioClip, audioSource);
+            //_audioRemixer = new RingBufferBasedAudioRemixer(audioClip, audioSource);
+            _audioRemixer = new QueueBasedAudioRemixer(_audioTimeSyncController, audioClip, audioSource);
             _beatmapRemixer = new BeatmapRemixer(originalBeatmap, beatmap);
 #if DEBUG
             _remixVisualizer.InitializeData(spotifyAnalysis.SerializeToJson());

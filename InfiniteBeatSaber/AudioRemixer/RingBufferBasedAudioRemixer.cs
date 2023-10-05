@@ -1,11 +1,26 @@
-﻿using InfiniteBeatSaber.Extensions;
+﻿/* RingBufferBasedAudioRemixer.cs
+ *
+ * This `IAudioRemixer` is deprecated. `QueueBasedAudioRemixer` should be used instead.
+ *
+ * It's deprecated because it only works with custom songs. It doesn't work with builtin songs. It
+ * needs access to the raw audio data via `AudioClip.GetData` but this method isn't supported on
+ * builtin songs because their `loadType` is not `DecompressOnLoad`.
+ *
+ * Remixes audio by manipulating the raw data of an `AudioClip`. It regularly writes the next audio
+ * data to be played to the relevant position of the `AudioClip`. When it reaches the end of the
+ * `AudioClip`, it starts writing to the beginning of the `AudioClip` treating it as a ring buffer.
+ * The `AudioClip` is configured to loop so when it reaches its end, it begins playing at its
+ * beginning.
+ */
+
+using InfiniteBeatSaber.Extensions;
 using System;
 using System.Linq;
 using UnityEngine;
 
 namespace InfiniteBeatSaber
 {
-    internal class AudioRemixer : IDisposable
+    internal class RingBufferBasedAudioRemixer : IAudioRemixer
     {
         private readonly AudioClip _audioClip;
         private readonly float[] _channelSamples;
@@ -14,7 +29,7 @@ namespace InfiniteBeatSaber
         // The next index of `_audioClip` to write to. Measured in *samples* (not *channel-samples*).
         private int _audioClipSampleIndex = 0;
 
-        public AudioRemixer(AudioClip audioClip, AudioSource audioSource)
+        public RingBufferBasedAudioRemixer(AudioClip audioClip, AudioSource audioSource)
         {
             if (audioClip.ambisonic)
                 throw new Exception("Not sure how to handle ambisonic audio");
@@ -55,9 +70,9 @@ namespace InfiniteBeatSaber
             LogAndResetCounts();
 
             var remixSamplesCount = remixedChannelSamples.Length / ChannelsPerSample;
-            
+
             //var frequency = SamplesPerSecond;
-            //Plugin.Log.Info("AudioRemixer.AddRemix:");
+            //Plugin.Log.Info("RingBufferBasedAudioRemixer.AddRemix:");
             //Plugin.Log.Info("  numberOfSamples: " + remixSamplesCount);
             //Plugin.Log.Info("  NumChannels: " + ChannelsPerSample);
             //Plugin.Log.Info("  frequency: " + frequency);

@@ -23,7 +23,7 @@ namespace InfiniteBeatSaber.DebugTools
         private Action _unregisterWebSocket;
 
         private CancellationTokenSource _loopCts;
-
+            
         public void Initialize()
         {
             Util.AssertDebugBuild();
@@ -40,11 +40,12 @@ namespace InfiniteBeatSaber.DebugTools
         {
             if (!InfiniteBeatSaberMenuUI.IsInfiniteBeatSaberMode) return;
 
-            _loopCts?.Cancel();
+            StopLoop();
             _webSocketServer
                 .SendMessage("endSong", null)
                 .LogOnFailure();
             _unregisterWebSocket();
+            _audioTimeSyncController.stateChangedEvent -= OnAudioTimeSyncControllerStateChanged;
         }
 
         public void InitializeData(string spotifyAnalysisText)
@@ -121,7 +122,7 @@ namespace InfiniteBeatSaber.DebugTools
             {
                 while (!cancellationToken.IsCancellationRequested)
                 {
-                    await Cancelable(_beats.HasItemsAsync(), cancellationToken);
+                    await _beats.HasItemsAsync().Cancelable(cancellationToken);
 
                     {
                         var beat = _beats.Peek();
@@ -176,59 +177,6 @@ namespace InfiniteBeatSaber.DebugTools
                 // A loop is running. Stop it.
                 _loopCts = null;
                 cts.Cancel();
-            }
-        }
-
-        private static async Task Cancelable(Task task, CancellationToken cancellationToken)
-        {
-            var cancellationTask = Task.Delay(-1, cancellationToken);
-            var result = await Task.WhenAny(task, cancellationTask);
-            if (result == task)
-            {
-                await task;
-            }
-            else
-            {
-                throw new OperationCanceledException(cancellationToken);
-            }
-        }
-
-        // Like `Queue` but provides `HasItemsAsync` which enables you to be
-        // notified when an empty `Queue` gets an item added to it.
-        private class AsyncQueue<T>
-        {
-            private readonly Queue<T> _queue = new Queue<T>();
-            private TaskCompletionSource<object> _tcs = new TaskCompletionSource<object>();
-
-            public void Enqueue(T item)
-            {
-                _queue.Enqueue(item);
-                if (_tcs != null)
-                {
-                    var tcs = _tcs;
-                    _tcs = null;
-                    tcs.SetResult(null);
-                }
-            }
-
-            public T Peek()=> _queue.Peek();
-            public T Dequeue() => _queue.Dequeue();
-            public bool HasItems() => _queue.Count > 0;
-
-            public Task HasItemsAsync()
-            {
-                if (_queue.Count == 0)
-                {
-                    if (_tcs == null)
-                    {
-                        _tcs = new TaskCompletionSource<object>();
-                    }
-                    return _tcs.Task;
-                }
-                else
-                {
-                    return Task.CompletedTask;
-                }
             }
         }
 

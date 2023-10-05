@@ -16,13 +16,16 @@ namespace InfiniteBeatSaber.Patches
             return false; // Prevent the orginial implementation from running.
         }
 
-        // Derived from `MediaAsyncLoader.LoadAudioClipFromFilePathAsync`. The
-        // original implementation set `DownloadHandlerAudioClip.streamAudio` to
-        // true but a limitation is that streaming clips do not support
-        // `AudioClip.GetData`. `AudioClip.GetData` is important so that we can
-        // remix the clip. To get an AudioClip without this constraint, we load
-        // the AudioClip without setting `DownloadHandlerAudioClip.streamAudio` to
-        // true.
+        // Derived from `MediaAsyncLoader.LoadAudioClipFromFilePathAsync`. The original
+        // implementation set `DownloadHandlerAudioClip.streamAudio` to true which produces a
+        // streaming clip with these limitations:
+        //   1. `AudioSource.PlayScheduled` causes the AudioClip to stop playing on any other
+        //      AudioSource.
+        //   2. `AudioClip.GetData` isn't supported.
+        //
+        // (1) is a blocker for our technique for remixing the clip. To get an AudioClip without
+        // this constraint, we load the AudioClip without setting
+        // `DownloadHandlerAudioClip.streamAudio` to true.
         private static async Task<AudioClip> LoadAudioClipFromFilePathAsync(string filePath)
         {
             AudioType audioTypeFromPath = AudioTypeHelper.GetAudioTypeFromPath(filePath);
