@@ -74,8 +74,8 @@ namespace InfiniteBeatSaber
         {
             IsInfiniteBeatSaberMode = true;
 
-            // Use practice mode so the Infinite Beat Saber doesn't contribute to the
-            // player's high scores.
+            // Use practice mode so that Infinite Beat Saber doesn't contribute to the player's high
+            // scores.
             StartLevelInPracticeMode();
         }
 
@@ -118,9 +118,13 @@ namespace InfiniteBeatSaber
 
         private void StartLevelInPracticeMode()
         {
+            // We're only using practice mode so that Infinite Beat Saber doesn't contribute to the
+            // player's high scores. But we don't want the practice settings applied (e.g. the song
+            // start time and song speed settings) so clear them.
             var practiceViewController = _soloFreePlayFlowCoordinator.GetField<PracticeViewController, SinglePlayerLevelSelectionFlowCoordinator>("_practiceViewController");
-            practiceViewController.practiceSettings?.ResetToDefault();
-            _soloFreePlayFlowCoordinator.InvokeMethod<object, SinglePlayerLevelSelectionFlowCoordinator>("HandlePracticeViewControllerDidPressPlayButton");
+            practiceViewController.SetField<PracticeViewController, PracticeSettings>("_practiceSettings", null);
+
+            _soloFreePlayFlowCoordinator.InvokeMethod<object, SinglePlayerLevelSelectionFlowCoordinator>("StartLevelOrShow360Prompt", null, /* practice: */ true);
         }
 
         // `SetButtonText` is derived from BeatSaberMarkupLanguage (https://github.com/monkeymanboy/BeatSaberMarkupLanguage).
