@@ -4,9 +4,19 @@ namespace InfiniteBeatSaber
 {
     internal static class FloatComparison
     {
-        public static bool AreFloatsEqual(double a, double b)
+        private const double _threshold = 0.001;
+
+        public static bool AreFloatsEqual(double a, double b, double threshold = _threshold)
         {
-            return Math.Abs(a - b) <= 0.001;
+            return Math.Abs(a - b) <= threshold;
+        }
+
+        public static bool IsFloatAnInteger(double n, double threshold = _threshold)
+        {
+            var closestInteger = Math.Round(n);
+            var distanceFromInteger = Math.Abs(n - closestInteger);
+            return AreFloatsEqual(distanceFromInteger, 0, threshold);
+
         }
 
         public static bool IsFloatGreater(double a, double b)

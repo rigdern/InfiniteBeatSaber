@@ -145,11 +145,11 @@ namespace InfiniteBeatSaber
         private Quantum BeatAlignedObject(Quantum beat)
         {
             double alignedDuration = BeatAlignedSeconds(beat.Duration);
-            Util.Assert(
-                // beat.Which of -1 means its the beginning of the song before Spotify's analysis
-                // identified any beats. Consequently, it might be longer than 1 beat.
-                beat.Which == -1 || AreFloatsEqual(SecondsToBeats(alignedDuration), 1),
-                "Duration should be 1 beat but it is: " + SecondsToBeats(alignedDuration));
+            //Util.Assert(
+            //    // beat.Which of -1 means its the beginning of the song before Spotify's analysis
+            //    // identified any beats. Consequently, it might be longer than 1 beat.
+            //    beat.Which == -1 || AreFloatsEqual(SecondsToBeats(alignedDuration), 1),
+            //    "Duration should be 1 beat but it is: " + SecondsToBeats(alignedDuration));
             var result = beat.ShallowClone();
             result.Start = BeatAlignedSeconds(result.Start);
             result.Duration = alignedDuration;

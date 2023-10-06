@@ -100,7 +100,7 @@ namespace InfiniteBeatSaber
             return _levelIdToSpotifyAnalysisInfo.ContainsKey(level.levelID);
         }
 
-        public static (bool, string) IsDifficultyBeatmapRemixable(IDifficultyBeatmap difficultyBeatmap)
+        public static (bool Value, string Reason) IsDifficultyBeatmapRemixable(IDifficultyBeatmap difficultyBeatmap)
         {
             var levelId = difficultyBeatmap.level.levelID;
             var characteristicObj = difficultyBeatmap.parentDifficultyBeatmapSet.beatmapCharacteristic;
