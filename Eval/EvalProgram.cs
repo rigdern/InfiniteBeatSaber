@@ -39,23 +39,14 @@ namespace InfiniteBeatSaber.DebugTools
 
             // Example: Log the name of a Beat Saber pack.
             var pack = _beatmapLevelsModel.allLoadedBeatmapLevelPackCollection.beatmapLevelPacks.First();
-            Log.Info($"Name of a Beat Saber pack: {pack.packName}");
+            Info($"Name of a Beat Saber pack: {pack.packName}");
 
             // Example: Log properties of a root `GameObject`.
             LogObj(SceneManager.GetActiveScene().GetRootGameObjects().First(), "a root GameObject");
 
             // Example: Log all classes that derive from `BeatmapDataItem`.
+            Info("Classes that derive from `BeatmapDataItem`:");
             LogSubclassHierarchy(typeof(BeatmapDataItem));
-        }
-
-        private static IReadonlyBeatmapData OriginalMap
-        {
-            get
-            {
-                var tGameplayCoreSceneSetupDataPatches = Type.GetType("InfiniteBeatSaber.Patches.GameplayCoreSceneSetupDataPatches, InfiniteBeatSaber");
-                PropertyInfo propertyInfo = tGameplayCoreSceneSetupDataPatches.GetProperty("OriginalBeatmap", BindingFlags.Static | BindingFlags.Public);
-                return (IReadonlyBeatmapData)propertyInfo.GetValue(null);
-            }
         }
 
         #region Tests: Compatibility of song catalog with Infinite Beat Saber
@@ -887,9 +878,8 @@ namespace InfiniteBeatSaber.DebugTools
 
         private static string ScratchDirectory => Path.Combine(Application.temporaryCachePath, "InfiniteBeatSaber");
 
-        private static readonly IPA.Logging.Logger Log = (IPA.Logging.Logger)(
-            typeof(Plugin)
-            .GetProperty("Log", BindingFlags.NonPublic | BindingFlags.Static)
-            .GetValue(null));
+        private static readonly IPA.Logging.Logger Log = Plugin.Log;
+
+        private static void Info(string message) => Log.Info(message);
     }
 }
