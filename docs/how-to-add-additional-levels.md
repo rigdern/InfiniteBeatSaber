@@ -46,7 +46,11 @@ Here are the steps:
 
     This tells us that the level ID of Gangnam Style is `custom_level_8E7E553099436AF31564ADF1977A5EC42A61CFFF`.
 1. Add your Spotify analysis file to the "SpotifyAnalyses" folder.
-1. Now you can try out your change by recompiling the mod and launching Beat Saber.
+1. Add a `SpotifyAnalysisFiles` element to the `InfiniteBeatSaber.csproj` file so that the analysis file gets included in the DLL. The one for Gangnam Style looks like this:
+    ```
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\custom_level_8E7E553099436AF31564ADF1977A5EC42A61CFFF.json" />
+    ```
+1. Now you can try out your change by recompiling the mod (in Visual Studio, choose "Rebuild Solution" rather than "Build Solution" to be sure your new analysis file is included) and launching Beat Saber.
 
 ## Unsupported Beatmap Features
 

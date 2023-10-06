@@ -187,6 +187,54 @@
     <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\100Bills.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\100BillsRemix.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\AngelVoices.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\BalearicPumping.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\BeThereForYou.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\BeatSaber.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\Breezer.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\BurningSands.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\CommercialPumping.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\CountryRounds.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\CrabRave.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\Crystallized.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\CurtainsAllNightLong.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\custom_level_8E7E553099436AF31564ADF1977A5EC42A61CFFF.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\CycleHit.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\DollarSeventyEight.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\Elixia.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\Escape.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\EscapeRemix.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\ExitThisEarthsAtomosphere.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\FinalBossChan.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\Firestarter.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\FitBeat.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\FullCharge.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\Ghost.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\GiveALittleLove.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\INeedYou.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\IWannaBeAMachine.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\Immortal.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\IntoTheDream.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\ItTakesMe.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\Legend.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\LightItUp.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\LudicrousPlus.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\LvlInsane.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\Magic.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\OneHope.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\Origins.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\PopStars.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\ReasonForLiving.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\RumNBass.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\SpinEternally.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\SpookyBeat.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\TurnMeOn.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\UnlimitedPower.json" />
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\WhatTheCat.json" />
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="manifest.json" />
   </ItemGroup>
   <ItemGroup>
@@ -208,7 +256,6 @@
     <SpotifyAnalysesZipPath>$(IntermediateOutputPath)SpotifyAnalyses.zip</SpotifyAnalysesZipPath>
   </PropertyGroup>
   <ItemGroup>
-    <SpotifyAnalysisFiles Include="SpotifyAnalyses\*.json" />
     <EmbeddedResource Include="$(SpotifyAnalysesZipPath)">
       <LogicalName>InfiniteBeatSaber.SpotifyAnalyses.zip</LogicalName>
     </EmbeddedResource>
@@ -217,7 +264,7 @@
     <Exec Command="powershell.exe -ExecutionPolicy Bypass -File &quot;$(SolutionDir)build-tools\genBuildConstants.ps1&quot;" />
   </Target>
   <Target Name="ZipSpotifyAnalysisFiles" BeforeTargets="PreBuildEvent" Inputs="@(SpotifyAnalysisFiles)" Outputs="$(SpotifyAnalysesZipPath)">
-    <Exec Command="powershell.exe Compress-Archive -Path &quot;@(SpotifyAnalysisFiles->'%(Identity)', ',')&quot; -DestinationPath &quot;$(SpotifyAnalysesZipPath)&quot;" />
+    <Exec Command="powershell.exe Compress-Archive -Force -Path &quot;@(SpotifyAnalysisFiles->'%(Identity)', ',')&quot; -DestinationPath &quot;$(SpotifyAnalysesZipPath)&quot;" />
   </Target>
   <Target Name="Clean_ZipSpotifyAnalysisFiles" AfterTargets="Clean">
     <Delete Files="$(SpotifyAnalysesZipPath)" />
