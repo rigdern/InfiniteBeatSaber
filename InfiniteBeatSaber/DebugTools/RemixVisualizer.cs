@@ -116,6 +116,10 @@ namespace InfiniteBeatSaber.DebugTools
             _loopCts = new CancellationTokenSource();
             var cancellationToken = _loopCts.Token;
 
+            // How early we should wake before the beat so we don't miss it.
+            var realSecondsBeforeBeat = 0.01;
+            var songSecondsBeforeBeat = realSecondsBeforeBeat * _audioTimeSyncController.timeScale;
+
             //Plugin.Log.Info("InfiniteBeatSaberMode.DebugTools.RemixVisualizer: Started");
 
             try
@@ -129,7 +133,7 @@ namespace InfiniteBeatSaber.DebugTools
                         var songTime = _audioTimeSyncController.songTime;
                         var sleepUntilSongTime = beat.Clock;
                         // Wake a little early so we don't miss the beat.
-                        var sleepSeconds = (sleepUntilSongTime - songTime) / _audioTimeSyncController.timeScale - 0.01;
+                        var sleepSeconds = (sleepUntilSongTime - songTime) / _audioTimeSyncController.timeScale - realSecondsBeforeBeat;
 
                         if (sleepSeconds > 0)
                         {
@@ -141,7 +145,7 @@ namespace InfiniteBeatSaber.DebugTools
                     {
                         var songTime = _audioTimeSyncController.songTime;
                         Beat currentBeat = null;
-                        while (_beats.HasItems() && IsFloatLessOrEqual(_beats.Peek().Clock, songTime + 0.01))
+                        while (_beats.HasItems() && IsFloatLessOrEqual(_beats.Peek().Clock, songTime + songSecondsBeforeBeat))
                         {
                             currentBeat = _beats.Dequeue();
                             //var delta = songTime - currentBeat.Clock;
