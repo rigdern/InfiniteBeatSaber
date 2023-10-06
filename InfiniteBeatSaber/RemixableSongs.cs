@@ -150,16 +150,43 @@ namespace InfiniteBeatSaber
 
         private class SpotifyAnalysisInfo
         {
-            // The name of the file in this project's "SpotifyAnalyses" folder. These
-            // files are included in the DLL. They are configured as embedded resources by
-            // right-clicking on them in Solution Explorer, choosing "Properties", and then
-            // selecting "Embedded Resource" as the "Build Action".
+            // The name of the file in this project's "SpotifyAnalyses" folder. These files are
+            // combined into a zip file which is included as an embedded resource in the DLL.
             public readonly string ResourceName;
 
-            // Number of seconds to add to all timestamps of the SpotifyAnalysis.
-            // When the Beat Saber & Spotify versions of a song aren't aligned,
-            // use this to shift the SpotifyAnalysis timestamps so they align
-            // with Beat Saber's version of the song.
+            // Number of seconds to add to all timestamps of the SpotifyAnalysis. When the Beat
+            // Saber & Spotify versions of a song aren't aligned, use this to shift the
+            // SpotifyAnalysis timestamps so they align with Beat Saber's version of the song.
+            //
+            // I suspect that this doesn't have to be that accurate -- that it's okay if the Beat
+            // Saber song isn't quite aligned with the Spotify one. Why do I suspect this? In trying
+            // to align the Beat Saber & Spotify songs, I've been surprised by how hard it is to
+            // tell whether the songs are aligned. The jumps in the Infinite Beat Saber remix sound
+            // pretty good both before and after I've provided a value for `ShiftTimestampsSeconds`.
+            //
+            // I have a couple of potential explanations for why the remix sounds good even when the
+            // songs aren't aligned:
+            // - Mitigation for `ShiftTimestampsSeconds` being slightly off beat. When producing a
+            //   slice of the song to play, `InfiniteRemix.cs`, if necessary, shifts the slice so
+            //   that it begins and ends on a beat. Consequently, the slices will be on beat even if
+            //   the Spotify analysis is aligned slightly off of the Beat Saber song's beat.
+            // - Mitigation for `ShiftTimestampsSeconds` being off by a second or two. Probably, for
+            //   the most part, a song gradually changes rather than undergoing sudden abrupt
+            //   changes. Sudden abrupt changes would probably feel bad to the listener.
+            //   Consequently, a song probably doesn't change very much in the span of 1 or 2
+            //   seconds. So if the Spotify analysis determines that beat X is similar to beat Y
+            //   (i.e. we can jump from X to Y without the listener noticing a seam), then this is
+            //   probably true enough even when the Spotify analysis is misaligned by 1 or 2
+            //   seconds.
+            //
+            // It would be good to try to test these hypotheses. Here are some potential tests:
+            // - Remove the beat alignment logic from `InfiniteRemix.cs` so that it can return
+            //   slices that start and end off beat. Update `ShiftTimestampsSeconds` to be
+            //   intentionally off beat. Play the song and see whether the jumps produce noticeable
+            //   seams.
+            // - Update `ShiftTimestampsSeconds` so that it's off by a significant amount (10
+            //   seconds? 20 seconds? 40 seconds?) Play the song and see whether the jumps produce
+            //   noticeable seams.
             public readonly double ShiftTimestampsSeconds;
 
             public SpotifyAnalysisInfo(string resourceName, double shiftTimestampsSeconds = 0)
