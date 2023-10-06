@@ -21,6 +21,7 @@ namespace InfiniteJukeboxAlgorithm.AugmentedTypes
 
     public class SpotifyAnalysis
     {
+        public TrackInfo Track { get; set; }
         public List<Quantum> Sections { get; set; }
         public List<Quantum> Bars { get; set; }
         public List<Quantum> Beats { get; set; }
@@ -37,6 +38,13 @@ namespace InfiniteJukeboxAlgorithm.AugmentedTypes
                     ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 });
         }
+    }
+
+    public class TrackInfo
+    {
+        public double Duration { get; set; }
+        public double Tempo { get; set; }
+        [JsonProperty("tempo_confidence")] public double TempoConfidence { get; set; }
     }
 
     public class Quantum

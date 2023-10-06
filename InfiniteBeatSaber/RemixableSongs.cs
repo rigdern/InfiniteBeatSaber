@@ -93,6 +93,13 @@ namespace InfiniteBeatSaber
                 "BurningSands.json", shiftTimestampsSeconds: -0.8) },
         };
 
+        // Although the level itself may be remixable, some of its beatmaps may not be. Use
+        // `IsDifficultyBeatmapRemixable` to check its beatmaps.
+        public static bool IsLevelRemixable(IPreviewBeatmapLevel level)
+        {
+            return _levelIdToSpotifyAnalysisInfo.ContainsKey(level.levelID);
+        }
+
         public static (bool, string) IsDifficultyBeatmapRemixable(IDifficultyBeatmap difficultyBeatmap)
         {
             var levelId = difficultyBeatmap.level.levelID;
