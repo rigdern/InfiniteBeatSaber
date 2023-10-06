@@ -52,7 +52,7 @@ namespace InfiniteBeatSaber
         {
             var spotifyAnalysisInfo = _levelIdToSpotifyAnalysisInfo[level.levelID];
             var spotifyAnalysis = JsonConvert.DeserializeObject<SpotifyAnalysis>(
-                Util.ReadEmbeddedResource($"SpotifyAnalyses.{spotifyAnalysisInfo.ResourceName}"));
+                Util.ReadEntryFromEmbeddedZipResource("SpotifyAnalyses.zip", spotifyAnalysisInfo.ResourceName));
             ShiftSpotifyAnalysis(spotifyAnalysis, spotifyAnalysisInfo.ShiftTimestampsSeconds);
             return spotifyAnalysis;
         }

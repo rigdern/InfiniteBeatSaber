@@ -192,8 +192,6 @@
   <ItemGroup>
     <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')" />
     <None Include="InfiniteBeatSaber.csproj.user" Condition="Exists('InfiniteBeatSaber.csproj.user')" />
-    <EmbeddedResource Include="SpotifyAnalyses\custom_level_8E7E553099436AF31564ADF1977A5EC42A61CFFF.json" />
-    <EmbeddedResource Include="SpotifyAnalyses\BeatSaber.json" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BeatSaberModdingTools.Tasks">
@@ -206,7 +204,22 @@
     <None Include="InfiniteJukeboxAlgorithm\LICENSE" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <SpotifyAnalysesZipPath>$(IntermediateOutputPath)SpotifyAnalyses.zip</SpotifyAnalysesZipPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <SpotifyAnalysisFiles Include="SpotifyAnalyses\*.json" />
+    <EmbeddedResource Include="$(SpotifyAnalysesZipPath)">
+      <LogicalName>InfiniteBeatSaber.SpotifyAnalyses.zip</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
   <Target Name="GenerateReleaseBuildConstants" BeforeTargets="PreBuildEvent" Condition="'$(Configuration)'=='Release'">
     <Exec Command="powershell.exe -ExecutionPolicy Bypass -File &quot;$(SolutionDir)build-tools\genBuildConstants.ps1&quot;" />
+  </Target>
+  <Target Name="ZipSpotifyAnalysisFiles" BeforeTargets="PreBuildEvent" Inputs="@(SpotifyAnalysisFiles)" Outputs="$(SpotifyAnalysesZipPath)">
+    <Exec Command="powershell.exe Compress-Archive -Path &quot;@(SpotifyAnalysisFiles->'%(Identity)', ',')&quot; -DestinationPath &quot;$(SpotifyAnalysesZipPath)&quot;" />
+  </Target>
+  <Target Name="Clean_ZipSpotifyAnalysisFiles" AfterTargets="Clean">
+    <Delete Files="$(SpotifyAnalysesZipPath)" />
   </Target>
 </Project>

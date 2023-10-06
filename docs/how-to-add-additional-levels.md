@@ -45,10 +45,7 @@ Here are the steps:
     - `InfiniteBeatSaberMenuUI.OnDidChangeDifficultyBeatmap: Gangnam Style by PSY, GreatYazer (ID: custom_level_8E7E553099436AF31564ADF1977A5EC42A61CFFF)`
 
     This tells us that the level ID of Gangnam Style is `custom_level_8E7E553099436AF31564ADF1977A5EC42A61CFFF`.
-1. Add your Spotify analysis file to the "SpotifyAnalyses" folder in Visual Studio.
-1. In Visual Studio's Solution Explorer, right-click on the Spotify analysis file you just added and select "Properties". Then:
-    - Set the "Build Action" to "Embedded Resources" so it gets included in the DLL.
-    - Ensure "Copy to Output Directory" is "Do not copy."
+1. Add your Spotify analysis file to the "SpotifyAnalyses" folder.
 1. Now you can try out your change by recompiling the mod and launching Beat Saber.
 
 ## Unsupported Beatmap Features

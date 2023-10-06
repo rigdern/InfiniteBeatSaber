@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.IO.Compression;
 using System.Reflection;
 
 namespace InfiniteBeatSaber
@@ -44,6 +45,28 @@ namespace InfiniteBeatSaber
             {
                 return reader.ReadToEnd();
             }
+        }
+
+        public static string ReadEntryFromEmbeddedZipResource(string resourceName, string entryName)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var fullResourceName = $"InfiniteBeatSaber.{resourceName}";
+
+            using (Stream stream = assembly.GetManifestResourceStream(fullResourceName))
+            using (var zip = new ZipArchive(stream, ZipArchiveMode.Read))
+            {
+                var entry = zip.GetEntry(entryName);
+                if (entry != null)
+                {
+                    using (var entryStream = entry.Open())
+                    using (var reader = new StreamReader(entryStream))
+                    {
+                        return reader.ReadToEnd();
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }
