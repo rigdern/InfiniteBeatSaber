@@ -59,12 +59,14 @@ namespace InfiniteBeatSaber
 
         private static void ShiftSpotifyAnalysis(SpotifyAnalysis spotifyAnalysis, double shiftTimestampsSeconds)
         {
-            void ShiftQuantums(IEnumerable<Quantum> quantums)
+            void ShiftQuantums<T>(List<T> quantums) where T : Quantum
             {
                 foreach (var quantum in quantums)
                 {
                     quantum.Start += shiftTimestampsSeconds;
                 }
+
+                quantums.RemoveAll(quantum => IsFloatLess(quantum.Start, 0));
             }
 
             if (!AreFloatsEqual(shiftTimestampsSeconds, 0))
