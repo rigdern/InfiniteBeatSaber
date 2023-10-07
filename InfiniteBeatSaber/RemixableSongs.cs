@@ -1,4 +1,4 @@
-﻿using InfiniteJukeboxAlgorithm.AugmentedTypes;
+using InfiniteJukeboxAlgorithm.AugmentedTypes;
 using Newtonsoft.Json;
 using Polyglot;
 using System.Collections.Generic;
@@ -91,6 +91,11 @@ namespace InfiniteBeatSaber
             { "BurningSands", new SpotifyAnalysisInfo(
                 // Initial bell(?) starts later in the Spotify (~2.5 secs) than Beat Saber song (~1.7 secs).
                 "BurningSands.json", shiftTimestampsSeconds: -0.8) },
+
+            // Original Soundtrack Vol. 4
+            //{ "IntoTheDream", new SpotifyAnalysisInfo("IntoTheDream.json") }, // Disabled due to currently unsupported beatmap item types:
+                                                                                // - CustomNoteData, gameplayType: BurstSliderHead
+                                                                                // - CustomSliderData
         };
 
         // Although the level itself may be remixable, some of its beatmaps may not be. Use
