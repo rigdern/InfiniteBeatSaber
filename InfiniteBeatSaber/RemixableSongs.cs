@@ -96,6 +96,9 @@ namespace InfiniteBeatSaber
             //{ "IntoTheDream", new SpotifyAnalysisInfo("IntoTheDream.json") }, // Disabled due to currently unsupported beatmap item types:
                                                                                 // - CustomNoteData, gameplayType: BurstSliderHead
                                                                                 // - CustomSliderData
+            { "ItTakesMe", new SpotifyAnalysisInfo(
+                // Initial vocals ("yea!") start earlier in the Spotify (~17.0 secs) than Beat Saber song (~19.1 secs)
+                "ItTakesMe.json", shiftTimestampsSeconds: 2.1) },
         };
 
         // Although the level itself may be remixable, some of its beatmaps may not be. Use
