@@ -115,6 +115,19 @@ namespace InfiniteBeatSaber
             { "SpinEternally", new SpotifyAnalysisInfo(
                 // Initial vocals ("spin") start earlier in the Spotify (~19.0 secs) than Beat Saber song (~21.3 secs).
                 "SpinEternally.json", shiftTimestampsSeconds: 2.3) },
+
+            //
+            // Original Soundtrack Vol. 5
+            //
+
+            // Disabled due to currently unsupported beatmap item types:
+            // - CustomNoteData, gameplayType: BurstSliderHead
+            // - CustomSliderData
+            // - LightColorBeatmapEventData
+            // - LightRotationBeatmapEventData
+            //{ "DollarSeventyEight", new SpotifyAnalysisInfo(
+            //    // Initial bass drop starts later in the Spotify (~8.3 secs) than Beat Saber song (~6.3 secs).
+            //    "DollarSeventyEight.json", shiftTimestampsSeconds: -2.0) },
         };
 
         // Although the level itself may be remixable, some of its beatmaps may not be. Use
