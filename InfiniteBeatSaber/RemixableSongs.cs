@@ -155,6 +155,17 @@ namespace InfiniteBeatSaber
             //{ "Firestarter", new SpotifyAnalysisInfo(
             //    // A bass drop starts earlier in the Spotify (~37.5 secs) than Beat Saber song (~38.2 secs).
             //    "Firestarter.json", shiftTimestampsSeconds: 0.7) },
+
+            // Disabled due to currently unsupported beatmap item types:
+            // - CustomNoteData, gameplayType: BurstSliderHead
+            // - CustomSliderData
+            // - LightColorBeatmapEventData
+            // - LightRotationBeatmapEventData
+            // - BPM changes (via multiple BPMChangeBeatmapEventData events in the song)
+            //{ "IWannaBeAMachine", new SpotifyAnalysisInfo(
+            //    // Initial drum of bass drop (around word "square") starts earlier in the Spotify
+            //    // (~29.8 secs) than Beat Saber song (~33.3 secs).
+            //    "IWannaBeAMachine.json", shiftTimestampsSeconds: 3.5) },
         };
 
         // Although the level itself may be remixable, some of its beatmaps may not be. Use
