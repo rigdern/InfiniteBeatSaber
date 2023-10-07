@@ -111,6 +111,10 @@ namespace InfiniteBeatSaber
             //{ "LudicrousPlus", new SpotifyAnalysisInfo(
             //    // Initial vocals ("one") start earlier in the Spotify (~0.9 secs) than Beat Saber song (~1.2 secs).
             //    "LudicrousPlus.json", shiftTimestampsSeconds: 0.3) }, 
+
+            { "SpinEternally", new SpotifyAnalysisInfo(
+                // Initial vocals ("spin") start earlier in the Spotify (~19.0 secs) than Beat Saber song (~21.3 secs).
+                "SpinEternally.json", shiftTimestampsSeconds: 2.3) },
         };
 
         // Although the level itself may be remixable, some of its beatmaps may not be. Use
