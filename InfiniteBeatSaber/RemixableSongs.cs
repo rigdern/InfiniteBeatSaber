@@ -128,6 +128,14 @@ namespace InfiniteBeatSaber
             //{ "DollarSeventyEight", new SpotifyAnalysisInfo(
             //    // Initial bass drop starts later in the Spotify (~8.3 secs) than Beat Saber song (~6.3 secs).
             //    "DollarSeventyEight.json", shiftTimestampsSeconds: -2.0) },
+
+            //// Disabled due to currently unsupported beatmap item types:
+            //// - CustomNoteData, gameplayType: BurstSliderHead
+            //// - CustomSliderData
+            //// - LightColorBeatmapEventData
+            //// - LightRotationBeatmapEventData
+            //{ "CurtainsAllNightLong", new SpotifyAnalysisInfo(
+            //    "CurtainsAllNightLong.json", shiftTimestampsSeconds: 3.0) },
         };
 
         // Although the level itself may be remixable, some of its beatmaps may not be. Use
