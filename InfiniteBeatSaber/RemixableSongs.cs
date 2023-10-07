@@ -92,13 +92,25 @@ namespace InfiniteBeatSaber
                 // Initial bell(?) starts later in the Spotify (~2.5 secs) than Beat Saber song (~1.7 secs).
                 "BurningSands.json", shiftTimestampsSeconds: -0.8) },
 
+            //
             // Original Soundtrack Vol. 4
-            //{ "IntoTheDream", new SpotifyAnalysisInfo("IntoTheDream.json") }, // Disabled due to currently unsupported beatmap item types:
+            //
+
+            // Disabled due to currently unsupported beatmap item types:
                                                                                 // - CustomNoteData, gameplayType: BurstSliderHead
                                                                                 // - CustomSliderData
+            //{ "IntoTheDream", new SpotifyAnalysisInfo("IntoTheDream.json") }, 
+                                                                                
             { "ItTakesMe", new SpotifyAnalysisInfo(
-                // Initial vocals ("yea!") start earlier in the Spotify (~17.0 secs) than Beat Saber song (~19.1 secs)
+                // Initial vocals ("yea!") start earlier in the Spotify (~17.0 secs) than Beat Saber song (~19.1 secs).
                 "ItTakesMe.json", shiftTimestampsSeconds: 2.1) },
+
+            // Disabled due to currently unsupported beatmap item types:
+            // - CustomNoteData, gameplayType: BurstSliderHead
+            // - CustomSliderData
+            //{ "LudicrousPlus", new SpotifyAnalysisInfo(
+            //    // Initial vocals ("one") start earlier in the Spotify (~0.9 secs) than Beat Saber song (~1.2 secs).
+            //    "LudicrousPlus.json", shiftTimestampsSeconds: 0.3) }, 
         };
 
         // Although the level itself may be remixable, some of its beatmaps may not be. Use
