@@ -135,7 +135,17 @@ namespace InfiniteBeatSaber
             //// - LightColorBeatmapEventData
             //// - LightRotationBeatmapEventData
             //{ "CurtainsAllNightLong", new SpotifyAnalysisInfo(
+            //    // Initial bass drop starts earlier in the Spotify (~45.1 secs) than Beat Saber song (~48.1 secs)
             //    "CurtainsAllNightLong.json", shiftTimestampsSeconds: 3.0) },
+
+            //// Disabled due to currently unsupported beatmap item types:
+            //// - CustomNoteData, gameplayType: BurstSliderHead
+            //// - CustomSliderData
+            //// - LightColorBeatmapEventData
+            //// - LightRotationBeatmapEventData
+            //{ "FinalBossChan", new SpotifyAnalysisInfo(
+            //    // Initial bass drop starts later in the Spotify (~2.9 secs) than Beat Saber song (~1.9 secs).
+            //    "FinalBossChan.json", shiftTimestampsSeconds: -1.0) },
         };
 
         // Although the level itself may be remixable, some of its beatmaps may not be. Use
