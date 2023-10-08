@@ -223,6 +223,9 @@ namespace InfiniteBeatSaber
                 { "FitBeat", new SpotifyAnalysisInfo(
                     // Initial female vocals at same timestamp in the Spotify & Beat Saber songs (~10.0).
                     "FitBeat.json") },
+                { "CrabRave", new SpotifyAnalysisInfo(
+                    // Start of horn-sounding section later in the Spotify (~15.4 secs) than Beat Saber song (~9.6 secs).
+                    "CrabRave.json", shiftTimestampsSeconds: -5.8) },
             };
         }
 
