@@ -214,6 +214,10 @@ namespace InfiniteBeatSaber
                 //{ "EscapeRemix", new SpotifyAnalysisInfo(
                 //    // Initial drum beat at same timestamp in the Spotify & Beat Saber songs (~3.0)
                 //    "EscapeRemix.json") },
+
+                { "SpookyBeat", new SpotifyAnalysisInfo(
+                    // Initial bell at same timestamp in the Spotify & Beat Saber songs (~2.2)
+                    "SpookyBeat.json") },
             };
         }
 
