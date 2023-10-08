@@ -266,6 +266,20 @@ namespace InfiniteBeatSaber
                 //{ "Ghost", new SpotifyAnalysisInfo(
                 //    // Initial drum later in the Spotify (~10.7 secs) than Beat Saber song (~4.4 secs).
                 //    "Ghost.json", shiftTimestampsSeconds: -6.3) },
+
+                // Disabled because aligning the Beat Saber & Spotify songs requires more
+                // investigation. I tried 3 reference points but they all had quite different shifts
+                // between the Beat Saber & Spotify songs:
+                // - Initial drum (shiftTimestampsSeconds: 1.6 secs)
+                //   - Spotify:    0:01.2
+                //   - Beat Saber: 0:02.8
+                // - Vocals (shiftTimestampsSeconds: 2.9 secs)
+                //   - Spotify:    4:01.2
+                //   - Beat Saber: 4:04.1
+                // - Final clap (shiftTimestampsSeconds: 3.7 secs)
+                //   - Spotify:    6:02.9
+                //   - Beat Saber: 6:06.6
+                //{ "LightItUp", new SpotifyAnalysisInfo("LightItUp.json") },
             };
         }
 
