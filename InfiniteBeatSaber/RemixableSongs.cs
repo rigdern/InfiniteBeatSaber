@@ -284,6 +284,13 @@ namespace InfiniteBeatSaber
                 { "Crystallized", new SpotifyAnalysisInfo(
                     // Initial piano(?) later in the Spotify (~8.9 secs) than Beat Saber song (~2.9 secs).
                     "Crystallized.json", shiftTimestampsSeconds: -6.0) },
+
+                // Disabled due to currently unsupported beatmap item types:
+                // - CustomNoteData, gameplayType: BurstSliderHead
+                // - CustomSliderData
+                //{ "CycleHit", new SpotifyAnalysisInfo(
+                //    // Initial instrument earlier in the Spotify (~0.4 secs) than Beat Saber song (~1.4 secs).
+                //    "CycleHit.json", shiftTimestampsSeconds: 1.0) },
             };
         }
 
