@@ -259,6 +259,13 @@ namespace InfiniteBeatSaber
                 { "ExitThisEarthsAtomosphere", new SpotifyAnalysisInfo(
                     // Initial frizzle sound later in the Spotify (~4.5 secs) than Beat Saber song (~4.0 secs).
                     "ExitThisEarthsAtomosphere.json", shiftTimestampsSeconds: -0.5) },
+
+                // Disabled due to currently unsupported beatmap item types:
+                // - CustomNoteData, gameplayType: BurstSliderHead
+                // - CustomSliderData
+                //{ "Ghost", new SpotifyAnalysisInfo(
+                //    // Initial drum later in the Spotify (~10.7 secs) than Beat Saber song (~4.4 secs).
+                //    "Ghost.json", shiftTimestampsSeconds: -6.3) },
             };
         }
 
