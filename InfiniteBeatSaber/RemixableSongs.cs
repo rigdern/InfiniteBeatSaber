@@ -1,4 +1,4 @@
-using InfiniteJukeboxAlgorithm.AugmentedTypes;
+﻿using InfiniteJukeboxAlgorithm.AugmentedTypes;
 using Newtonsoft.Json;
 using Polyglot;
 using System.Collections.Generic;
@@ -23,6 +23,7 @@ namespace InfiniteBeatSaber
                 // - Key: The Beat Saber level ID as given by `IPreviewBeatmapLevel.levelID`.
                 // - Value: See the field comments on the `SpotifyAnalysisInfo` class.
 
+                //
                 // Custom levels
                 //
 
@@ -41,7 +42,10 @@ namespace InfiniteBeatSaber
                 // - LightRotationBeatmapEventData
                 //{ "custom_level_0F3CD1E0CFC05FDB2FD59852A5F456E32F88BA9E", magic },
 
+                //
                 // Original Soundtrack Vol. 1
+                //
+
                 { "100Bills", new SpotifyAnalysisInfo(
                     // The Beat Saber song has a brief intro that isn't present in the Spotify song. The
                     // Beat Saber song is longer. Shift the Spotify analysis timestamps by the
@@ -75,7 +79,10 @@ namespace InfiniteBeatSaber
                     // difference in duration between the Beat Saber and Spotify songs.
                     "TurnMeOn.json", shiftTimestampsSeconds: 3) },
 
+                //
                 // Original Soundtrack Vol. 2
+                //
+
                 { "BeThereForYou", new SpotifyAnalysisInfo(
                     // Initial singing starts earlier in the Spotify (~1.6 secs) than Beat Saber song (~3.4 secs).
                     "BeThereForYou.json", shiftTimestampsSeconds: 1.8) },
@@ -92,7 +99,10 @@ namespace InfiniteBeatSaber
                     // Base drop after "we're playing" vocals starts earlier in the Spotify (~21.8 secs) than Beat Saber song (~23.0 secs).
                     "UnlimitedPower.json", shiftTimestampsSeconds: 1.2) },
 
+                //
                 // Original Soundtrack Vol. 3
+                //
+
                 { "Origins", new SpotifyAnalysisInfo(
                     // Initial vocals start earlier in the Spotify (~13.5 secs) than Beat Saber song (~13.6 secs).
                     "Origins.json", shiftTimestampsSeconds: 0.1) },
