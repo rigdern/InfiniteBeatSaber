@@ -336,6 +336,7 @@ namespace InfiniteBeatSaber
             var spotifyAnalysis = JsonConvert.DeserializeObject<SpotifyAnalysis>(
                 Util.ReadEntryFromEmbeddedZipResource("SpotifyAnalyses.zip", spotifyAnalysisInfo.ResourceName));
             ShiftSpotifyAnalysis(spotifyAnalysis, spotifyAnalysisInfo.ShiftTimestampsSeconds);
+            TrimEndOfSpotifyAnalysis(spotifyAnalysis, level);
             return spotifyAnalysis;
         }
 
@@ -359,6 +360,20 @@ namespace InfiniteBeatSaber
                 ShiftQuantums(spotifyAnalysis.Tatums);
                 ShiftQuantums(spotifyAnalysis.Segments);
             }
+        }
+
+        private static void TrimEndOfSpotifyAnalysis(SpotifyAnalysis spotifyAnalysis, IPreviewBeatmapLevel level)
+        {
+            void TrimEndOfQuantums<T>(List<T> quantums) where T : Quantum
+            {
+                quantums.RemoveAll(quantum => IsFloatGreater(quantum.Start, level.songDuration));
+            }
+
+            TrimEndOfQuantums(spotifyAnalysis.Sections);
+            TrimEndOfQuantums(spotifyAnalysis.Bars);
+            TrimEndOfQuantums(spotifyAnalysis.Beats);
+            TrimEndOfQuantums(spotifyAnalysis.Tatums);
+            TrimEndOfQuantums(spotifyAnalysis.Segments);
         }
 
         private class SpotifyAnalysisInfo
