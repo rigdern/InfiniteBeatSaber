@@ -28,8 +28,9 @@ namespace InfiniteBeatSaber
                 //
 
                 // Gangnam Style by PSY. Mapped by GreatYazer. https://bsaber.com/songs/141/
-                { "custom_level_8E7E553099436AF31564ADF1977A5EC42A61CFFF",
-                    new SpotifyAnalysisInfo("custom_level_8E7E553099436AF31564ADF1977A5EC42A61CFFF.json") },
+                { "custom_level_8E7E553099436AF31564ADF1977A5EC42A61CFFF", new SpotifyAnalysisInfo(
+                    // Initial vocals ("oh") later in the Spotify (~6.3 secs) than Beat Saber song (~5.9 secs).
+                    "custom_level_8E7E553099436AF31564ADF1977A5EC42A61CFFF.json", shiftTimestampsSeconds: -0.4) },
             
                 // Beat Saber by Jaroslav Beck.
                 { "custom_level_B68BF61AC6BE0E128BE32A85810D42E7C53F4756", beatSaber },
