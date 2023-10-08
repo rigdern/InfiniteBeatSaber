@@ -291,6 +291,10 @@ namespace InfiniteBeatSaber
                 //{ "CycleHit", new SpotifyAnalysisInfo(
                 //    // Initial instrument earlier in the Spotify (~0.4 secs) than Beat Saber song (~1.4 secs).
                 //    "CycleHit.json", shiftTimestampsSeconds: 1.0) },
+
+                { "WhatTheCat", new SpotifyAnalysisInfo(
+                    // Initial "psh" drum earlier in the Spotify (~8.2 secs) than Beat Saber song (~9.6 secs).
+                    "WhatTheCat.json", shiftTimestampsSeconds: 1.4) },
             };
         }
 
