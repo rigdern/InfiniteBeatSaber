@@ -226,6 +226,9 @@ namespace InfiniteBeatSaber
                 { "CrabRave", new SpotifyAnalysisInfo(
                     // Start of horn-sounding section later in the Spotify (~15.4 secs) than Beat Saber song (~9.6 secs).
                     "CrabRave.json", shiftTimestampsSeconds: -5.8) },
+                { "PopStars", new SpotifyAnalysisInfo(
+                    // Initial vocals earlier in the Spotify (~0.7 secs) than Beat Saber song (~1.8 secs).
+                    "PopStars.json", shiftTimestampsSeconds: 1.1) },
             };
         }
 
