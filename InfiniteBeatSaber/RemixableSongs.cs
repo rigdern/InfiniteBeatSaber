@@ -280,6 +280,10 @@ namespace InfiniteBeatSaber
                 //   - Spotify:    6:02.9
                 //   - Beat Saber: 6:06.6
                 //{ "LightItUp", new SpotifyAnalysisInfo("LightItUp.json") },
+
+                { "Crystallized", new SpotifyAnalysisInfo(
+                    // Initial piano(?) later in the Spotify (~8.9 secs) than Beat Saber song (~2.9 secs).
+                    "Crystallized.json", shiftTimestampsSeconds: -6.0) },
             };
         }
 
