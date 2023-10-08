@@ -236,6 +236,11 @@ namespace InfiniteBeatSaber
                 // - But at 2:30 Spotify has a horn solo & Beat Saber has singing.
                 // - So the Spotify & Beat Saber songs might be too different to use Spotify's audio analysis data.
                 //{ "OneHope", new SpotifyAnalysisInfo("OneHope.json") },
+
+                { "AngelVoices", new SpotifyAnalysisInfo(
+                    // Initial beat later in the Spotify (~2.5 secs) than Beat Saber song (~0.0 secs).
+                    // Spotify outro is longer by ~18 secs.
+                    "AngelVoices.json", shiftTimestampsSeconds: -2.5) },
             };
         }
 
