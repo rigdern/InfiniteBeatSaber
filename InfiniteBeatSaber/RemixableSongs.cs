@@ -229,6 +229,13 @@ namespace InfiniteBeatSaber
                 { "PopStars", new SpotifyAnalysisInfo(
                     // Initial vocals earlier in the Spotify (~0.7 secs) than Beat Saber song (~1.8 secs).
                     "PopStars.json", shiftTimestampsSeconds: 1.1) },
+
+                // Disabled because the Beat Saber & Spotify songs are too different:
+                // - The Spotify song (4:01) is significantly longer than the Beat Saber song (2:52) so there will be differences.
+                // - Introduction of 2nd instrument at same timestamp in the Spotify & Beat Saber songs (~3.3).
+                // - But at 2:30 Spotify has a horn solo & Beat Saber has singing.
+                // - So the Spotify & Beat Saber songs might be too different to use Spotify's audio analysis data.
+                //{ "OneHope", new SpotifyAnalysisInfo("OneHope.json") },
             };
         }
 
