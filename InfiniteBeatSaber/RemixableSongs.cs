@@ -1,4 +1,4 @@
-﻿using InfiniteJukeboxAlgorithm.AugmentedTypes;
+using InfiniteJukeboxAlgorithm.AugmentedTypes;
 using Newtonsoft.Json;
 using Polyglot;
 using System.Collections.Generic;
@@ -251,6 +251,14 @@ namespace InfiniteBeatSaber
                     // Initial beat later in the Spotify (~2.5 secs) than Beat Saber song (~0.0 secs).
                     // Spotify outro is longer by ~18 secs.
                     "AngelVoices.json", shiftTimestampsSeconds: -2.5) },
+                
+                //
+                // Camellia Music Pack
+                //
+
+                { "ExitThisEarthsAtomosphere", new SpotifyAnalysisInfo(
+                    // Initial frizzle sound later in the Spotify (~4.5 secs) than Beat Saber song (~4.0 secs).
+                    "ExitThisEarthsAtomosphere.json", shiftTimestampsSeconds: -0.5) },
             };
         }
 
