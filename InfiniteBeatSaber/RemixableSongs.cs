@@ -1,4 +1,4 @@
-﻿using InfiniteJukeboxAlgorithm.AugmentedTypes;
+using InfiniteJukeboxAlgorithm.AugmentedTypes;
 using Newtonsoft.Json;
 using Polyglot;
 using System.Collections.Generic;
@@ -12,6 +12,7 @@ namespace InfiniteBeatSaber
 
         static RemixableSongs()
         {
+            var beatSaber = new SpotifyAnalysisInfo("BeatSaber.json");
             var magic = new SpotifyAnalysisInfo(
                 // A bass drop (around word "go") earlier in the Spotify (~46.2 secs) than Beat Saber song (~48.5 secs).
                 "Magic.json", shiftTimestampsSeconds: 2.3);
@@ -30,7 +31,7 @@ namespace InfiniteBeatSaber
                     new SpotifyAnalysisInfo("custom_level_8E7E553099436AF31564ADF1977A5EC42A61CFFF.json") },
             
                 // Beat Saber by Jaroslav Beck.
-                { "custom_level_B68BF61AC6BE0E128BE32A85810D42E7C53F4756", new SpotifyAnalysisInfo("BeatSaber.json") },
+                { "custom_level_B68BF61AC6BE0E128BE32A85810D42E7C53F4756", beatSaber },
 
                 // Magic ft. Meredith Bull by Jaroslav Beck. Mapped by Freeek.
                 // Disabled due to currently unsupported beatmap item types:
@@ -47,7 +48,7 @@ namespace InfiniteBeatSaber
                     // difference in duration between the Beat Saber and Spotify songs.
                     "100Bills.json", shiftTimestampsSeconds: 2.252919175) },
                 { "BalearicPumping", new SpotifyAnalysisInfo("BalearicPumping.json") },
-                { "BeatSaber", new SpotifyAnalysisInfo("BeatSaber.json") },
+                { "BeatSaber", beatSaber },
                 { "Breezer", new SpotifyAnalysisInfo("Breezer.json") },
                 { "CommercialPumping", new SpotifyAnalysisInfo(
                     // Initial "crash" sound seems to come slightly later in the Spotify (~3.5 secs)
