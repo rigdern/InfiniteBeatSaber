@@ -205,6 +205,15 @@ namespace InfiniteBeatSaber
                 // - LightRotationBeatmapEventData
                 //{ "100BillsRemix", new SpotifyAnalysisInfo(
                 //    "100BillsRemix.json", shiftTimestampsSeconds: 0.1) },
+
+                // Disabled due to currently unsupported beatmap item types:
+                // - CustomNoteData, gameplayType: BurstSliderHead
+                // - CustomSliderData
+                // - LightColorBeatmapEventData
+                // - LightRotationBeatmapEventData
+                //{ "EscapeRemix", new SpotifyAnalysisInfo(
+                //    // Initial drum beat at same timestamp in the Spotify & Beat Saber songs (~3.0)
+                //    "EscapeRemix.json") },
             };
         }
 
