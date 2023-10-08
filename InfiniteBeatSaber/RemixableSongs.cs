@@ -204,6 +204,7 @@ namespace InfiniteBeatSaber
                 // - LightColorBeatmapEventData
                 // - LightRotationBeatmapEventData
                 //{ "100BillsRemix", new SpotifyAnalysisInfo(
+                //    // Initial drum beat earlier in the Spotify (~4.4 secs) than Beat Saber song (~4.5 secs).
                 //    "100BillsRemix.json", shiftTimestampsSeconds: 0.1) },
 
                 // Disabled due to currently unsupported beatmap item types:
@@ -212,12 +213,16 @@ namespace InfiniteBeatSaber
                 // - LightColorBeatmapEventData
                 // - LightRotationBeatmapEventData
                 //{ "EscapeRemix", new SpotifyAnalysisInfo(
-                //    // Initial drum beat at same timestamp in the Spotify & Beat Saber songs (~3.0)
+                //    // Initial drum beat at same timestamp in the Spotify & Beat Saber songs (~3.0).
                 //    "EscapeRemix.json") },
 
                 { "SpookyBeat", new SpotifyAnalysisInfo(
-                    // Initial bell at same timestamp in the Spotify & Beat Saber songs (~2.2)
+                    // Initial bell at same timestamp in the Spotify & Beat Saber songs (~2.2).
                     "SpookyBeat.json") },
+
+                { "FitBeat", new SpotifyAnalysisInfo(
+                    // Initial female vocals at same timestamp in the Spotify & Beat Saber songs (~10.0).
+                    "FitBeat.json") },
             };
         }
 
