@@ -193,6 +193,18 @@ namespace InfiniteBeatSaber
                 // - LightColorBeatmapEventData
                 // - LightRotationBeatmapEventData
                 //{ "Magic", magic },
+
+                //
+                // Extras
+                //
+
+                // Disabled due to currently unsupported beatmap item types:
+                // - CustomNoteData, gameplayType: BurstSliderHead
+                // - CustomSliderData
+                // - LightColorBeatmapEventData
+                // - LightRotationBeatmapEventData
+                //{ "100BillsRemix", new SpotifyAnalysisInfo(
+                //    "100BillsRemix.json", shiftTimestampsSeconds: 0.1) },
             };
         }
 
