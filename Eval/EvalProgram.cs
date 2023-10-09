@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -571,17 +571,18 @@ namespace InfiniteBeatSaber.DebugTools
             {
                 if (noteData.gameplayType == NoteData.GameplayType.Bomb)
                 {
-                    return $"{item.time.ToString() + ":",-10} {noteData.GetType().Name}(gameplayType: {noteData.gameplayType}, lineIndex: {noteData.lineIndex}, noteLineLayer: {noteData.noteLineLayer})\n";
+                    return $"{item.time.ToString() + ":",-10} {noteData.GetType().Name}(gameplayType: {noteData.gameplayType}, lineIndex: {noteData.lineIndex}, lineLayer: {noteData.noteLineLayer})\n";
                 }
                 else
                 {
                     return
-                        $"{item.time.ToString() + ":",-10} {noteData.GetType().Name}(gameplayType: {noteData.gameplayType})\n" +
-                        $"  lineIndex: {noteData.lineIndex}\n" +
-                        $"  noteLineLayer: {noteData.noteLineLayer}\n" +
-                        $"  colorType: {noteData.colorType}\n" +
-                        $"  cutDirection: {noteData.cutDirection}\n" +
+                        $"{item.time.ToString() + ":",-10} {noteData.GetType().Name}(gameplayType: {noteData.gameplayType}, color: {noteData.colorType}, lineIndex: {noteData.lineIndex}, lineLayer: {noteData.noteLineLayer}, cutDir: {noteData.cutDirection})\n" +
+                        $"  scoringType: {noteData.scoringType}\n" +
+                        $"  beforeJumpNoteLineLayer: {noteData.beforeJumpNoteLineLayer}\n" +
+                        $"  flipLineIndex: {noteData.flipLineIndex}\n" +
+                        $"  flipYSide: {noteData.flipYSide}\n" +
                         $"  cutDirectionAngleOffset: {noteData.cutDirectionAngleOffset}\n" +
+                        $"  cutSfxVolumeMultiplier: {noteData.cutSfxVolumeMultiplier}\n" +
                         "";
                 }
             }
@@ -612,6 +613,20 @@ namespace InfiniteBeatSaber.DebugTools
             else if (item is LightRotationBeatmapEventData lightRotEvent)
             {
                 return $"{item.time.ToString() + ":",-10} {item.GetType().Name}(group: {lightRotEvent.groupId}, el: {lightRotEvent.elementId}, ease: {lightRotEvent.easeType}, axis: {lightRotEvent.axis}, loopCount: {lightRotEvent.loopCount}, rotation: {lightRotEvent.rotation}, dir: {lightRotEvent.rotationDirection})\n";
+            }
+            else if (item is SliderData sliderData)
+            {
+                var headDesc =
+                    !sliderData.hasHeadNote ? "(not set)" :
+                    $"(lineIndex: {sliderData.headLineIndex}, lineLayer: {sliderData.headLineLayer}, beforeJumpLineLayer: {sliderData.headBeforeJumpLineLayer}, ctrlPtLngthMultiplier: {sliderData.headControlPointLengthMultiplier}, cutDir: {sliderData.headCutDirection}, cutDirAngleOffset: {sliderData.headCutDirectionAngleOffset})";
+                var tailDesc =
+                    !sliderData.hasTailNote ? "(not set)" :
+                    $"(lineIndex: {sliderData.tailLineIndex}, lineLayer: {sliderData.tailLineLayer}, beforeJumpLineLayer: {sliderData.tailBeforeJumpLineLayer}, ctrlPtLngthMultiplier: {sliderData.tailControlPointLengthMultiplier}, cutDir: {sliderData.tailCutDirection}, cutDirAngleOffset: {sliderData.tailCutDirectionAngleOffset})";
+                return $"{item.time.ToString() + ":",-10} {item.GetType().Name}(type: {sliderData.sliderType}, color: {sliderData.colorType}, midAnchorMode: {sliderData.midAnchorMode}, sliceCount: {sliderData.sliceCount}, squishAmount: {sliderData.sliceCount})\n" +
+                    $"  {sliderData.time}: Head{headDesc}\n" +
+                    $"  {sliderData.tailTime}: Tail{tailDesc}\n" +
+                    $"  {sliderData.tailTime - sliderData.time} (duration)\n" +
+                    "";
             }
             else
             {
