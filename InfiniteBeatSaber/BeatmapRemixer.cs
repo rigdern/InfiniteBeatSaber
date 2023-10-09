@@ -56,7 +56,9 @@ namespace InfiniteBeatSaber
             {
                 if (item is BPMChangeBeatmapEventData ||
                     item is BasicBeatmapEventData ||
-                    item is ColorBoostBeatmapEventData)
+                    item is ColorBoostBeatmapEventData ||
+                    item is LightColorBeatmapEventData ||
+                    item is LightRotationBeatmapEventData)
                 {
                     keptBeatmapDataItems.AddLast(item);
                 }

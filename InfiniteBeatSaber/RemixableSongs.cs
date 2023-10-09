@@ -39,8 +39,6 @@ namespace InfiniteBeatSaber
                 // Disabled due to currently unsupported beatmap item types:
                 // - CustomNoteData, gameplayType: BurstSliderHead
                 // - CustomSliderData
-                // - LightColorBeatmapEventData
-                // - LightRotationBeatmapEventData
                 //{ "custom_level_0F3CD1E0CFC05FDB2FD59852A5F456E32F88BA9E", magic },
 
                 //
@@ -154,8 +152,6 @@ namespace InfiniteBeatSaber
                 // Disabled due to currently unsupported beatmap item types:
                 // - CustomNoteData, gameplayType: BurstSliderHead
                 // - CustomSliderData
-                // - LightColorBeatmapEventData
-                // - LightRotationBeatmapEventData
                 //{ "DollarSeventyEight", new SpotifyAnalysisInfo(
                 //    // Initial bass drop starts later in the Spotify (~8.3 secs) than Beat Saber song (~6.3 secs).
                 //    "DollarSeventyEight.json", shiftTimestampsSeconds: -2.0) },
@@ -163,8 +159,6 @@ namespace InfiniteBeatSaber
                 // Disabled due to currently unsupported beatmap item types:
                 // - CustomNoteData, gameplayType: BurstSliderHead
                 // - CustomSliderData
-                // - LightColorBeatmapEventData
-                // - LightRotationBeatmapEventData
                 //{ "CurtainsAllNightLong", new SpotifyAnalysisInfo(
                 //    // Initial bass drop starts earlier in the Spotify (~45.1 secs) than Beat Saber song (~48.1 secs)
                 //    "CurtainsAllNightLong.json", shiftTimestampsSeconds: 3.0) },
@@ -172,8 +166,6 @@ namespace InfiniteBeatSaber
                 // Disabled due to currently unsupported beatmap item types:
                 // - CustomNoteData, gameplayType: BurstSliderHead
                 // - CustomSliderData
-                // - LightColorBeatmapEventData
-                // - LightRotationBeatmapEventData
                 //{ "FinalBossChan", new SpotifyAnalysisInfo(
                 //    // Initial bass drop starts later in the Spotify (~2.9 secs) than Beat Saber song (~1.9 secs).
                 //    "FinalBossChan.json", shiftTimestampsSeconds: -1.0) },
@@ -181,8 +173,6 @@ namespace InfiniteBeatSaber
                 // Disabled due to currently unsupported beatmap item types:
                 // - CustomNoteData, gameplayType: BurstSliderHead
                 // - CustomSliderData
-                // - LightColorBeatmapEventData
-                // - LightRotationBeatmapEventData
                 //{ "Firestarter", new SpotifyAnalysisInfo(
                 //    // A bass drop starts earlier in the Spotify (~37.5 secs) than Beat Saber song (~38.2 secs).
                 //    "Firestarter.json", shiftTimestampsSeconds: 0.7) },
@@ -190,8 +180,6 @@ namespace InfiniteBeatSaber
                 // Disabled due to currently unsupported beatmap item types:
                 // - CustomNoteData, gameplayType: BurstSliderHead
                 // - CustomSliderData
-                // - LightColorBeatmapEventData
-                // - LightRotationBeatmapEventData
                 // - BPM changes (via multiple BPMChangeBeatmapEventData events in the song)
                 //{ "IWannaBeAMachine", new SpotifyAnalysisInfo(
                 //    // Initial drum of bass drop (around word "square") starts earlier in the Spotify
@@ -201,8 +189,6 @@ namespace InfiniteBeatSaber
                 // Disabled due to currently unsupported beatmap item types:
                 // - CustomNoteData, gameplayType: BurstSliderHead
                 // - CustomSliderData
-                // - LightColorBeatmapEventData
-                // - LightRotationBeatmapEventData
                 //{ "Magic", magic },
 
                 //
@@ -212,8 +198,6 @@ namespace InfiniteBeatSaber
                 // Disabled due to currently unsupported beatmap item types:
                 // - CustomNoteData, gameplayType: BurstSliderHead
                 // - CustomSliderData
-                // - LightColorBeatmapEventData
-                // - LightRotationBeatmapEventData
                 //{ "100BillsRemix", new SpotifyAnalysisInfo(
                 //    // Initial drum beat earlier in the Spotify (~4.4 secs) than Beat Saber song (~4.5 secs).
                 //    "100BillsRemix.json", shiftTimestampsSeconds: 0.1) },
@@ -221,8 +205,6 @@ namespace InfiniteBeatSaber
                 // Disabled due to currently unsupported beatmap item types:
                 // - CustomNoteData, gameplayType: BurstSliderHead
                 // - CustomSliderData
-                // - LightColorBeatmapEventData
-                // - LightRotationBeatmapEventData
                 //{ "EscapeRemix", new SpotifyAnalysisInfo(
                 //    // Initial drum beat at same timestamp in the Spotify & Beat Saber songs (~3.0).
                 //    "EscapeRemix.json") },
