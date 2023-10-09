@@ -58,14 +58,16 @@ namespace InfiniteBeatSaber
                     item is BasicBeatmapEventData ||
                     item is ColorBoostBeatmapEventData ||
                     item is LightColorBeatmapEventData ||
-                    item is LightRotationBeatmapEventData)
+                    item is LightRotationBeatmapEventData ||
+                    item is SliderData)
                 {
                     keptBeatmapDataItems.AddLast(item);
                 }
                 else if (item is NoteData noteData)
                 {
                     if (noteData.gameplayType == NoteData.GameplayType.Normal ||
-                        noteData.gameplayType == NoteData.GameplayType.Bomb)
+                        noteData.gameplayType == NoteData.GameplayType.Bomb ||
+                        noteData.gameplayType == NoteData.GameplayType.BurstSliderHead)
                     {
                         keptBeatmapDataItems.AddLast(item);
                     }
@@ -100,6 +102,12 @@ namespace InfiniteBeatSaber
             fieldInfo.SetValue(item, time);
         }
 
+        private static void SetTailTime(SliderData sliderData, float time)
+        {
+            var fieldInfo = typeof(SliderData).GetField("<tailTime>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic);
+            fieldInfo.SetValue(sliderData, time);
+        }
+
         private static void SetDuration(ObstacleData obstacleData, float duration)
         {
             var fieldInfo = typeof(ObstacleData).GetField("<duration>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -122,13 +130,40 @@ namespace InfiniteBeatSaber
             return _sortedBeatmapDataItems
                 .SkipWhile(item => IsFloatGreater(start, item.time))
                 .TakeWhile(item => IsFloatGreater(end, item.time))
+                .Where(item =>
+                {
+                    if (item is SliderData sliderData)
+                    {
+                        // TODO: Whenever we omit a `SliderData` that represents a *chain* (i.e. its
+                        //   `sliderType` is `Burst`) then we should also omit the item representing
+                        //   the head of the *chain* (the head of the *chain* is a `NoteData` with
+                        //   `type: BurstSliderHead`).
+                        //
+                        //   For now, we leave the head of the *chain* alone because it results in
+                        //   the simplest implementation. Leaving it in doesn't result in any
+                        //   undesirable side effects in the game.
+
+                        return IsFloatGreater(end, sliderData.tailTime);
+                    }
+
+                    return true;
+                })
                 .Select(item =>
                 {
+                    var result = item.GetCopy();
+
                     var origTime = item.time;
                     var newTime = origTime - start + clock;
                     //var delta = Math.Abs(origTime - newTime);
-                    var result = item.GetCopy();
                     SetTime(result, (float)newTime);
+
+                    if (item is SliderData sliderData)
+                    {
+                        var origTailTime = sliderData.tailTime;
+                        var newTailTime = origTailTime - start + clock;
+                        SetTailTime((SliderData)result, (float)newTailTime);
+                    }
+
                     return result;
                 });
         }

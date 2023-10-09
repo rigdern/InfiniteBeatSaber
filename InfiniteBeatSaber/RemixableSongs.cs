@@ -36,10 +36,7 @@ namespace InfiniteBeatSaber
                 { "custom_level_B68BF61AC6BE0E128BE32A85810D42E7C53F4756", beatSaber },
 
                 // Magic ft. Meredith Bull by Jaroslav Beck. Mapped by Freeek.
-                // Disabled due to currently unsupported beatmap item types:
-                // - CustomNoteData, gameplayType: BurstSliderHead
-                // - CustomSliderData
-                //{ "custom_level_0F3CD1E0CFC05FDB2FD59852A5F456E32F88BA9E", magic },
+                { "custom_level_0F3CD1E0CFC05FDB2FD59852A5F456E32F88BA9E", magic },
 
                 //
                 // Original Soundtrack Vol. 1
@@ -125,21 +122,15 @@ namespace InfiniteBeatSaber
                 // Original Soundtrack Vol. 4
                 //
 
-                // Disabled due to currently unsupported beatmap item types:
-                // - CustomNoteData, gameplayType: BurstSliderHead
-                // - CustomSliderData
-                //{ "IntoTheDream", new SpotifyAnalysisInfo("IntoTheDream.json") }, 
+                { "IntoTheDream", new SpotifyAnalysisInfo("IntoTheDream.json") },
                                                                                 
                 { "ItTakesMe", new SpotifyAnalysisInfo(
                     // Initial vocals ("yea!") start earlier in the Spotify (~17.0 secs) than Beat Saber song (~19.1 secs).
                     "ItTakesMe.json", shiftTimestampsSeconds: 2.1) },
 
-                // Disabled due to currently unsupported beatmap item types:
-                // - CustomNoteData, gameplayType: BurstSliderHead
-                // - CustomSliderData
-                //{ "LudicrousPlus", new SpotifyAnalysisInfo(
-                //    // Initial vocals ("one") start earlier in the Spotify (~0.9 secs) than Beat Saber song (~1.2 secs).
-                //    "LudicrousPlus.json", shiftTimestampsSeconds: 0.3) }, 
+                { "LudicrousPlus", new SpotifyAnalysisInfo(
+                    // Initial vocals ("one") start earlier in the Spotify (~0.9 secs) than Beat Saber song (~1.2 secs).
+                    "LudicrousPlus.json", shiftTimestampsSeconds: 0.3) },
 
                 { "SpinEternally", new SpotifyAnalysisInfo(
                     // Initial vocals ("spin") start earlier in the Spotify (~19.0 secs) than Beat Saber song (~21.3 secs).
@@ -149,65 +140,42 @@ namespace InfiniteBeatSaber
                 // Original Soundtrack Vol. 5
                 //
 
-                // Disabled due to currently unsupported beatmap item types:
-                // - CustomNoteData, gameplayType: BurstSliderHead
-                // - CustomSliderData
-                //{ "DollarSeventyEight", new SpotifyAnalysisInfo(
-                //    // Initial bass drop starts later in the Spotify (~8.3 secs) than Beat Saber song (~6.3 secs).
-                //    "DollarSeventyEight.json", shiftTimestampsSeconds: -2.0) },
+                { "DollarSeventyEight", new SpotifyAnalysisInfo(
+                    // Initial bass drop starts later in the Spotify (~8.3 secs) than Beat Saber song (~6.3 secs).
+                    "DollarSeventyEight.json", shiftTimestampsSeconds: -2.0) },
+
+                { "CurtainsAllNightLong", new SpotifyAnalysisInfo(
+                    // Initial bass drop starts earlier in the Spotify (~45.1 secs) than Beat Saber song (~48.1 secs)
+                    "CurtainsAllNightLong.json", shiftTimestampsSeconds: 3.0) },
+
+                { "FinalBossChan", new SpotifyAnalysisInfo(
+                    // Initial bass drop starts later in the Spotify (~2.9 secs) than Beat Saber song (~1.9 secs).
+                    "FinalBossChan.json", shiftTimestampsSeconds: -1.0) },
+
+                { "Firestarter", new SpotifyAnalysisInfo(
+                    // A bass drop starts earlier in the Spotify (~37.5 secs) than Beat Saber song (~38.2 secs).
+                    "Firestarter.json", shiftTimestampsSeconds: 0.7) },
 
                 // Disabled due to currently unsupported beatmap item types:
-                // - CustomNoteData, gameplayType: BurstSliderHead
-                // - CustomSliderData
-                //{ "CurtainsAllNightLong", new SpotifyAnalysisInfo(
-                //    // Initial bass drop starts earlier in the Spotify (~45.1 secs) than Beat Saber song (~48.1 secs)
-                //    "CurtainsAllNightLong.json", shiftTimestampsSeconds: 3.0) },
-
-                // Disabled due to currently unsupported beatmap item types:
-                // - CustomNoteData, gameplayType: BurstSliderHead
-                // - CustomSliderData
-                //{ "FinalBossChan", new SpotifyAnalysisInfo(
-                //    // Initial bass drop starts later in the Spotify (~2.9 secs) than Beat Saber song (~1.9 secs).
-                //    "FinalBossChan.json", shiftTimestampsSeconds: -1.0) },
-
-                // Disabled due to currently unsupported beatmap item types:
-                // - CustomNoteData, gameplayType: BurstSliderHead
-                // - CustomSliderData
-                //{ "Firestarter", new SpotifyAnalysisInfo(
-                //    // A bass drop starts earlier in the Spotify (~37.5 secs) than Beat Saber song (~38.2 secs).
-                //    "Firestarter.json", shiftTimestampsSeconds: 0.7) },
-
-                // Disabled due to currently unsupported beatmap item types:
-                // - CustomNoteData, gameplayType: BurstSliderHead
-                // - CustomSliderData
                 // - BPM changes (via multiple BPMChangeBeatmapEventData events in the song)
                 //{ "IWannaBeAMachine", new SpotifyAnalysisInfo(
                 //    // Initial drum of bass drop (around word "square") starts earlier in the Spotify
                 //    // (~29.8 secs) than Beat Saber song (~33.3 secs).
                 //    "IWannaBeAMachine.json", shiftTimestampsSeconds: 3.5) },
 
-                // Disabled due to currently unsupported beatmap item types:
-                // - CustomNoteData, gameplayType: BurstSliderHead
-                // - CustomSliderData
-                //{ "Magic", magic },
+                { "Magic", magic },
 
                 //
                 // Extras
                 //
 
-                // Disabled due to currently unsupported beatmap item types:
-                // - CustomNoteData, gameplayType: BurstSliderHead
-                // - CustomSliderData
-                //{ "100BillsRemix", new SpotifyAnalysisInfo(
-                //    // Initial drum beat earlier in the Spotify (~4.4 secs) than Beat Saber song (~4.5 secs).
-                //    "100BillsRemix.json", shiftTimestampsSeconds: 0.1) },
+                { "100BillsRemix", new SpotifyAnalysisInfo(
+                    // Initial drum beat earlier in the Spotify (~4.4 secs) than Beat Saber song (~4.5 secs).
+                    "100BillsRemix.json", shiftTimestampsSeconds: 0.1) },
 
-                // Disabled due to currently unsupported beatmap item types:
-                // - CustomNoteData, gameplayType: BurstSliderHead
-                // - CustomSliderData
-                //{ "EscapeRemix", new SpotifyAnalysisInfo(
-                //    // Initial drum beat at same timestamp in the Spotify & Beat Saber songs (~3.0).
-                //    "EscapeRemix.json") },
+                { "EscapeRemix", new SpotifyAnalysisInfo(
+                    // Initial drum beat at same timestamp in the Spotify & Beat Saber songs (~3.0).
+                    "EscapeRemix.json") },
 
                 { "SpookyBeat", new SpotifyAnalysisInfo(
                     // Initial bell at same timestamp in the Spotify & Beat Saber songs (~2.2).
@@ -243,12 +211,9 @@ namespace InfiniteBeatSaber
                     // Initial frizzle sound later in the Spotify (~4.5 secs) than Beat Saber song (~4.0 secs).
                     "ExitThisEarthsAtomosphere.json", shiftTimestampsSeconds: -0.5) },
 
-                // Disabled due to currently unsupported beatmap item types:
-                // - CustomNoteData, gameplayType: BurstSliderHead
-                // - CustomSliderData
-                //{ "Ghost", new SpotifyAnalysisInfo(
-                //    // Initial drum later in the Spotify (~10.7 secs) than Beat Saber song (~4.4 secs).
-                //    "Ghost.json", shiftTimestampsSeconds: -6.3) },
+                { "Ghost", new SpotifyAnalysisInfo(
+                    // Initial drum later in the Spotify (~10.7 secs) than Beat Saber song (~4.4 secs).
+                    "Ghost.json", shiftTimestampsSeconds: -6.3) },
 
                 // Disabled because aligning the Beat Saber & Spotify songs requires more
                 // investigation. I tried 3 reference points but they all had quite different shifts
@@ -268,12 +233,9 @@ namespace InfiniteBeatSaber
                     // Initial piano(?) later in the Spotify (~8.9 secs) than Beat Saber song (~2.9 secs).
                     "Crystallized.json", shiftTimestampsSeconds: -6.0) },
 
-                // Disabled due to currently unsupported beatmap item types:
-                // - CustomNoteData, gameplayType: BurstSliderHead
-                // - CustomSliderData
-                //{ "CycleHit", new SpotifyAnalysisInfo(
-                //    // Initial instrument earlier in the Spotify (~0.4 secs) than Beat Saber song (~1.4 secs).
-                //    "CycleHit.json", shiftTimestampsSeconds: 1.0) },
+                { "CycleHit", new SpotifyAnalysisInfo(
+                    // Initial instrument earlier in the Spotify (~0.4 secs) than Beat Saber song (~1.4 secs).
+                    "CycleHit.json", shiftTimestampsSeconds: 1.0) },
 
                 { "WhatTheCat", new SpotifyAnalysisInfo(
                     // Initial "psh" drum earlier in the Spotify (~8.2 secs) than Beat Saber song (~9.6 secs).
