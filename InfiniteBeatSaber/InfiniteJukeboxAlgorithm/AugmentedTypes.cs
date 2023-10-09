@@ -38,6 +38,17 @@ namespace InfiniteJukeboxAlgorithm.AugmentedTypes
                     ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 });
         }
+
+        public string SerializeToIndentedJson()
+        {
+            return JsonConvert.SerializeObject(
+                this,
+                new JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                    Formatting = Formatting.Indented,
+                });
+        }
     }
 
     public class TrackInfo
