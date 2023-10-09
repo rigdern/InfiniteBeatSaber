@@ -85,9 +85,9 @@ namespace InfiniteBeatSaber.DebugTools
                 var nonsingleBeats = new TreeNode("SpotifyAnalysis.Beats contains beats that have a length other than 1 beat");
                 foreach (var beat in spotifyAnalysis.Beats)
                 {
-                    var durationBeats = SecondsToBeats(beatsPerMinute, beat.Duration);
-                    if (!AreFloatsEqual(durationBeats, 1, threshold: 0.15))
+                    if (!IsOneBeat(beatsPerMinute, beat.Duration))
                     {
+                        var durationBeats = SecondsToBeats(beatsPerMinute, beat.Duration);
                         nonsingleBeats.Add($"{beat.Start}: {durationBeats}");
                     }
                 }
@@ -560,9 +560,63 @@ namespace InfiniteBeatSaber.DebugTools
             var output = new StringBuilder();
             foreach (var item in beatmapDataItems)
             {
-                output.Append(PrintObj(item));
+                output.Append(PrintBeatmapDataItem(item));
             }
             return output.ToString();
+        }
+
+        private static string PrintBeatmapDataItem(BeatmapDataItem item)
+        {
+            if (item is NoteData noteData)
+            {
+                if (noteData.gameplayType == NoteData.GameplayType.Bomb)
+                {
+                    return $"{item.time.ToString() + ":",-10} {noteData.GetType().Name}(gameplayType: {noteData.gameplayType}, lineIndex: {noteData.lineIndex}, noteLineLayer: {noteData.noteLineLayer})\n";
+                }
+                else
+                {
+                    return
+                        $"{item.time.ToString() + ":",-10} {noteData.GetType().Name}(gameplayType: {noteData.gameplayType})\n" +
+                        $"  lineIndex: {noteData.lineIndex}\n" +
+                        $"  noteLineLayer: {noteData.noteLineLayer}\n" +
+                        $"  colorType: {noteData.colorType}\n" +
+                        $"  cutDirection: {noteData.cutDirection}\n" +
+                        $"  cutDirectionAngleOffset: {noteData.cutDirectionAngleOffset}\n" +
+                        "";
+                }
+            }
+            else if (item is ObstacleData obstacleData)
+            {
+                return
+                    $"{item.time.ToString() + ":",-10} {item.GetType().Name}(duration: {obstacleData.duration}, width: {obstacleData.width}, height: {obstacleData.height})\n" +
+                    $"  lineIndex: {obstacleData.lineIndex}\n" +
+                    $"  lineLayer: {obstacleData.lineLayer}\n" +
+                    "";
+            }
+            else if (item is BPMChangeBeatmapEventData bpmData)
+            {
+                return $"{item.time.ToString() + ":",-10} {item.GetType().Name}(bpm: {bpmData.bpm})\n";
+            }
+            else if (item is ColorBoostBeatmapEventData colorBoostData)
+            {
+                return $"{item.time.ToString() + ":",-10} {item.GetType().Name}(boostColorsAreOn: {colorBoostData.boostColorsAreOn})\n";
+            }
+            else if (item is BasicBeatmapEventData basicData)
+            {
+                return $"{item.time.ToString() + ":",-10} {item.GetType().Name}(basicBeatmapEventType: {BasicBeatmapEventTypeToString(basicData.basicBeatmapEventType)}, value: {basicData.value}, floatValue: {basicData.floatValue})\n";
+            }
+            else if (item is LightColorBeatmapEventData lightColorEvent)
+            {
+                return $"{item.time.ToString() + ":",-10} {item.GetType().Name}(group: {lightColorEvent.groupId}, el: {lightColorEvent.elementId}, transition: {lightColorEvent.transitionType}, color: {lightColorEvent.colorType}, brightness: {lightColorEvent.brightness}, strobeBeatFreq: {lightColorEvent.strobeBeatFrequency})\n";
+            }
+            else if (item is LightRotationBeatmapEventData lightRotEvent)
+            {
+                return $"{item.time.ToString() + ":",-10} {item.GetType().Name}(group: {lightRotEvent.groupId}, el: {lightRotEvent.elementId}, ease: {lightRotEvent.easeType}, axis: {lightRotEvent.axis}, loopCount: {lightRotEvent.loopCount}, rotation: {lightRotEvent.rotation}, dir: {lightRotEvent.rotationDirection})\n";
+            }
+            else
+            {
+                return $"{item.time.ToString() + ":",-10} {PrintObj(item, "Unhandled beatmap item type")}";
+            }
         }
 
         #endregion
@@ -654,8 +708,9 @@ namespace InfiniteBeatSaber.DebugTools
                 output.AppendLine($"{pack.packName} (ID: {pack.packID})");
                 foreach (var level in pack.beatmapLevelCollection.beatmapLevels)
                 {
+                    var subsongName = string.IsNullOrEmpty(level.songSubName) ? "" : $" {level.songSubName}";
                     var mappedBy = string.IsNullOrEmpty(level.levelAuthorName) ? "" : $". Mapped by {level.levelAuthorName}";
-                    output.AppendLine($"  {level.songName} by {level.songAuthorName}{mappedBy} (ID: {level.levelID})");
+                    output.AppendLine($"  {level.songName}{subsongName} by {level.songAuthorName}{mappedBy} (ID: {level.levelID})");
                 }
             }
 
@@ -867,6 +922,12 @@ namespace InfiniteBeatSaber.DebugTools
         private static double SecondsToBeats(double beatsPerMinute, double seconds)
         {
             return seconds / 60 * beatsPerMinute;
+        }
+
+        private static bool IsOneBeat(double beatsPerMinute, double duration)
+        {
+            var durationBeats = SecondsToBeats(beatsPerMinute, duration);
+            return AreFloatsEqual(durationBeats, 1, threshold: 0.15);
         }
 
         #endregion
