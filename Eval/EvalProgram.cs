@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -176,16 +176,16 @@ namespace InfiniteBeatSaber.DebugTools
 
             var printedTree = PrintTree(new List<TreeNode>
             {
-                fullySupportedLevels,
                 compatibilityIssueLevels,
+                warningLevels,
+                new TreeNode("Unsupported item types", unsupportedTypes),
                 new TreeNode(
                     "Levels currently missing from `RemixableSongs.cs`", new List<TreeNode>
                     {
                         nonremixableLevelsOwned,
                         nonremixableLevelsNotOwned,
                     }),
-                warningLevels,
-                new TreeNode("Unsupported item types", unsupportedTypes),
+                fullySupportedLevels,
             });
 
             stopwatch.Stop();
