@@ -1,14 +1,11 @@
-﻿{
+{
   "$schema": "https://raw.githubusercontent.com/bsmg/BSIPA-MetadataFileSchema/master/Schema.json",
   "id": "InfiniteBeatSaber",
   "name": "InfiniteBeatSaber",
   "author": "rigdern",
   "version": "1.0.1",
   "description": "Generates never-ending and ever changing levels. Inspired by the Infinite Jukebox.",
-  "gameVersion": "1.31.1",
-  "dependsOn": {
-    "BSIPA": "^4.3.0",
-    "CustomJSONData": "^2.5.1",
-    "SiraUtil": "^3.1.5"
-  }
+  
+  // "gameVersion" and "dependsOn" are defined in the .csproj file so that they can have different
+  // values based on the version of Beat Saber we are targeting.
 }

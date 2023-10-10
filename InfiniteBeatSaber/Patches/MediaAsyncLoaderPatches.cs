@@ -36,11 +36,25 @@ namespace InfiniteBeatSaber.Patches
             {
                 await Task.Delay(100);
             }
-            if (www.result != UnityWebRequest.Result.Success)
+            if (IsError(www))
             {
                 return null;
             }
             return DownloadHandlerAudioClip.GetContent(www);
+        }
+
+        private static bool IsError(UnityWebRequest request)
+        {
+            // In some Unity version after the one used by Beat Saber 1.29.1, `isNetworkError` and
+            // `isHttpError` were marked as obsolete in favor of the new `result` property.
+
+#if BEAT_SABER_1_29_1
+            // These properties are obsolete in newer versions of Unity.
+            return request.isNetworkError || request.isHttpError;
+#else
+            // The replacement property in newer versions of Unity.
+            return request.result != UnityWebRequest.Result.Success;
+#endif
         }
     }
 }

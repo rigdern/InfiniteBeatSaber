@@ -34,10 +34,15 @@ namespace InfiniteBeatSaber.DebugTools
         private static Lazy<AudioTimeSyncController> _audioTimeSyncControllerLazy = ResolveLazy<AudioTimeSyncController>();
         private static AudioTimeSyncController _audioTimeSyncController => _audioTimeSyncControllerLazy.Value;
 
-        // `EvalMain` is intended to be used like a REPL. While Beat Saber is
-        // running, write code in `EvalMain` and then build the "Eval" project
-        // to have it injected into and executed in the running Beat Saber game.
-        // Only works in debug builds.
+        // `EvalMain` is intended to be used like a REPL. While Beat Saber is running, write code in
+        // `EvalMain` and then build the "Eval" project to have it injected into and executed in the
+        // running Beat Saber game.
+        //
+        // Limitations:
+        // - Only works in debug builds.
+        // - Severely limited in Beat Saber 1.29.1. For reasons I don't understand, only the first
+        //   eval works properly. Subsequent evals rerun the code from the first eval rather than
+        //   running the new code you're trying to eval.
         public static void EvalMain(IDictionary<string, object> state)
         {
             _state = state;

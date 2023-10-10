@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -21,18 +21,54 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TargetFrameworkProfile />
+    <GenerateManifest>true</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <Optimize>false</Optimize>
+    <BuildType>Debug</BuildType>
+    <BeatSaberVersion>Latest</BeatSaberVersion>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <Optimize>true</Optimize>
+    <BuildType>Release</BuildType>
+    <BeatSaberVersion>Latest</BeatSaberVersion>
     <OutputPath>bin\Release\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Beat_Saber_1.29.1_Debug'">
+    <BuildType>Debug</BuildType>
+    <BeatSaberVersion>1.29.1</BeatSaberVersion>
+    <OutputPath>bin\Beat_Saber_1.29.1_Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Beat_Saber_1.29.1_Release'">
+    <BuildType>Release</BuildType>
+    <BeatSaberVersion>1.29.1</BeatSaberVersion>
+    <OutputPath>bin\Beat_Saber_1.29.1_Release\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(BuildType)' == 'Debug'">
+    <Optimize>false</Optimize>
+    <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(BuildType)' == 'Release'">
+    <Optimize>true</Optimize>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(BeatSaberVersion)' == 'Latest'">
+    <GameVersion>1.31.1</GameVersion>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(BeatSaberVersion)' == 'Latest'">
+    <DependsOn Include="BSIPA" Version="^4.3.0" />
+    <DependsOn Include="CustomJSONData" Version="^2.5.1" />
+    <DependsOn Include="SiraUtil" Version="^3.1.5" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(BeatSaberVersion)' == '1.29.1'">
+    <GameVersion>1.29.1</GameVersion>
+    <DefineConstants>$(DefineConstants);BEAT_SABER_1_29_1</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(BeatSaberVersion)' == '1.29.1'">
+    <DependsOn Include="BSIPA" Version="^4.2.2" />
+    <DependsOn Include="CustomJSONData" Version="^2.5.1" />
+    <DependsOn Include="SiraUtil" Version="^3.1.2" />
+  </ItemGroup>
   <PropertyGroup Condition="$(DefineConstants.Contains('CIBuild')) OR '$(NCrunch)' == '1'">
     <DisableCopyToPlugins>True</DisableCopyToPlugins>
   </PropertyGroup>
@@ -154,12 +190,9 @@
     <Compile Include="AudioRemixer\RingBufferBasedAudioRemixer.cs" />
     <Compile Include="AwaitingQueue.cs" />
     <Compile Include="BeatmapRemixer.cs" />
-    <Compile Include="BuildConstants\Debug.cs" Condition="'$(Configuration)' == 'Debug'" />
-    <Compile Include="$(SolutionDir)Generated\BuildConstants\Release.cs" Link="BuildConstants\Release.cs" Condition="'$(Configuration)' == 'Release'" />
+    <Compile Include="BuildConstants\Debug.cs" Condition="'$(BuildType)' == 'Debug'" />
+    <Compile Include="$(SolutionDir)Generated\BuildConstants\Release.cs" Link="BuildConstants\Release.cs" Condition="'$(BuildType)' == 'Release'" />
     <Compile Include="FloatComparison.cs" />
-    <Compile Include="DebugTools\Eval.cs" Condition="'$(Configuration)' == 'Debug'" />
-    <Compile Include="DebugTools\RemixVisualizer.cs" Condition="'$(Configuration)' == 'Debug'" />
-    <Compile Include="DebugTools\WebSocketServer.cs" Condition="'$(Configuration)' == 'Debug'" />
     <Compile Include="Extensions\AudioClipExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="InfiniteBeatSaberMenuUI.cs" />
@@ -185,6 +218,11 @@
     <Compile Include="Remix.cs" />
     <Compile Include="RemixableSongs.cs" />
     <Compile Include="Util.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(BuildType)' == 'Debug'">
+    <Compile Include="DebugTools\Eval.cs" />
+    <Compile Include="DebugTools\RemixVisualizer.cs" />
+    <Compile Include="DebugTools\WebSocketServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <SpotifyAnalysisFiles Include="SpotifyAnalyses\100Bills.json" />
@@ -235,21 +273,17 @@
     <SpotifyAnalysisFiles Include="SpotifyAnalyses\WhatTheCat.json" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="manifest.json" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="InfiniteJukeboxAlgorithm\LICENSE" />
+    <None Include="manifest.json" />
     <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')" />
     <None Include="InfiniteBeatSaber.csproj.user" Condition="Exists('InfiniteBeatSaber.csproj.user')" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BeatSaberModdingTools.Tasks">
-      <Version>2.0.0-beta1</Version>
+      <Version>2.0.0-beta7</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="InfiniteJukeboxAlgorithm\LICENSE" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -260,7 +294,7 @@
       <LogicalName>InfiniteBeatSaber.SpotifyAnalyses.zip</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
-  <Target Name="GenerateReleaseBuildConstants" BeforeTargets="PreBuildEvent" Condition="'$(Configuration)'=='Release'">
+  <Target Name="GenerateReleaseBuildConstants" BeforeTargets="PreBuildEvent" Condition="'$(BuildType)'=='Release'">
     <Exec Command="powershell.exe -ExecutionPolicy Bypass -File &quot;$(SolutionDir)build-tools\genBuildConstants.ps1&quot;" />
   </Target>
   <Target Name="ZipSpotifyAnalysisFiles" BeforeTargets="PreBuildEvent" Inputs="@(SpotifyAnalysisFiles)" Outputs="$(SpotifyAnalysesZipPath)">
