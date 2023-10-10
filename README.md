@@ -7,29 +7,38 @@ This mod is both inspired by the [The Infinite Jukebox](https://musicmachinery.c
 ## How to Play
 
 1. Install the Infinite Beat Saber mod using [ModAssistant](https://github.com/Assistant/ModAssistant/) or a mechanism of your choosing. If you haven't installed any Beat Saber mods before, you might want to check out the [PC Modding page on the Beat Saber Modding Group Wiki](https://bsmg.wiki/pc-modding.html). (If you prefer manual installation, see the [Manual Installation](./docs/manual-installation.md) doc.)
-2. Launch Beat Saber.
-3. Press the "Solo" button.
-4. Press the "Custom Levels" button &mdash; (1) in the screenshot.
-5. Select one of the [currently supported levels](#currently-supported-levels). Only the Standard, One Saber, and No Arrows modes are currently supported.
-6. Press the button with the infinity symbol on it &mdash; (2) in the screenshot.
-7. Play the song for as long as you like &mdash; it never ends!
+1. Launch Beat Saber.
+1. Press the "Solo" button.
+1. Select one of the [44 currently supported levels](#currently-supported-levels). Only the Standard, One Saber, and No Arrows modes are currently supported.
+1. Press the button with the infinity symbol on it &mdash; (1) in the screenshot.
+1. Play the song for as long as you like &mdash; it never ends!
 
 Here's a screenshot highlighting the relevant UI:
 
 ![Screenshot highlighting the Custom Levels and infinity buttons](./docs/interface-intro.png)
 
-If you don't see the infinity button, it could mean one of these things:
-1. The selected song isn't currently supported.
-2. The selected mode isn't currently supported &mdash; only the Standard, One Saber, and No Arrows modes are currently supported.
-3. The Infinite Beat Saber mod isn't installed.
+If the infinity button is disabled, it means one of these things:
+1. The selected *level* isn't currently supported.
+1. The selected *mode* isn't currently supported &mdash; only the Standard, One Saber, and No Arrows modes are currently supported.
+
+If you hover over the infinity button, it'll pop up some text describing which case it is.
 
 ## Currently Supported Levels
 
-Currently only these custom levels are supported:
+All but 3 built-in levels are supported (excluding DLC). In other words, these level packs are supported:
+- Original Soundtrack Volumes 1 through 5
+- Extras
+- Camellia Music Pack
+
+These are the 3 unsupported levels:
+- I Wanna Be A Machine by The Living Tombstone. Mapped by ConnorJC ([Issue #1](https://github.com/rigdern/InfiniteBeatSaber/issues/1))
+- One Hope ft. David Binney by KNOWER ([Issue #2](https://github.com/rigdern/InfiniteBeatSaber/issues/2))
+- Light it up by Camellia ([Issue #3](https://github.com/rigdern/InfiniteBeatSaber/issues/3))
+
+Additionally, these custom levels are supported:
 - [Gangnam Style by PSY. Mapped by GreatYazer](https://bsaber.com/songs/141/)
 - Beat Saber by Jaroslav Beck
-
-Built-in levels aren't currently supported.
+- Magic ft. Meredith Bull by Jaroslav Beck. Mapped by Freeek
 
 ## How to Add Additional Levels
 
