@@ -28,6 +28,12 @@ namespace InfiniteBeatSaber.DebugTools
         private static Lazy<AdditionalContentModel> _additionalContentModelLazy = ResolveLazy<AdditionalContentModel>();
         private static AdditionalContentModel _additionalContentModel => _additionalContentModelLazy.Value;
 
+        private static Lazy<GameplayCoreSceneSetupData> _gameplayCoreSceneSetupDataLazy = ResolveLazy<GameplayCoreSceneSetupData>();
+        private static GameplayCoreSceneSetupData _gameplayCoreSceneSetupData => _gameplayCoreSceneSetupDataLazy.Value;
+
+        private static Lazy<AudioTimeSyncController> _audioTimeSyncControllerLazy = ResolveLazy<AudioTimeSyncController>();
+        private static AudioTimeSyncController _audioTimeSyncController => _audioTimeSyncControllerLazy.Value;
+
         // `EvalMain` is intended to be used like a REPL. While Beat Saber is
         // running, write code in `EvalMain` and then build the "Eval" project
         // to have it injected into and executed in the running Beat Saber game.
@@ -943,6 +949,171 @@ namespace InfiniteBeatSaber.DebugTools
         {
             var durationBeats = SecondsToBeats(beatsPerMinute, duration);
             return AreFloatsEqual(durationBeats, 1, threshold: 0.15);
+        }
+
+        #endregion
+
+        #region Beatmap manipulation
+
+        // Seems to do nothing if `ActiveBeatmap` already contains items that occur later than the
+        // arc we're adding.
+        private static void SpawnArc(bool omitTail = false)
+        {
+            var headTime = _audioTimeSyncController.songTime + 1;
+            var tailTime = headTime + 0.5f;
+
+            // Head note. (`NoteData, type: Normal`)
+            AddBeatmapDataItemInOrder(
+                ActiveBeatmap,
+                NoteData.CreateBasicNoteData(
+                    time: headTime,
+                    lineIndex: 2,
+                    noteLineLayer: NoteLineLayer.Top,
+                    colorType: ColorType.ColorA,
+                    cutDirection: NoteCutDirection.Up));
+
+            // Connecting arc. (a `SliderData, sliderType: Normal` pointing from the head note to the tail note)
+            AddBeatmapDataItemInOrder(
+                ActiveBeatmap,
+                new SliderData(
+                    sliderType: SliderData.Type.Normal,
+                    colorType: ColorType.ColorA,
+
+                    // Head
+                    hasHeadNote: true,
+                    headTime: _audioTimeSyncController.songTime + 1,
+                    headLineIndex: 2,
+                    headLineLayer: NoteLineLayer.Top,
+                    headBeforeJumpLineLayer: NoteLineLayer.Base,
+                    headControlPointLengthMultiplier: 1f,
+                    headCutDirection: NoteCutDirection.Up,
+                    headCutDirectionAngleOffset: 0f,
+
+                    // Tail
+                    hasTailNote: !omitTail,
+                    tailTime: tailTime,
+                    tailLineIndex: 1,
+                    tailLineLayer: NoteLineLayer.Base,
+                    tailBeforeJumpLineLayer: NoteLineLayer.Base,
+                    tailControlPointLengthMultiplier: 1f,
+                    tailCutDirection: NoteCutDirection.Down,
+                    tailCutDirectionAngleOffset: 0f,
+
+                    midAnchorMode: SliderMidAnchorMode.Straight,
+                    sliceCount: 0,
+                    squishAmount: 1f));
+
+            if (!omitTail)
+            {
+                // Tail note. (`NoteData, type: Normal`)
+                AddBeatmapDataItemInOrder(
+                    ActiveBeatmap,
+                    NoteData.CreateBasicNoteData(
+                        time: tailTime,
+                        lineIndex: 1,
+                        noteLineLayer: NoteLineLayer.Base,
+                        colorType: ColorType.ColorA,
+                        cutDirection: NoteCutDirection.Down));
+            }
+        }
+
+        // Seems to do nothing if `ActiveBeatmap` already contains items that occur later than the
+        // chain we're adding.
+        private static void SpawnChain()
+        {
+            var headTime = _audioTimeSyncController.songTime + 1;
+            var tailTime = headTime + 0.01249f;
+
+            // Tail links. (a tailless `SliderData, sliderType: Burst` pointing at the head note).
+            AddBeatmapDataItemInOrder(
+                ActiveBeatmap,
+                new SliderData(
+                    sliderType: SliderData.Type.Burst,
+                    colorType: ColorType.ColorA,
+
+                    // Head
+                    hasHeadNote: true,
+                    headTime: headTime,
+                    headLineIndex: 1,
+                    headLineLayer: NoteLineLayer.Base,
+                    headBeforeJumpLineLayer: NoteLineLayer.Base,
+                    headControlPointLengthMultiplier: 0f,
+                    headCutDirection: NoteCutDirection.UpLeft,
+                    headCutDirectionAngleOffset: 0f,
+
+                    // Tail
+                    hasTailNote: false,
+                    tailTime: tailTime,
+                    tailLineIndex: 0,
+                    tailLineLayer: NoteLineLayer.Upper,
+                    tailBeforeJumpLineLayer: NoteLineLayer.Upper,
+                    tailControlPointLengthMultiplier: 0f,
+                    tailCutDirection: NoteCutDirection.Any,
+                    tailCutDirectionAngleOffset: 0f,
+                    midAnchorMode: SliderMidAnchorMode.Straight,
+                    sliceCount: 4,
+                    squishAmount: 1f));
+
+            // Head note. (`NoteData, type: BurstSliderHead`)
+            AddBeatmapDataItemInOrder(
+                ActiveBeatmap,
+                CreateBurstSliderHeadNoteData(
+                    time: headTime,
+                    lineIndex: 1,
+                    noteLineLayer: NoteLineLayer.Base,
+                    beforeJumpNoteLineLayer: NoteLineLayer.Base,
+                    colorType: ColorType.ColorA,
+                    cutDirection: NoteCutDirection.UpLeft,
+                    cutSfxVolumeMultiplier: 1));
+        }
+
+        // Head note for *chains*.
+        private static NoteData CreateBurstSliderHeadNoteData(
+            float time,
+            int lineIndex,
+            NoteLineLayer noteLineLayer,
+            NoteLineLayer beforeJumpNoteLineLayer,
+            ColorType colorType,
+            NoteCutDirection cutDirection,
+            float cutSfxVolumeMultiplier)
+        {
+            var sliderHead = NoteData.CreateBurstSliderNoteData(
+                time: time,
+                lineIndex: lineIndex,
+                noteLineLayer: noteLineLayer,
+                beforeJumpNoteLineLayer: beforeJumpNoteLineLayer,
+                colorType: colorType,
+                cutDirection: cutDirection,
+                cutSfxVolumeMultiplier: cutSfxVolumeMultiplier);
+            sliderHead.ChangeToBurstSliderHead();
+
+            return sliderHead;
+        }
+
+        private static BeatmapData ActiveBeatmap
+        {
+            get
+            {
+                var readonlyBeatmap = Util.AssertNotNull(_gameplayCoreSceneSetupData.transformedBeatmapData, "readonlyBeatmap");
+                return Util.AssertNotNull(readonlyBeatmap as BeatmapData, "beatmap");
+            }
+        }
+
+        // Seems to do nothing if `map` already contains items that occur later than `item`.
+        private static void AddBeatmapDataItemInOrder(BeatmapData map, BeatmapDataItem item)
+        {
+            if (item is BeatmapEventData eventData)
+            {
+                map.InsertBeatmapEventDataInOrder(eventData);
+            }
+            else if (item is BeatmapObjectData objectData)
+            {
+                map.AddBeatmapObjectDataInOrder(objectData);
+            }
+            else
+            {
+                throw new Exception("BeatmapDataItem isn't event or object data. Its class is: " + item.GetType().Name);
+            }
         }
 
         #endregion
