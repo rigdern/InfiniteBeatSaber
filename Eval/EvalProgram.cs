@@ -257,6 +257,229 @@ namespace InfiniteBeatSaber.DebugTools
 
         #endregion
 
+        #region Tests: Assumptions about arcs & chains
+
+        /// <summary>
+        /// Generates a report listing any occurrences in the beatmaps of the songs you own that
+        /// violate our assumptions about Beat Saber's data representation for arcs & chains.
+        /// </summary>
+        private static async Task<string> GenerateArcsAndChainsAssumptionsReport()
+        {
+            bool MatchesHead(SliderData slider, NoteData note)
+            {
+                Util.Assert(slider.hasHeadNote, "MatchesHead should only be called with sliders that have a head");
+
+                return
+                    note.colorType == slider.colorType &&
+
+                    note.time == slider.time &&
+                    note.lineIndex == slider.headLineIndex &&
+                    note.noteLineLayer == slider.headLineLayer &&
+                    note.beforeJumpNoteLineLayer == slider.headBeforeJumpLineLayer &&
+                    note.cutDirection == slider.headCutDirection &&
+                    //AreFloatsEqual(note.cutDirectionAngleOffset, slider.headCutDirectionAngleOffset) && // The angle fields don't match in some cases
+
+                    true;
+            }
+
+            bool MatchesTail(SliderData slider, NoteData note)
+            {
+                Util.Assert(slider.hasTailNote, "MatchesTail should only be called with sliders that have a tail");
+
+                return
+                    note.colorType == slider.colorType &&
+
+                    note.time == slider.tailTime &&
+                    note.lineIndex == slider.tailLineIndex &&
+                    note.noteLineLayer == slider.tailLineLayer &&
+                    note.beforeJumpNoteLineLayer == slider.tailBeforeJumpLineLayer &&
+                    //note.cutDirection == slider.tailCutDirection && // The cut dir fields don't match in some cases
+                    //AreFloatsEqual(note.cutDirectionAngleOffset, slider.tailCutDirectionAngleOffset) && // The angle fields don't match in some cases
+
+                    true;
+            }
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            var successLevels = new TreeNode("Levels that fully match our assumptions");
+            var violationLevels = new TreeNode("Levels that violate our assumptions");
+            var notOwnedLevels = new TreeNode("Levels you don't own (so they couldn't be checked)");
+            var checkedCount = 0;
+            var skippedCount = 0;
+
+            foreach (var pack in _beatmapLevelsModel.allLoadedBeatmapLevelPackCollection.beatmapLevelPacks)
+            {
+                foreach (var levelPreview in pack.beatmapLevelCollection.beatmapLevels)
+                {
+                    var levelNode = new TreeNode(levelPreview.levelID);
+                    var isLevelOwned = await IsLevelOwned(levelPreview.levelID);
+
+                    if (isLevelOwned)
+                    {
+                        ++checkedCount;
+                        var level = await _beatmapCache.GetBeatmapLevelAsync(levelPreview.levelID);
+                        foreach (var difficultyBeatmapSet in level.beatmapLevelData.difficultyBeatmapSets)
+                        {
+                            var beatmapCharacteristicNode = new TreeNode(difficultyBeatmapSet.beatmapCharacteristic.serializedName);
+
+                            foreach (var difficultyBeatmap in difficultyBeatmapSet.difficultyBeatmaps)
+                            {
+                                var beatmapNode = new TreeNode(difficultyBeatmap.difficulty.ToString());
+
+                                var normalSliderNode = new TreeNode("Normal sliders");
+                                var headlessNormalNode = new TreeNode("Headless");
+                                var headMismatchNormalNode = new TreeNode("Head mismatch");
+                                var tailMismatchNormalNode = new TreeNode("Tail mismatch");
+
+                                var burstSliderNode = new TreeNode("Burst sliders");
+                                var headlessBurstNode = new TreeNode("Headless");
+                                var tailedBurstNode = new TreeNode("Tailed");
+                                var headMismatchBurstNode = new TreeNode("Head mismatch");
+
+                                var beatmap = await _beatmapCache.GetBeatmapDataAsync(difficultyBeatmap);
+
+                                var itemsByTime = new Dictionary<float, List<BeatmapDataItem>>();
+                                foreach (var item in beatmap.allBeatmapDataItems)
+                                {
+                                    if (!itemsByTime.ContainsKey(item.time)) itemsByTime[item.time] = new List<BeatmapDataItem>();
+                                    itemsByTime[item.time].Add(item);
+                                }
+
+                                foreach (var item in beatmap.allBeatmapDataItems)
+                                {
+                                    if (item is SliderData sliderData)
+                                    {
+                                        if (sliderData.sliderType == SliderData.Type.Normal)
+                                        {
+                                            // Arc
+                                            //
+
+                                            if (sliderData.hasHeadNote)
+                                            {
+                                                var headMatches = itemsByTime[sliderData.time].Where(
+                                                    x => x is NoteData noteData &&
+                                                    noteData.gameplayType == NoteData.GameplayType.Normal &&
+                                                    MatchesHead(sliderData, noteData));
+                                                if (headMatches.Count() != 1)
+                                                {
+                                                    // Violated assumption: All arcs have exactly 1 head `NoteData, gameplayType: Normal`.
+                                                    headMismatchNormalNode.Add($"{sliderData.time}: Unexpected number of heads: {headMatches.Count()}");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                // Violated assumption: All arcs have a head (`hasHeadNote == true`).
+                                                headlessNormalNode.Add(PrintBeatmapDataItem(sliderData));
+                                            }
+
+                                            if (sliderData.hasTailNote)
+                                            {
+                                                var tailMatches = itemsByTime[sliderData.tailTime].Where(
+                                                    x => x is NoteData noteData &&
+                                                    (
+                                                        noteData.gameplayType == NoteData.GameplayType.Normal ||
+                                                        noteData.gameplayType == NoteData.GameplayType.BurstSliderHead
+                                                    ) &&
+                                                    MatchesTail(sliderData, noteData));
+                                                if (tailMatches.Count() != 1)
+                                                {
+                                                    // Violated assumption: All arcs have exactly 1 tail `NoteData, gameplayType: Normal or BurstSliderHead`.
+                                                    tailMismatchNormalNode.Add($"{sliderData.time}: Unexpected number of tails: {tailMatches.Count()}");
+                                                }
+                                            }
+                                        }
+                                        else if (sliderData.sliderType == SliderData.Type.Burst)
+                                        {
+                                            // Chain
+                                            //
+
+                                            if (sliderData.hasTailNote)
+                                            {
+                                                // Violated assumption: No chains have a tail (`hasTailNote == false`).
+                                                tailedBurstNode.Add(PrintBeatmapDataItem(sliderData));
+                                            }
+
+                                            if (sliderData.hasHeadNote)
+                                            {
+                                                var headMatches = itemsByTime[sliderData.time].Where(
+                                                    x => x is NoteData noteData &&
+                                                    noteData.gameplayType == NoteData.GameplayType.BurstSliderHead &&
+                                                    MatchesHead(sliderData, noteData));
+                                                if (headMatches.Count() != 1)
+                                                {
+                                                    // Violated assumption: All chains have exactly 1 head `NoteData, gameplayType: BurstSliderHead`.
+                                                    headMismatchBurstNode.Add($"{sliderData.time}: Unexpected number of heads: {headMatches.Count()}");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                // Violated assumption: All chains have a head (`hasHeadNote == true`).
+                                                headlessBurstNode.Add(PrintBeatmapDataItem(sliderData));
+                                            }
+                                        }
+                                        else
+                                        {
+                                            throw new Exception($"Unexpected `sliderType`: {sliderData.sliderType}");
+                                        }
+                                    }
+                                }
+
+                                normalSliderNode.AddIfHasChildren(headlessNormalNode);
+                                normalSliderNode.AddIfHasChildren(headMismatchNormalNode);
+                                normalSliderNode.AddIfHasChildren(tailMismatchNormalNode);
+
+                                burstSliderNode.AddIfHasChildren(headlessBurstNode);
+                                burstSliderNode.AddIfHasChildren(tailedBurstNode);
+                                burstSliderNode.AddIfHasChildren(headMismatchBurstNode);
+
+                                beatmapNode.AddIfHasChildren(normalSliderNode);
+                                beatmapNode.AddIfHasChildren(burstSliderNode);
+
+                                beatmapCharacteristicNode.AddIfHasChildren(beatmapNode);
+                            }
+
+                            levelNode.AddIfHasChildren(beatmapCharacteristicNode);
+                        }
+                    }
+                    else
+                    {
+                        ++skippedCount;
+                    }
+
+                    if (levelNode.Children.Count() > 0)
+                    {
+                        violationLevels.Add(levelNode);
+                    }
+                    else if (isLevelOwned)
+                    {
+                        successLevels.Add(levelNode);
+                    }
+                    else
+                    {
+                        notOwnedLevels.Add(levelNode);
+                    }
+                }
+            }
+
+            var printedTree = PrintTree(new List<TreeNode>
+            {
+                violationLevels,
+                successLevels,
+                notOwnedLevels,
+            });
+
+            stopwatch.Stop();
+
+            return
+                $"Checked {checkedCount} levels in {stopwatch.ElapsedMilliseconds:N0} ms. Skipped {skippedCount} levels you do not own.\n" +
+                $"\n" +
+                printedTree;
+        }
+
+
+        #endregion
+
         #region Utilities for EvailMain's `state` parameter
 
         private static TValue GetOrAdd<TKey, TValue>(
@@ -561,7 +784,17 @@ namespace InfiniteBeatSaber.DebugTools
 
         #region Printing BeatmapDataItems
 
-        public static string PrintBeatmapDataItems(IEnumerable<BeatmapDataItem> beatmapDataItems)
+        /// <summary>
+        /// Writes the beatmap to a file with the name "{levelId}_{characteristic}_{difficulty}.txt".
+        /// </summary>
+        private static async Task WriteBeatmap(string levelId, string beatmapCharacteristic, BeatmapDifficulty difficulty)
+        {
+            var level = await _beatmapCache.GetBeatmapLevelAsync(levelId);
+            var beatmap = await _beatmapCache.GetBeatmapDataAsync(GetBeatmap(level, beatmapCharacteristic, difficulty));
+            WriteAllText($"{levelId}_{beatmapCharacteristic}_{difficulty}.txt", PrintBeatmapDataItems(beatmap.allBeatmapDataItems));
+        }
+
+        private static string PrintBeatmapDataItems(IEnumerable<BeatmapDataItem> beatmapDataItems)
         {
             var output = new StringBuilder();
             foreach (var item in beatmapDataItems)
@@ -1121,6 +1354,7 @@ namespace InfiniteBeatSaber.DebugTools
         private static void WriteAllText(string fileName, string text)
         {
             File.WriteAllText(Path.Combine(ScratchDirectory, fileName), text);
+            Info($"Wrote {fileName}");
         }
 
         private static string ScratchDirectory => Path.Combine(Application.temporaryCachePath, "InfiniteBeatSaber");
