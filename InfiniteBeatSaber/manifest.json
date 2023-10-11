@@ -5,6 +5,10 @@
   "author": "rigdern",
   "version": "1.0.1",
   "description": "Generates never-ending and ever changing levels. Inspired by the Infinite Jukebox.",
+  "links": {
+    "project-source": "https://github.com/rigdern/InfiniteBeatSaber",
+    "donate": "https://ko-fi.com/adamcomella"
+  }
   
   // "gameVersion" and "dependsOn" are defined in the .csproj file so that they can have different
   // values based on the version of Beat Saber we are targeting.
