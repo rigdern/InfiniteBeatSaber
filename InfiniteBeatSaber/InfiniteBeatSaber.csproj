@@ -72,7 +72,7 @@
   </PropertyGroup>
   <ItemGroup Condition="'$(BeatSaberVersion)' == '1.29.1'">
     <DependsOn Include="BSIPA" Version="^4.2.2" />
-    <DependsOn Include="CustomJSONData" Version="^2.5.1" />
+    <DependsOn Include="CustomJSONData" Version="^2.5.2" />
     <DependsOn Include="SiraUtil" Version="^3.1.2" />
   </ItemGroup>
   <PropertyGroup Condition="$(DefineConstants.Contains('CIBuild')) OR '$(NCrunch)' == '1'">
