@@ -22,6 +22,8 @@
     <WarningLevel>4</WarningLevel>
     <TargetFrameworkProfile />
     <GenerateManifest>true</GenerateManifest>
+    <!-- Disable the "BSMT_ZipRelease" task. We've replaced it with our "ZipRelease" task. -->
+    <DisableZipRelease>True</DisableZipRelease>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <BuildType>Debug</BuildType>
@@ -302,5 +304,30 @@
   </Target>
   <Target Name="Clean_ZipSpotifyAnalysisFiles" AfterTargets="Clean">
     <Delete Files="$(SpotifyAnalysesZipPath)" />
+  </Target>
+  <Target Name="ZipRelease" AfterTargets="Build" DependsOnTargets="BSMT_AfterBuild;CopyToArtifactDestination" Condition="'$(BuildType)'=='Release'">
+    <!--
+      Creates a BeatMods compliant zip file with the release.
+
+      The "ZipRelease" task was derived from "BSMT_ZipRelease" in BeatSaberModdingTools.Tasks (https://github.com/Zingabopp/BeatSaberModdingTools.Tasks/blob/master/BeatSaberModdingTools.Tasks/BuildTypes/BSMT.BSIPA.targets#L142-L159).
+      We couldn't use the "BSMT_ZipRelease" task directly because it only runs if `Configuration` is
+      `Release` but we need it to also run when `Configuration` is `Beat_Saber_1.29.1_Release`. See
+      this issue: https://github.com/Zingabopp/BeatSaberModdingTools.Tasks/issues/11.
+    -->
+    <Message Text="Target: ZipRelease" Importance="high" />
+    <PropertyGroup>
+      <!--Set 'ArtifactName' if it failed before.-->
+      <ArtifactName Condition="'$(ArtifactName)' == ''">$(AssemblyName)</ArtifactName>
+      <ZipDestinationDirectory>$(OutDir)zip\</ZipDestinationDirectory>
+      <ZipDestinationFile>$(ZipDestinationDirectory)$(ArtifactName).zip</ZipDestinationFile>
+    </PropertyGroup>
+    <Message Text="   Output Properties:" Importance="high" />
+    <Message Text="      ZipDestinationDirectory= '$(ZipDestinationDirectory)'" Importance="high" />
+    <Message Text="      ZipDestinationFile= '$(ZipDestinationFile)'" Importance="high" />
+    <ItemGroup>
+      <OldZips Include="$(ZipDestinationDirectory)$(AssemblyName)*.zip"/>
+    </ItemGroup>
+    <Delete Files="@(OldZips)" TreatErrorsAsWarnings="true" ContinueOnError="true" />
+    <ZipDir SourceDirectory="$(ArtifactDestination)" DestinationFile="$(ZipDestinationDirectory)$(ArtifactName).zip" MessagePrefix="   " />
   </Target>
 </Project>
