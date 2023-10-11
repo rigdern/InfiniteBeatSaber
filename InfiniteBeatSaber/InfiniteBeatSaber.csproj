@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -21,6 +21,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TargetFrameworkProfile />
+    <AssemblyInfoReleasePath>$(SolutionDir)Generated\Properties\AssemblyInfo\Release.cs</AssemblyInfoReleasePath>
+    <SemVerPatch>0</SemVerPatch>
     <GenerateManifest>true</GenerateManifest>
     <!-- Disable the "BSMT_ZipRelease" task. We've replaced it with our "ZipRelease" task. -->
     <DisableZipRelease>True</DisableZipRelease>
@@ -55,6 +57,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(BeatSaberVersion)' == 'Latest'">
+    <Version>3.0.$(SemVerPatch)</Version>
     <GameVersion>1.31.1</GameVersion>
   </PropertyGroup>
   <ItemGroup Condition="'$(BeatSaberVersion)' == 'Latest'">
@@ -63,6 +66,7 @@
     <DependsOn Include="SiraUtil" Version="^3.1.5" />
   </ItemGroup>
   <PropertyGroup Condition="'$(BeatSaberVersion)' == '1.29.1'">
+    <Version>2.0.$(SemVerPatch)</Version>
     <GameVersion>1.29.1</GameVersion>
     <DefineConstants>$(DefineConstants);BEAT_SABER_1_29_1</DefineConstants>
   </PropertyGroup>
@@ -215,7 +219,8 @@
     <Compile Include="Patches\SongProgressUIControllerPatches.cs" />
     <Compile Include="Patches\StandardLevelDetailViewPatches.cs" />
     <Compile Include="Plugin.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo\Debug.cs"  Condition="'$(BuildType)' == 'Debug'" />
+    <Compile Include="$(AssemblyInfoReleasePath)" Link="Properties\AssemblyInfo\Release.cs" Condition="'$(BuildType)' == 'Release'" />
     <Compile Include="Range.cs" />
     <Compile Include="Remix.cs" />
     <Compile Include="RemixableSongs.cs" />
@@ -299,6 +304,9 @@
   <Target Name="GenerateReleaseBuildConstants" BeforeTargets="PreBuildEvent" Condition="'$(BuildType)'=='Release'">
     <Exec Command="powershell.exe -ExecutionPolicy Bypass -File &quot;$(SolutionDir)build-tools\genBuildConstants.ps1&quot;" />
   </Target>
+  <Target Name="GenerateReleaseAssemblyInfo" BeforeTargets="PreBuildEvent" Condition="'$(BuildType)'=='Release'">
+    <Exec Command="powershell.exe -ExecutionPolicy Bypass -File &quot;$(SolutionDir)build-tools\genAssemblyInfo.ps1&quot; -AssemblyVersion &quot;$(Version)&quot; -AssemblyInfoPath &quot;$(AssemblyInfoReleasePath)&quot;" />
+  </Target>
   <Target Name="ZipSpotifyAnalysisFiles" BeforeTargets="PreBuildEvent" Inputs="@(SpotifyAnalysisFiles)" Outputs="$(SpotifyAnalysesZipPath)">
     <Exec Command="powershell.exe Compress-Archive -Force -Path &quot;@(SpotifyAnalysisFiles->'%(Identity)', ',')&quot; -DestinationPath &quot;$(SpotifyAnalysesZipPath)&quot;" />
   </Target>
@@ -325,7 +333,7 @@
     <Message Text="      ZipDestinationDirectory= '$(ZipDestinationDirectory)'" Importance="high" />
     <Message Text="      ZipDestinationFile= '$(ZipDestinationFile)'" Importance="high" />
     <ItemGroup>
-      <OldZips Include="$(ZipDestinationDirectory)$(AssemblyName)*.zip"/>
+      <OldZips Include="$(ZipDestinationDirectory)$(AssemblyName)*.zip" />
     </ItemGroup>
     <Delete Files="@(OldZips)" TreatErrorsAsWarnings="true" ContinueOnError="true" />
     <ZipDir SourceDirectory="$(ArtifactDestination)" DestinationFile="$(ZipDestinationDirectory)$(ArtifactName).zip" MessagePrefix="   " />
