@@ -67,7 +67,12 @@
   </ItemGroup>
   <PropertyGroup Condition="'$(BeatSaberVersion)' == '1.29.1'">
     <Version>2.0.$(SemVerPatch)</Version>
-    <GameVersion>1.29.1</GameVersion>
+    <!--
+      Use 1.29.0 instead of 1.29.1 because BeatMods only has an entry for 1.29.0. But 1.29.1 is
+      probably the game version people have installed. It's the last game version before Beat Saber
+      migrated to a newer version of Unity.
+    -->
+    <GameVersion>1.29.0</GameVersion>
     <DefineConstants>$(DefineConstants);BEAT_SABER_1_29_1</DefineConstants>
   </PropertyGroup>
   <ItemGroup Condition="'$(BeatSaberVersion)' == '1.29.1'">
