@@ -1,0 +1,216 @@
+<mxfile host="app.diagrams.net" modified="2023-10-13T01:27:47.353Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.2045.60" etag="Wx7HW-2nT10SUhOr3nbm" version="22.0.4" type="device" pages="2">
+  <diagram id="C5RBs43oDa-KdzZeNtuy" name="Links">
+    <mxGraphModel dx="784" dy="1135" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1050" pageHeight="610" math="0" shadow="0">
+      <root>
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
+        <mxCell id="lmb0oQb16tBhzFa3YAMW-32" value="This &amp;amp; the stuff below were implemented by me for" style="text;strokeColor=none;align=left;fillColor=none;html=1;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="685" y="351" width="280" height="70" as="geometry" />
+        </mxCell>
+        <UserObject label="UnderMybrella&#39;s The Eternal Jukebox" link="https://github.com/UnderMybrella/EternalJukebox/" id="lmb0oQb16tBhzFa3YAMW-25">
+          <mxCell style="fontColor=#0000EE;fontStyle=4;rounded=1;overflow=hidden;spacing=10;fillColor=none;strokeColor=none;fontSize=12;align=left;verticalAlign=top;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+            <mxGeometry x="810" y="261" width="225" height="32" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="lmb0oQb16tBhzFa3YAMW-26" value="My code is derived from" style="text;strokeColor=none;align=left;fillColor=none;html=1;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="685" y="248" width="130" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="lmb0oQb16tBhzFa3YAMW-18" value="Figures out which sections of the song are so similar that it can jump the song from one section to the other without the listener noticing a seam in the music." style="text;strokeColor=none;align=left;fillColor=none;html=1;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="685" y="160" width="270" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="lmb0oQb16tBhzFa3YAMW-14" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;For any song on Spotify, provides information about its structure and musical content including rhythm, pitch, and timbre.&lt;br&gt;&lt;/font&gt;" style="text;strokeColor=none;align=left;fillColor=none;html=1;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="685" y="10" width="270" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="lmb0oQb16tBhzFa3YAMW-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="lmb0oQb16tBhzFa3YAMW-12" target="lmb0oQb16tBhzFa3YAMW-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lmb0oQb16tBhzFa3YAMW-17" value="The song&#39;s bars, beats, tatums,&lt;br style=&quot;font-size: 14px;&quot;&gt;sections, and segments." style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" vertex="1" connectable="0" parent="lmb0oQb16tBhzFa3YAMW-13">
+          <mxGeometry y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <UserObject label="Spotify audio analysis file" link="https://developer.spotify.com/documentation/web-api/reference/get-audio-analysis" id="lmb0oQb16tBhzFa3YAMW-12">
+          <mxCell style="fontColor=#0000EE;fontStyle=4;rounded=1;overflow=hidden;spacing=10;fontSize=22;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+            <mxGeometry x="364.5" y="10" width="280" height="60" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="lmb0oQb16tBhzFa3YAMW-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="lmb0oQb16tBhzFa3YAMW-10" target="lmb0oQb16tBhzFa3YAMW-27">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lmb0oQb16tBhzFa3YAMW-29" value="The timestamp of the next beat&lt;br&gt;in the song that should be played" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" vertex="1" connectable="0" parent="lmb0oQb16tBhzFa3YAMW-28">
+          <mxGeometry x="-0.04" y="3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <UserObject label="The Infinite Jukebox Algorithm" link="https://github.com/rigdern/InfiniteJukeboxAlgorithm" id="lmb0oQb16tBhzFa3YAMW-10">
+          <mxCell style="fontColor=#0000EE;fontStyle=4;rounded=1;overflow=hidden;spacing=10;fontSize=22;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+            <mxGeometry x="344" y="160" width="321" height="60" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Spotify&#39;s web API" link="https://developer.spotify.com/documentation/web-api/reference/get-audio-analysis" id="lmb0oQb16tBhzFa3YAMW-19">
+          <mxCell style="fontColor=#0000EE;fontStyle=4;rounded=1;overflow=hidden;spacing=10;fillColor=none;strokeColor=none;fontSize=12;align=left;verticalAlign=top;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+            <mxGeometry x="772" y="68" width="130" height="50" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="lmb0oQb16tBhzFa3YAMW-22" value="Data provided by&amp;nbsp;" style="text;strokeColor=none;align=left;fillColor=none;html=1;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="685" y="56" width="106" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="lmb0oQb16tBhzFa3YAMW-24" value="Original implementation by&amp;nbsp;" style="text;strokeColor=none;align=left;fillColor=none;html=1;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="685" y="220" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="lmb0oQb16tBhzFa3YAMW-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="lmb0oQb16tBhzFa3YAMW-27" target="lmb0oQb16tBhzFa3YAMW-33">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lmb0oQb16tBhzFa3YAMW-45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="lmb0oQb16tBhzFa3YAMW-27" target="lmb0oQb16tBhzFa3YAMW-34">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lmb0oQb16tBhzFa3YAMW-46" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;The timestamp of the next beat&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;in the song that should be played&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="lmb0oQb16tBhzFa3YAMW-45">
+          <mxGeometry x="-0.7882" y="-2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <UserObject label="InfiniteBeatSaberMode" link="https://github.com/rigdern/InfiniteBeatSaber/blob/026361adbe3f2f7b794ab6a3f75c5a04837c13c9/InfiniteBeatSaber/InfiniteBeatSaberMode.cs" id="lmb0oQb16tBhzFa3YAMW-27">
+          <mxCell style="fontColor=#0000EE;fontStyle=4;rounded=1;overflow=hidden;spacing=10;fontSize=22;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+            <mxGeometry x="344" y="320" width="321" height="60" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="lmb0oQb16tBhzFa3YAMW-30" value="Connects the Infinite Jukebox algorithm&#39;s output to the relevant parts of Beat Saber." style="text;strokeColor=none;align=left;fillColor=none;html=1;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="685" y="320" width="270" height="80" as="geometry" />
+        </mxCell>
+        <UserObject label="the Infinite Beat Saber mod" link="https://github.com/rigdern/InfiniteBeatSaber/" id="lmb0oQb16tBhzFa3YAMW-31">
+          <mxCell style="fontColor=#0000EE;fontStyle=4;rounded=1;overflow=hidden;spacing=10;fillColor=none;strokeColor=none;fontSize=12;align=left;verticalAlign=top;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+            <mxGeometry x="679" y="380" width="211" height="50" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="AudioRemixer" link="https://github.com/rigdern/InfiniteBeatSaber/blob/026361adbe3f2f7b794ab6a3f75c5a04837c13c9/InfiniteBeatSaber/AudioRemixer/QueueBasedAudioRemixer.cs" id="lmb0oQb16tBhzFa3YAMW-33">
+          <mxCell style="fontColor=#0000EE;fontStyle=4;rounded=1;overflow=hidden;spacing=10;fontSize=22;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+            <mxGeometry x="280" y="490" width="180" height="60" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="BeatmapRemixer" link="https://github.com/rigdern/InfiniteBeatSaber/blob/026361adbe3f2f7b794ab6a3f75c5a04837c13c9/InfiniteBeatSaber/BeatmapRemixer.cs" id="lmb0oQb16tBhzFa3YAMW-34">
+          <mxCell style="fontColor=#0000EE;fontStyle=4;rounded=1;overflow=hidden;spacing=10;fontSize=22;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+            <mxGeometry x="535" y="490" width="210" height="60" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="lmb0oQb16tBhzFa3YAMW-35" value="Schedules the audio so that each beat of the song is played at the appropriate time. This is responsible for the player&amp;nbsp;&lt;i&gt;hearing&lt;/i&gt;&amp;nbsp;the remixed song." style="text;strokeColor=none;align=left;fillColor=none;html=1;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="10" y="480" width="270" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="lmb0oQb16tBhzFa3YAMW-47" value="Uses the information about the ordering of the song&#39;s beats to add the note blocks, obstacles, lights, etc. to the level at the appropriate timestamps. This is responsible for the player &lt;i&gt;seeing&lt;/i&gt;&amp;nbsp;the remixed level so they know when to swing their hands, duck, etc." style="text;strokeColor=none;align=left;fillColor=none;html=1;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="760" y="480" width="270" height="130" as="geometry" />
+        </mxCell>
+        <UserObject label="Paul Lamere&#39;s The Infinite Jukebox" link="https://musicmachinery.com/2012/11/12/the-infinite-jukebox/" id="lmb0oQb16tBhzFa3YAMW-23">
+          <mxCell style="fontColor=#0000EE;fontStyle=4;rounded=1;overflow=hidden;spacing=10;fillColor=none;strokeColor=none;fontSize=12;align=left;verticalAlign=top;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+            <mxGeometry x="824" y="232" width="211" height="38" as="geometry" />
+          </mxCell>
+        </UserObject>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="Miv-9QC-7ryqJ1M9ENk0" name="Linkless">
+    <mxGraphModel dx="784" dy="1135" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1050" pageHeight="610" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="mJul7LDWtYh94GrbtA1N-1" value="This &amp;amp; the stuff below were implemented by me for" style="text;strokeColor=none;align=left;fillColor=none;html=1;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="685" y="351" width="280" height="70" as="geometry" />
+        </mxCell>
+        <UserObject label="UnderMybrella&#39;s The Eternal Jukebox" link="https://github.com/UnderMybrella/EternalJukebox/" id="mJul7LDWtYh94GrbtA1N-2">
+          <mxCell style="fontColor=#;fontStyle=0;rounded=1;overflow=hidden;spacing=10;fillColor=none;strokeColor=none;fontSize=12;align=left;verticalAlign=top;" vertex="1" parent="1">
+            <mxGeometry x="810" y="261" width="225" height="32" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="mJul7LDWtYh94GrbtA1N-3" value="My code is derived from" style="text;strokeColor=none;align=left;fillColor=none;html=1;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="685" y="248" width="130" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="mJul7LDWtYh94GrbtA1N-4" value="Figures out which sections of the song are so similar that it can jump the song from one section to the other without the listener noticing a seam in the music." style="text;strokeColor=none;align=left;fillColor=none;html=1;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="685" y="160" width="270" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="mJul7LDWtYh94GrbtA1N-5" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;For any song on Spotify, provides information about its structure and musical content including rhythm, pitch, and timbre.&lt;br&gt;&lt;/font&gt;" style="text;strokeColor=none;align=left;fillColor=none;html=1;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="685" y="10" width="270" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="mJul7LDWtYh94GrbtA1N-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="mJul7LDWtYh94GrbtA1N-8" target="mJul7LDWtYh94GrbtA1N-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mJul7LDWtYh94GrbtA1N-7" value="The song&#39;s bars, beats, tatums,&lt;br style=&quot;font-size: 14px;&quot;&gt;sections, and segments." style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" vertex="1" connectable="0" parent="mJul7LDWtYh94GrbtA1N-6">
+          <mxGeometry y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <UserObject label="Spotify audio analysis file" link="https://developer.spotify.com/documentation/web-api/reference/get-audio-analysis" id="mJul7LDWtYh94GrbtA1N-8">
+          <mxCell style="fontColor=#003366;fontStyle=0;rounded=1;overflow=hidden;spacing=10;fontSize=22;" vertex="1" parent="1">
+            <mxGeometry x="364.5" y="10" width="280" height="60" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="mJul7LDWtYh94GrbtA1N-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="mJul7LDWtYh94GrbtA1N-11" target="mJul7LDWtYh94GrbtA1N-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mJul7LDWtYh94GrbtA1N-10" value="The timestamp of the next beat&lt;br&gt;in the song that should be played" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" vertex="1" connectable="0" parent="mJul7LDWtYh94GrbtA1N-9">
+          <mxGeometry x="-0.04" y="3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <UserObject label="The Infinite Jukebox Algorithm" link="https://github.com/rigdern/InfiniteJukeboxAlgorithm" id="mJul7LDWtYh94GrbtA1N-11">
+          <mxCell style="fontColor=#;fontStyle=0;rounded=1;overflow=hidden;spacing=10;fontSize=22;" vertex="1" parent="1">
+            <mxGeometry x="344" y="160" width="321" height="60" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Spotify&#39;s web API" link="https://developer.spotify.com/documentation/web-api/reference/get-audio-analysis" id="mJul7LDWtYh94GrbtA1N-12">
+          <mxCell style="fontColor=#;fontStyle=0;rounded=1;overflow=hidden;spacing=10;fillColor=none;strokeColor=none;fontSize=12;align=left;verticalAlign=top;" vertex="1" parent="1">
+            <mxGeometry x="772" y="68" width="130" height="50" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="mJul7LDWtYh94GrbtA1N-13" value="Data provided by&amp;nbsp;" style="text;strokeColor=none;align=left;fillColor=none;html=1;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="685" y="56" width="106" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="mJul7LDWtYh94GrbtA1N-14" value="Original implementation by&amp;nbsp;" style="text;strokeColor=none;align=left;fillColor=none;html=1;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="685" y="220" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="mJul7LDWtYh94GrbtA1N-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="mJul7LDWtYh94GrbtA1N-18" target="mJul7LDWtYh94GrbtA1N-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mJul7LDWtYh94GrbtA1N-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="mJul7LDWtYh94GrbtA1N-18" target="mJul7LDWtYh94GrbtA1N-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mJul7LDWtYh94GrbtA1N-17" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;The timestamp of the next beat&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;in the song that should be played&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="mJul7LDWtYh94GrbtA1N-16">
+          <mxGeometry x="-0.7882" y="-2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <UserObject label="InfiniteBeatSaberMode" link="https://github.com/rigdern/InfiniteBeatSaber/blob/026361adbe3f2f7b794ab6a3f75c5a04837c13c9/InfiniteBeatSaber/InfiniteBeatSaberMode.cs" id="mJul7LDWtYh94GrbtA1N-18">
+          <mxCell style="fontColor=#;fontStyle=0;rounded=1;overflow=hidden;spacing=10;fontSize=22;" vertex="1" parent="1">
+            <mxGeometry x="344" y="320" width="321" height="60" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="mJul7LDWtYh94GrbtA1N-19" value="Connects the Infinite Jukebox algorithm&#39;s output to the relevant parts of Beat Saber." style="text;strokeColor=none;align=left;fillColor=none;html=1;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="685" y="320" width="270" height="80" as="geometry" />
+        </mxCell>
+        <UserObject label="the Infinite Beat Saber mod" link="https://github.com/rigdern/InfiniteBeatSaber/" id="mJul7LDWtYh94GrbtA1N-20">
+          <mxCell style="fontColor=#;fontStyle=0;rounded=1;overflow=hidden;spacing=10;fillColor=none;strokeColor=none;fontSize=12;align=left;verticalAlign=top;" vertex="1" parent="1">
+            <mxGeometry x="679" y="380" width="211" height="50" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="AudioRemixer" link="https://github.com/rigdern/InfiniteBeatSaber/blob/026361adbe3f2f7b794ab6a3f75c5a04837c13c9/InfiniteBeatSaber/AudioRemixer/QueueBasedAudioRemixer.cs" id="mJul7LDWtYh94GrbtA1N-21">
+          <mxCell style="fontColor=#;fontStyle=0;rounded=1;overflow=hidden;spacing=10;fontSize=22;" vertex="1" parent="1">
+            <mxGeometry x="280" y="490" width="180" height="60" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="BeatmapRemixer" link="https://github.com/rigdern/InfiniteBeatSaber/blob/026361adbe3f2f7b794ab6a3f75c5a04837c13c9/InfiniteBeatSaber/BeatmapRemixer.cs" id="mJul7LDWtYh94GrbtA1N-22">
+          <mxCell style="fontColor=#;fontStyle=0;rounded=1;overflow=hidden;spacing=10;fontSize=22;" vertex="1" parent="1">
+            <mxGeometry x="535" y="490" width="210" height="60" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="mJul7LDWtYh94GrbtA1N-23" value="Schedules the audio so that each beat of the song is played at the appropriate time. This is responsible for the player&amp;nbsp;&lt;i&gt;hearing&lt;/i&gt;&amp;nbsp;the remixed song." style="text;strokeColor=none;align=left;fillColor=none;html=1;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="10" y="480" width="270" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="mJul7LDWtYh94GrbtA1N-24" value="Uses the information about the ordering of the song&#39;s beats to add the note blocks, obstacles, lights, etc. to the level at the appropriate timestamps. This is responsible for the player &lt;i&gt;seeing&lt;/i&gt;&amp;nbsp;the remixed level so they know when to swing their hands, duck, etc." style="text;strokeColor=none;align=left;fillColor=none;html=1;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="760" y="480" width="270" height="130" as="geometry" />
+        </mxCell>
+        <UserObject label="Paul Lamere&#39;s The Infinite Jukebox" link="https://musicmachinery.com/2012/11/12/the-infinite-jukebox/" id="mJul7LDWtYh94GrbtA1N-25">
+          <mxCell style="fontColor=#;fontStyle=0;rounded=1;overflow=hidden;spacing=10;fillColor=none;strokeColor=none;fontSize=12;align=left;verticalAlign=top;" vertex="1" parent="1">
+            <mxGeometry x="824" y="232" width="211" height="38" as="geometry" />
+          </mxCell>
+        </UserObject>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
