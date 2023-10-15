@@ -6,6 +6,7 @@ param (
     [string]$dllPath
 )
 
+# Immediately exit the PowerShell script if an exception is thrown.
 $ErrorActionPreference = 'Stop'
 
 function IsUnexpectedException {
@@ -45,7 +46,7 @@ try {
     $client.SendAsync(
         [System.ArraySegment[byte]]::new($buffer),
         [System.Net.WebSockets.WebSocketMessageType]::Text,
-        $true,
+        $true, # endOfMessage
         [System.Threading.CancellationToken]::None).Wait()
     Write-Output "WebSocket message sent"
 
