@@ -16,7 +16,14 @@ function IsUnexpectedException {
     # Infinite Beat Saber's WebSocketServer implementation is prototype-quality.
     # It doesn't close connections properly. Swallow the exception.
 
-    return $Exception -isnot [System.Net.WebSockets.WebSocketException] -or $Exception.WebSocketErrorCode -ne [System.Net.WebSockets.WebSocketError]::ConnectionClosedPrematurely
+    $expected = $Exception -is [System.Net.WebSockets.WebSocketException] -and (
+        $Exception.WebSocketErrorCode -eq [System.Net.WebSockets.WebSocketError]::ConnectionClosedPrematurely -or
+
+        # Probably received a message of type 'Text' after calling WebSocket.CloseAsync.
+        $Exception.WebSocketErrorCode -eq [System.Net.WebSockets.WebSocketError]::InvalidMessageType
+    )
+
+    return -not $expected
 }
 
 try {
@@ -67,7 +74,11 @@ try {
     $exception = $_.Exception
     Write-Host "Fatal AggregateException: $($_.Exception.Message)"
     foreach ($innerException in $exception.InnerExceptions) {
-        Write-Host "  InnerException: $($innerException.Message)"
+        Write-Host "  InnerException: $($innerException.GetType().Name): $($innerException.Message)"
+        if ($innerException.GetType() -eq [System.Net.WebSockets.WebSocketException]) {
+            $webSocketException = [System.Net.WebSockets.WebSocketException]$innerException
+            Write-Host "    WebSocketErrorCode: $($webSocketException.WebSocketErrorCode)"
+        }
     }
     throw
 }
