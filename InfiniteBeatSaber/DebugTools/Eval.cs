@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using Zenject;
 
@@ -18,8 +19,9 @@ namespace InfiniteBeatSaber.DebugTools
         {
             try
             {
-                var assemblyBytes = System.IO.File.ReadAllBytes(dllPath);
-                var assembly = Assembly.Load(assemblyBytes);
+                var assemblyBytes = File.ReadAllBytes(dllPath);
+                var pdbBytes = LoadPdbIfExists(dllPath); // Enables us to see line numbers in exceptions
+                var assembly = Assembly.Load(assemblyBytes, pdbBytes);
 
                 var type = assembly.GetType(evalClassName);
                 if (type == null)
@@ -45,6 +47,13 @@ namespace InfiniteBeatSaber.DebugTools
                     Plugin.Log.Info("EvalDll inner exception: " + ex.InnerException.ToString());
                 }
             }
+        }
+
+        private byte[] LoadPdbIfExists(string dllPath)
+        {
+            var pdbPath = Path.ChangeExtension(dllPath, "pdb");
+            return !File.Exists(pdbPath) ? null :
+                File.ReadAllBytes(pdbPath);
         }
 
         #region Initialization & cleanup
