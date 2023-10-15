@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -980,53 +981,99 @@ namespace InfiniteBeatSaber.DebugTools
 
         #region Printing Unity UI hierarchy
 
-        private static string PrintFullUIHierarchy()
+        private static string PrintFullSceneHierarchy(bool verbose = false)
+        {
+            var output = new StringBuilder();
+
+            var activeScene = SceneManager.GetActiveScene();
+            foreach (var scene in GetScenes())
+            {
+                var activePrefix = scene == activeScene ? "*" : "";
+                var scenePrefix = scene.isSubScene ? "SubScene" : "Scene";
+                output.AppendLine($"<{activePrefix}{scenePrefix}/{scene.name}>");
+                var roots = scene.GetRootGameObjects();
+                foreach (var c in roots)
+                {
+                    output.Append(PrintUIHierarchy(c.gameObject, verbose, "  "));
+                }
+                output.AppendLine($"</{activePrefix}{scenePrefix}/{scene.name}>");
+            }
+
+            return output.ToString();
+        }
+
+        private static string PrintFullUIHierarchy(bool verbose = false)
         {
             var roots = SceneManager.GetActiveScene().GetRootGameObjects();
             var output = new StringBuilder();
             foreach (var c in roots)
             {
-                output.Append(PrintUIHierarchy(c.gameObject));
+                output.Append(PrintUIHierarchy(c.gameObject, verbose));
             }
             return output.ToString();
         }
 
-        private static void LogUIHierarchy(GameObject root)
-        {
-            Log.Info(PrintUIHierarchy(root));
-        }
-
-        private static string PrintUIHierarchy(GameObject root)
+        private static string PrintUIHierarchy(GameObject root, bool verbose = false, string initialIndent = "")
         {
             var output = new StringBuilder();
+
+            string AdditionalInfo(UnityEngine.Object obj)
+            {
+                return
+                    obj is Text text ? text.text :
+                    obj is Image image ? image.sprite?.name :
+                    obj is TextMeshPro textMesh ? textMesh.text :
+                    obj is TextMeshProUGUI textMeshUGUI ? textMeshUGUI.text :
+                    null;
+            }
+
+            string DisabledNotation(bool isDisabled)
+            {
+                return isDisabled ? "//" : "";
+            }
 
             void Walk(GameObject node, string indent)
             {
                 if (node == null) return;
 
-                // Get some relevant UI components for additional info
-                var textComp = node.GetComponent<Text>();
-                var imageComp = node.GetComponent<Image>();
-
-                string additionalInfo = "";
-
-                if (textComp != null)
-                    additionalInfo += $"Text: \"{textComp.text}\" ";
-                if (imageComp != null)
-                    additionalInfo += $"Image: {imageComp.sprite?.name} ";
-
-                // Log current GameObject
-                output.AppendLine($"{indent}{node.name} ({node.GetType().Name}) {additionalInfo}");
+                var selfClose = node.transform.childCount == 0 ? " /" : "";
+                var disabledNotation = node.activeInHierarchy ? "" : "//";
+                var components = string.Join(" ", node
+                    .GetComponents<UnityEngine.Object>()
+                    .Select(c =>
+                    {
+                        var componentDisabled = c is Behaviour behaviour && !behaviour.enabled;
+                        var name = c.name == node.name ? "" : $"[{c.name}]";
+                        var additionalInfoRaw = verbose ? AdditionalInfo(c) : null;
+                        var additionalInfo = additionalInfoRaw == null ? null : $"({additionalInfoRaw})";
+                        return $"{DisabledNotation(componentDisabled)}{c.GetType().Name}{name}{additionalInfo}";
+                    }));
+                output.AppendLine($"{indent}<{DisabledNotation(!node.activeInHierarchy)}{node.name} {components}{selfClose}>");
 
                 // Recurse on children
                 foreach (Transform child in node.transform)
                 {
                     Walk(child.gameObject, indent + "  ");
                 }
+
+                if (node.transform.childCount > 0)
+                {
+                    output.AppendLine($"{indent}</{node.name}>");
+                }
             };
 
-            Walk(root, "");
+            Walk(root, initialIndent);
             return output.ToString();
+        }
+
+        private static List<Scene> GetScenes()
+        {
+            var scenes = new List<Scene>();
+            for (var i = 0; i < SceneManager.sceneCount; ++i)
+            {
+                scenes.Add(SceneManager.GetSceneAt(i));
+            }
+            return scenes;
         }
 
         #endregion
