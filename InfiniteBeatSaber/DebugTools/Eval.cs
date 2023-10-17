@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 using Zenject;
 
 namespace InfiniteBeatSaber.DebugTools
@@ -15,7 +16,7 @@ namespace InfiniteBeatSaber.DebugTools
         // Gives the caller the opportunity to preserve state across evals.
         private readonly IDictionary<string, object> _state = new Dictionary<string, object>();
 
-        public void EvalDll(string dllPath)
+        public async void EvalDll(string dllPath)
         {
             try
             {
@@ -37,7 +38,11 @@ namespace InfiniteBeatSaber.DebugTools
                     return;
                 }
 
-                method.Invoke(null, new object[] { _state });
+                var returnValue = method.Invoke(null, new object[] { _state });
+                if (returnValue is Task task)
+                {
+                    await task;
+                }
             }
             catch (Exception ex)
             {
