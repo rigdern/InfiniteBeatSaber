@@ -39,6 +39,7 @@ try {
     $message = ConvertTo-Json @($commandName, (ConvertTo-Json $commandArgs))
 
     $client = New-Object System.Net.WebSockets.ClientWebSocket
+    $client.Options.SetRequestHeader('Origin', 'http://localhost/')
     $client.ConnectAsync($uri, [System.Threading.CancellationToken]::None).Wait()
     Write-Output "WebSocket connection opened"
 
